@@ -1,11 +1,7 @@
 package way.application.data.schedule;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -20,7 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class ScheduleEntity {
-    @Id @Column(name = "schedule_id")
+    @Id
+    @Column(name = "schedule_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

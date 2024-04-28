@@ -40,6 +40,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), errorDescription));
     }
+
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<ErrorResponse> handleUsersException(final BadRequestException exception) {
+        log.warn("BadRequestException occur: ", exception);
+        return this.makeErrorResponseEntity(exception.getErrorResult());
+    }
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorResponse> handleException(final Exception exception) {
         log.warn("Exception occur: ", exception);

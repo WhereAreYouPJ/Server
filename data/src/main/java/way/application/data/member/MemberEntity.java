@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import way.application.data.schedule.ScheduleEntity;
 
 @Entity
 @Table(name = "member")
@@ -18,9 +17,10 @@ import way.application.data.schedule.ScheduleEntity;
 @Getter
 @Builder
 public class MemberEntity {
-    @Id @Column(name = "member_id")
+    @Id
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String userId;
@@ -28,7 +28,4 @@ public class MemberEntity {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
-    private ScheduleEntity schedule;
 }
