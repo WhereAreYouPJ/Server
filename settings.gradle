@@ -1,0 +1,5 @@
+rootProject.name = 'backend'
+include 'application'
+include 'domain'
+include 'data'
+include 'core'

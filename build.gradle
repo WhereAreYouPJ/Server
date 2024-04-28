@@ -1,0 +1,81 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'application'
+
+    mainClassName = 'way.application.BackendApplication'
+    group = 'way'
+    version = '0.0.1-SNAPSHOT'
+
+    java {
+        sourceCompatibility = '17'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        compileOnly 'org.projectlombok:lombok'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        runtimeOnly 'com.h2database:h2'
+        runtimeOnly 'com.mysql:mysql-connector-j'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
+
+bootJar { enabled = false }
+
+project(':application') {
+    bootJar { enabled = true }
+    jar {enabled = false }
+    dependencies {
+        implementation project(':domain')
+        implementation project(':data')
+        implementation project(':core')
+    }
+}
+
+project(':data') {
+    bootJar { enabled = false }
+    jar {enabled = true }
+    dependencies {
+        implementation project(':domain')
+        implementation project(':core')
+    }
+}
+
+project(':domain') {
+    bootJar { enabled = false }
+    jar {enabled = true }
+    dependencies {
+        implementation project(':core')
+    }
+}
+
+project(':core') {
+    bootJar { enabled = false }
+    jar {enabled = true }
+    dependencies {
+    }
+}
