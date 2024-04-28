@@ -29,14 +29,56 @@ subprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        compileOnly 'org.projectlombok:lombok'
-        developmentOnly 'org.springframework.boot:spring-boot-devtools'
-        runtimeOnly 'com.h2database:h2'
-        runtimeOnly 'com.mysql:mysql-connector-j'
-        annotationProcessor 'org.projectlombok:lombok'
+        //spring
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation('org.springframework.boot:spring-boot-starter-web')
+        implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.1.6'
+
+        // Dev Tools
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+        //jpa
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+        // MySQL
+        runtimeOnly 'com.mysql:mysql-connector-j'
+
+        //lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
+        // JWT
+        implementation group: 'io.jsonwebtoken',name:'jjwt',version:'0.9.1'
+
+        //이메일 발송
+        implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+        // modelmapper 라이브러리
+        implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+
+        // AWS
+        implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+        // Spring Security
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+
+        // FireBase
+        implementation 'com.google.firebase:firebase-admin:9.1.1'
+        implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+
+        // H2 DB
+        runtimeOnly 'com.h2database:h2'
+
+        // Redis
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+        // Validation
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        // Swagger
+        implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     }
 
     tasks.named('test') {
