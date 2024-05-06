@@ -33,6 +33,7 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         implementation('org.springframework.boot:spring-boot-starter-web')
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.1.6'
+        implementation 'org.springframework.boot:spring-boot-starter-security'
 
         // Dev Tools
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
