@@ -11,19 +11,13 @@ import way.application.domain.member.MemberRepository;
 public class MemberRepositoryImpl implements MemberRepository {
 
     private final MemberJpaRepository memberJpaRepository;
+    private final MemberMapper memberMapper;
     private final BCryptPasswordEncoder encoder;
+
     @Override
     public void save(Member.SaveMemberRequest request) {
-
-        MemberEntity member = MemberEntity.builder()
-                .userName(request.userName())
-                .userId(request.userId())
-                .password(encoder.encode(request.password()))
-                .email(request.email())
-                .profileImage(null)
-                .build();
-
-        memberJpaRepository.save(member);
-
+        memberJpaRepository.save(
+                memberMapper.toMemberEntity(request, encoder.encode(request.password()), null)
+        );
     }
 }

@@ -29,7 +29,7 @@ public class MemberEntity {
     private String userId;
 
     @Column(nullable = false)
-    private String password;
+    private String encodedPassword;
 
     private String email;
     private String profileImage;

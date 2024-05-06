@@ -11,27 +11,38 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
+import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.member.Member;
 import way.application.domain.member.usecase.SaveMemberUseCase;
-import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 
 @RestController
 @RequestMapping(value = "/v1/member", name = "멤버")
 @RequiredArgsConstructor
 @Tag(name = "Member API", description = "Response List API")
 public class MemberController {
-    private final SaveScheduleUseCase saveScheduleUseCase;
     private final SaveMemberUseCase saveMemberUseCase;
 
     @PostMapping(value = "/join", name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "B001",
+                    description = "Invalid DTO Parameter errors 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
     public ResponseEntity<BaseResponse> saveMember(@Valid @RequestBody Member.SaveMemberRequest request) {
         saveMemberUseCase.invoke(request);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
 
 }

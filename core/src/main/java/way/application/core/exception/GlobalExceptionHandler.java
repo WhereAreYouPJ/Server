@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> makeErrorResponseEntity(final String errorDescription) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), errorDescription));
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), errorDescription, "B001"));
     }
 
     @ExceptionHandler({BadRequestException.class})
@@ -55,14 +55,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<ErrorResponse> makeErrorResponseEntity(final ErrorResult errorResult) {
         return ResponseEntity.status(errorResult.getHttpStatus())
-                .body(new ErrorResponse(errorResult.getHttpStatus().toString(), errorResult.getMessage()));
+                .body(new ErrorResponse(errorResult.getHttpStatus().toString(), errorResult.getMessage(), errorResult.getCode()));
     }
 
     @Getter
     @RequiredArgsConstructor
     public static class ErrorResponse {
-        private final String code;
+        private final String status;
         private final String message;
+        private final String code;
     }
 
 }
