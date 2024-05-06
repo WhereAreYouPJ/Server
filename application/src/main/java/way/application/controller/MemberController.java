@@ -9,10 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.domain.member.Member;
 import way.application.domain.member.usecase.SaveMemberUseCase;
@@ -26,8 +23,8 @@ public class MemberController {
     private final SaveScheduleUseCase saveScheduleUseCase;
     private final SaveMemberUseCase saveMemberUseCase;
 
-    @PostMapping(value = "/save", name = "회원가입")
-    @Operation(summary = "Save Member API", description = "Create Member API")
+    @PostMapping(value = "/join", name = "회원가입")
+    @Operation(summary = "join Member API", description = "join Member API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공하였습니다.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class))),
     })
