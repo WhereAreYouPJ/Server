@@ -15,7 +15,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert
 @DynamicUpdate
 @Getter
-@Builder
+@Builder(toBuilder = true)
 public class MemberEntity {
     @Id
     @Column(name = "member_id")
@@ -23,9 +23,14 @@ public class MemberEntity {
     private Long id;
 
     @Column(nullable = false)
+    private String userName;
+
+    @Column(nullable = false)
     private String userId;
 
     @Column(nullable = false)
     private String password;
 
+    private String email;
+    private String profileImage;
 }
