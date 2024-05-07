@@ -5,6 +5,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 **/application/src/main/resources/*.yml
+**/application/src/main/resources/firebase/*.json
 
 ### STS ###
 .apt_generated
