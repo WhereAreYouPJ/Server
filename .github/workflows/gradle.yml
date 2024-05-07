@@ -74,7 +74,7 @@ jobs:
       - name: build and release to DockerHub
         env:
           NAME: ${{secrets.DOCKER_USERNAME}}
-          REPO: WAY
+          REPO: way
         run: |
           docker build -t $REPO .
           docker tag $REPO:latest $NAME/$REPO:latest
