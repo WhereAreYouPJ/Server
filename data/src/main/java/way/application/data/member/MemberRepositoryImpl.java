@@ -20,4 +20,6 @@ public class MemberRepositoryImpl implements MemberRepository {
                 memberMapper.toMemberEntity(request, encoder.encode(request.password()))
         );
     }
+
+    // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }
