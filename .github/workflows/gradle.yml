@@ -1,8 +1,6 @@
 name: WAY CI/CD
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
   workflow_dispatch:
@@ -25,13 +23,13 @@ jobs:
         run: |
           mkdir -p application/src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > application/src/main/resources/application.yml
-          find src
+          find application/src  # 변경된 부분
 
-      - name: Set YML PRODUCTION
+      - name: Set YML LOCAL
         run: |
           mkdir -p application/src/main/resources
           echo "${{ secrets.APPLICATION_LOCAL_YML }}" | base64 --decode > application/src/main/resources/application-local.yml
-          find src
+          find application/src  # 변경된 부분
 
       # Firebase JSON Key 생성
       - name: Create Firebase Config Directory
