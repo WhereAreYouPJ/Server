@@ -18,7 +18,7 @@ import way.application.domain.member.usecase.SaveMemberUseCase;
 @RestController
 @RequestMapping(value = "/v1/member", name = "멤버")
 @RequiredArgsConstructor
-@Tag(name = "Member API", description = "Response List API")
+@Tag(name = "Member API", description = "업무 담당: 송인준")
 public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
 
