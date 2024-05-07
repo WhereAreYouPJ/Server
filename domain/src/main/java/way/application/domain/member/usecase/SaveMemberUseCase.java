@@ -8,7 +8,6 @@ import way.application.domain.member.MemberRepository;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
 public class SaveMemberUseCase {
 
     private final MemberRepository memberRepository;

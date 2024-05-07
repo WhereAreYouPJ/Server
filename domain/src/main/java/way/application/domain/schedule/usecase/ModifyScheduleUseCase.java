@@ -8,10 +8,10 @@ import way.application.domain.schedule.ScheduleRepository;
 
 @Component
 @RequiredArgsConstructor
-public class SaveScheduleUseCase {
+public class ModifyScheduleUseCase {
     private final ScheduleRepository scheduleRepository;
 
-    public Schedule.SaveScheduleResponse invoke(Schedule.SaveScheduleRequest request) {
-        return scheduleRepository.save(request);
+    public Schedule.ModifyScheduleResponse invoke(Schedule.ModifyScheduleRequest request) {
+        return scheduleRepository.modify(request);
     }
 }

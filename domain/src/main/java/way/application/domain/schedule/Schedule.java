@@ -39,4 +39,40 @@ public class Schedule {
     ) {
 
     }
+
+    public record ModifyScheduleRequest(
+            @NotNull(message = "id 값을 입력해주세요.")
+            Long id,
+
+            @NotEmpty(message = "title 값을 입력해주세요.")
+            String title,
+
+            @NotNull(message = "startTime 값을 입력해주세요.")
+            LocalDateTime startTime,
+
+            @NotNull(message = "endTime 값을 입력해주세요.")
+            LocalDateTime endTime,
+
+            @NotEmpty(message = "location 값을 입력해주세요.")
+            String location,
+
+            @NotEmpty(message = "color 값을 입력해주세요.")
+            String color,
+
+            @NotEmpty(message = "memo 값을 입력해주세요.")
+            String memo,
+
+            List<Long> invitedMemberIds,
+
+            @NotNull(message = "createMemberId 값을 입력해주세요")
+            Long createMemberId
+    ) {
+
+    }
+
+    public record ModifyScheduleResponse(
+            Long id
+    ) {
+
+    }
 }

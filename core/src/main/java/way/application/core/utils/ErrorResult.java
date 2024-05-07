@@ -8,13 +8,12 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorResult {
 
-    // User Bad UB001
-    USER_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "User Bad Request Exception", "UB002"),
-
-    // Schedule Member Bad B002
-    INVITED_MEMBER_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "Invited Member Bad Request Exception", "IMB003"),
+    // BAD_REQUEST
+    USER_ID_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "USER_ID_BAD_REQUEST_EXCEPTION", "UIB002"),
+    SCHEDULE_ID_BAD_REQUEST_EXCEPTION(HttpStatus.BAD_REQUEST, "SCHEDULE_ID_BAD_REQUEST_EXCEPTION", "SIB003"),
 
     // SERVER
+    FIREBASE_CLOUD_MESSAGING_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "FIREBASE_CLOUD_MESSAGING_EXCEPTION", "S501"),
     UNKNOWN_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, "Unknown Exception", "S500"),
     ;
 
