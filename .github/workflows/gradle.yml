@@ -48,9 +48,14 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
-        shell: bash
+      - name: Build Application Module
+        run: ./gradlew :application:build
+      - name: Build Core Module
+        run: ./gradlew :core:build
+      - name: Build Data Module
+        run: ./gradlew :data:build
+      - name: Build Domain Module
+        run: ./gradlew :domain:build
 
       # Time Setting
       - name: Get current time
