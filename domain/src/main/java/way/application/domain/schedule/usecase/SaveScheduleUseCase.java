@@ -8,7 +8,6 @@ import way.application.domain.schedule.ScheduleRepository;
 
 @Component
 @RequiredArgsConstructor
-@Transactional
 public class SaveScheduleUseCase {
     private final ScheduleRepository scheduleRepository;
 

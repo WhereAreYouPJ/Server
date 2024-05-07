@@ -9,6 +9,7 @@ import way.application.data.member.MemberJpaRepository;
 import way.application.data.schedule.ScheduleEntity;
 import way.application.data.schedule.ScheduleJpaRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -24,6 +25,10 @@ public class ValidateUtils {
     }
 
     public List<MemberEntity> validateMemberEntityIn(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         List<MemberEntity> memberEntities = memberJpaRepository.findAllById(ids);
         if (memberEntities.size() != ids.size()) {
             throw new BadRequestException(ErrorResult.USER_ID_BAD_REQUEST_EXCEPTION);
@@ -31,6 +36,7 @@ public class ValidateUtils {
 
         return memberEntities;
     }
+
 
     public ScheduleEntity validateScheduleEntity(Long id) {
         return scheduleJpaRepository.findById(id)

@@ -1,5 +1,6 @@
 package way.application.data.schedule;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import way.application.core.exception.ServerException;
@@ -14,7 +15,6 @@ import way.application.domain.schedule.ScheduleRepository;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -28,54 +28,35 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     private final ValidateUtils validateUtils;
 
     @Override
+    @Transactional
     public Schedule.SaveScheduleResponse save(Schedule.SaveScheduleRequest request) {
         MemberEntity createMember = validateUtils.validateMemberEntity(
                 request.createMemberId()
         );
 
+        // Schedule 저장
         ScheduleEntity savedSchedule = scheduleJpaRepository.save(
                 scheduleMapper.toScheduleEntity(request)
         );
 
-        if (request.invitedMemberIds() == null || request.invitedMemberIds().isEmpty()) {
-            // ScheduleMember 저장
-            scheduleMemberJpaRepository.save(
-                    scheduleMemberMapper.toScheduleMemberEntity(
-                            savedSchedule, createMember, true, true
-                    )
-            );
-        } else {
-            // 예외처리
-            List<MemberEntity> invitedMembers = validateUtils.validateMemberEntityIn(
-                    request.invitedMemberIds()
-            );
-
-            Set<MemberEntity> invitedMembersSet = new HashSet<>(invitedMembers);
-            invitedMembersSet.add(createMember);
-            invitedMembersSet.forEach(invitedMember -> {
-                // ScheduleMember 저장
-                scheduleMemberJpaRepository.save(scheduleMemberMapper.toScheduleMemberEntity(
-                        savedSchedule, invitedMember, invitedMember.getId().equals(createMember.getId()), invitedMember.getId().equals(createMember.getId())
-                ));
-
-                // 푸시 알림
-                if (!invitedMember.getId().equals(createMember.getId())) {
-                    try {
-                        String body = createMember.getUserName() + "이(가) 일정 초대를 했습니다.";
-                        fireBaseRepository.sendMessageTo(
-                                invitedMember.getFireBaseTargetToken(), "일정 요청이 들어왔습니다.", body
-                        );
-                    } catch (IOException e) {
-                        throw new ServerException(ErrorResult.UNKNOWN_EXCEPTION);
-                    }
-                }
-            });
-        }
+        // ScheduleMember 저장
+        Set<MemberEntity> invitedMembers = new HashSet<>(
+                validateUtils.validateMemberEntityIn(
+                        request.invitedMemberIds()
+                )
+        );
+        invitedMembers.add(createMember);
+        invitedMembers.forEach(invitedMember ->
+                saveScheduleMember(
+                        savedSchedule, invitedMember, createMember
+                )
+        );
 
         return new Schedule.SaveScheduleResponse(savedSchedule.getId());
     }
 
     @Override
+    @Transactional
     public Schedule.ModifyScheduleResponse modify(Schedule.ModifyScheduleRequest request) {
         ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(request.id());
 
@@ -92,6 +73,24 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         Schedule.SaveScheduleResponse response = save(saveScheduleRequest);
 
         return new Schedule.ModifyScheduleResponse(response.id());
+    }
+
+    private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember, MemberEntity createMember) {
+        boolean isCreator = invitedMember.getId().equals(createMember.getId());
+        scheduleMemberJpaRepository.save(scheduleMemberMapper.toScheduleMemberEntity(savedSchedule, invitedMember, isCreator, isCreator));
+
+        if (!isCreator) {
+            sendNotification(invitedMember, createMember);
+        }
+    }
+
+    private void sendNotification(MemberEntity invitedMember, MemberEntity createMember) {
+        try {
+            String body = createMember.getUserName() + "이(가) 일정 초대를 했습니다.";
+            fireBaseRepository.sendMessageTo(invitedMember.getFireBaseTargetToken(), "일정 요청이 들어왔습니다.", body);
+        } catch (IOException e) {
+            throw new ServerException(ErrorResult.UNKNOWN_EXCEPTION);
+        }
     }
 
 }
