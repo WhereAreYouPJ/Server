@@ -19,7 +19,7 @@ import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 @RestController
 @RequestMapping(value = "/v1/schedule", name = "일정")
 @RequiredArgsConstructor
-@Tag(name = "Schedule API", description = "Response List API")
+@Tag(name = "Schedule API", description = "업무 담당: 박종훈")
 public class ScheduleController {
     private final SaveScheduleUseCase saveScheduleUseCase;
     private final ModifyScheduleUseCase modifyScheduleUseCase;
