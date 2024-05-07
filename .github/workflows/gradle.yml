@@ -80,23 +80,23 @@ jobs:
           docker tag $REPO:latest $NAME/$REPO:latest
           docker push $NAME/$REPO:latest
 
-#  deploy:
-#    needs: build
-#    name: Deploy
-#    runs-on: [ self-hosted ]
-#    steps:
-#      - name: Stop and Remove Redis Image
-#        run: |
-#          sudo docker ps -q --filter "name=redis" | grep -q . && sudo docker stop "redis" && sudo docker rmi -f "${{secrets.DOCKER_USERNAME}}/redis"
-#          sudo docker pull ${{secrets.DOCKER_USERNAME}}/redis
-#      - name: Run Redis
-#        run: |
-#          sudo docker run -d --name redis --rm -p 6379:6379 ${{secrets.DOCKER_USERNAME}}/redis
-#
-#      - name: Stop and Remove Docker Image
-#        run: |
-#          sudo docker ps -q --filter "name=WAY" | grep -q . && sudo docker stop "WAY" && sudo docker rmi -f "${{secrets.DOCKER_USERNAME}}/WAY"
-#          sudo docker pull ${{secrets.DOCKER_USERNAME}}/WAY
-#      - name: Docker run
-#        run: |
-#          sudo docker run -d --name WAY --rm -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/WAY
+  deploy:
+    needs: build
+    name: Deploy
+    runs-on: [ self-hosted ]
+    steps:
+      - name: Stop and Remove Redis Image
+        run: |
+          sudo docker ps -q --filter "name=redis" | grep -q . && sudo docker stop "redis" && sudo docker rmi -f "${{secrets.DOCKER_USERNAME}}/redis"
+          sudo docker pull ${{secrets.DOCKER_USERNAME}}/redis
+      - name: Run Redis
+        run: |
+          sudo docker run -d --name redis --rm -p 6379:6379 ${{secrets.DOCKER_USERNAME}}/redis
+
+      - name: Stop and Remove Docker Image
+        run: |
+          sudo docker ps -q --filter "name=WAY" | grep -q . && sudo docker stop "WAY" && sudo docker rmi -f "${{secrets.DOCKER_USERNAME}}/WAY"
+          sudo docker pull ${{secrets.DOCKER_USERNAME}}/WAY
+      - name: Docker run
+        run: |
+          sudo docker run -d --name WAY --rm -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/WAY
