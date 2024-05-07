@@ -33,7 +33,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         ScheduleEntity savedSchedule = scheduleJpaRepository.save(scheduleMapper.toScheduleEntity(request));
 
         if (request.invitedMemberIds() == null || request.invitedMemberIds().isEmpty()) {
-            scheduleMemberJpaRepository.save(scheduleMemberMapper.toScheduleMemberEntity(savedSchedule, createMember, true));
+            scheduleMemberJpaRepository.save(
+                    scheduleMemberMapper.toScheduleMemberEntity(
+                            savedSchedule, createMember, true, true
+                    )
+            );
         } else {
             List<MemberEntity> invitedMembers = memberJpaRepository.findAllById(request.invitedMemberIds());
             if (invitedMembers.size() != request.invitedMemberIds().size()) {
@@ -44,7 +48,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             invitedMembersSet.add(createMember);
             invitedMembersSet.forEach(invitedMember -> {
                 scheduleMemberJpaRepository.save(scheduleMemberMapper.toScheduleMemberEntity(
-                        savedSchedule, invitedMember, invitedMember.getId().equals(createMember.getId())
+                        savedSchedule, invitedMember, invitedMember.getId().equals(createMember.getId()), invitedMember.getId().equals(createMember.getId())
                 ));
             });
         }

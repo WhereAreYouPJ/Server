@@ -9,5 +9,5 @@ import way.application.domain.member.Member;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MemberMapper {
     @Mapping(target = "id", ignore = true)
-    MemberEntity toMemberEntity(Member.SaveMemberRequest request, String encodedPassword, String profileImage);
+    MemberEntity toMemberEntity(Member.SaveMemberRequest request, String encodedPassword);
 }

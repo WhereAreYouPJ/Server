@@ -17,7 +17,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public void save(Member.SaveMemberRequest request) {
         memberJpaRepository.save(
-                memberMapper.toMemberEntity(request, encoder.encode(request.password()), null)
+                memberMapper.toMemberEntity(request, encoder.encode(request.password()))
         );
     }
 }

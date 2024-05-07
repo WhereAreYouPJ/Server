@@ -34,4 +34,7 @@ public class ScheduleMemberEntity {
 
     @Column(name = "is_creator", nullable = false)
     private Boolean isCreator = false;
+
+    @Column(name = "accept_schedule", nullable = false)
+    private Boolean acceptSchedule = false;
 }
