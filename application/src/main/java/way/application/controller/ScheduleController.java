@@ -9,13 +9,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.schedule.Schedule;
+import way.application.domain.schedule.usecase.ModifyScheduleUseCase;
 import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 
 @RestController
@@ -24,6 +22,7 @@ import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 @Tag(name = "Schedule API", description = "Response List API")
 public class ScheduleController {
     private final SaveScheduleUseCase saveScheduleUseCase;
+    private final ModifyScheduleUseCase modifyScheduleUseCase;
 
     @PostMapping(value = "/save", name = "일정 생성")
     @Operation(summary = "Create Schedule API", description = "Create Schedule API")
@@ -52,16 +51,51 @@ public class ScheduleController {
                     description = "USER_BAD_REQUEST_EXCEPTION 400",
                     content = @Content(
                             schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "IMB003",
-                    description = "INVITED_MEMBER_BAD_REQUEST_EXCEPTION 400",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
     public ResponseEntity<BaseResponse> saveSchedule(@Valid @RequestBody Schedule.SaveScheduleRequest request) {
         Schedule.SaveScheduleResponse response = saveScheduleUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @PutMapping(value = "/modify", name = "일정 수정")
+    @Operation(summary = "Modify Schedule API", description = "Modify Schedule API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "S500",
+                    description = "SERVER_ERROR 500",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "B001",
+                    description = "Invalid DTO Parameter errors 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "UB002",
+                    description = "USER_BAD_REQUEST_EXCEPTION 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SIB003",
+                    description = "SCHEDULE_ID_BAD_REQUEST_EXCEPTION 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> modifySchedule(@Valid @RequestBody Schedule.ModifyScheduleRequest request) {
+        Schedule.ModifyScheduleResponse response = modifyScheduleUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
