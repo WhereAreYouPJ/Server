@@ -41,6 +41,12 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
+                    responseCode = "S501",
+                    description = "FIREBASE_CLOUD_MESSAGING_EXCEPTION 500",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
                     responseCode = "B001",
                     description = "Invalid DTO Parameter errors 400",
                     content = @Content(
@@ -72,6 +78,12 @@ public class ScheduleController {
             @ApiResponse(
                     responseCode = "S500",
                     description = "SERVER_ERROR 500",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "S501",
+                    description = "FIREBASE_CLOUD_MESSAGING_EXCEPTION 500",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
