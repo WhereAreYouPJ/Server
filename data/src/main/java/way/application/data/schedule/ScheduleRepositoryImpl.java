@@ -75,6 +75,16 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return new Schedule.ModifyScheduleResponse(response.id());
     }
 
+    @Override
+    @Transactional
+    public void delete(Schedule.DeleteScheduleRequest request) {
+        ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(request.id());
+
+        // 데이터 전체 삭제
+        scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
+        scheduleJpaRepository.deleteById(request.id());
+    }
+
     private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember, MemberEntity createMember) {
         boolean isCreator = invitedMember.getId().equals(createMember.getId());
         scheduleMemberJpaRepository.save(scheduleMemberMapper.toScheduleMemberEntity(savedSchedule, invitedMember, isCreator, isCreator));
