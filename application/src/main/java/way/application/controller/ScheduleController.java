@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.schedule.Schedule;
+import way.application.domain.schedule.usecase.DeleteScheduleUseCase;
 import way.application.domain.schedule.usecase.ModifyScheduleUseCase;
 import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 
@@ -23,8 +24,9 @@ import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 public class ScheduleController {
     private final SaveScheduleUseCase saveScheduleUseCase;
     private final ModifyScheduleUseCase modifyScheduleUseCase;
+    private final DeleteScheduleUseCase deleteScheduleUseCase;
 
-    @PostMapping(value = "/save", name = "일정 생성")
+    @PostMapping(name = "일정 생성")
     @Operation(summary = "Create Schedule API", description = "Create Schedule API")
     @ApiResponses(value = {
             @ApiResponse(
@@ -65,7 +67,7 @@ public class ScheduleController {
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 
-    @PutMapping(value = "/modify", name = "일정 수정")
+    @PutMapping(name = "일정 수정")
     @Operation(summary = "Modify Schedule API", description = "Modify Schedule API")
     @ApiResponses(value = {
             @ApiResponse(
@@ -110,5 +112,40 @@ public class ScheduleController {
         Schedule.ModifyScheduleResponse response = modifyScheduleUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @DeleteMapping(name = "일정 삭제")
+    @Operation(summary = "Delete Schedule API", description = "Delete Schedule API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "S500",
+                    description = "SERVER_ERROR 500",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "B001",
+                    description = "Invalid DTO Parameter errors 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SIB003",
+                    description = "SCHEDULE_ID_BAD_REQUEST_EXCEPTION 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> deleteSchedule(@Valid @RequestBody Schedule.DeleteScheduleRequest request) {
+        deleteScheduleUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
 }

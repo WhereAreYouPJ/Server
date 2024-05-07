@@ -75,4 +75,11 @@ public class Schedule {
     ) {
 
     }
+
+    public record DeleteScheduleRequest(
+            @NotNull(message = "id 값을 입력해주세요.")
+            Long id
+    ) {
+
+    }
 }
