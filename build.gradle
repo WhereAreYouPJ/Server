@@ -33,7 +33,6 @@ subprojects {
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         implementation('org.springframework.boot:spring-boot-starter-web')
         implementation group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '3.1.6'
-        implementation 'org.springframework.boot:spring-boot-starter-security'
 
         // Dev Tools
         developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -81,6 +80,13 @@ subprojects {
         // Mapper
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
+        // Security
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+
+        // FireBase
+        implementation 'com.google.firebase:firebase-admin:9.1.1'
+        implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
     }
 
     tasks.named('test') {

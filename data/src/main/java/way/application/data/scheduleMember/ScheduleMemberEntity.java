@@ -24,7 +24,7 @@ public class ScheduleMemberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private ScheduleEntity schedule;
 
@@ -34,4 +34,7 @@ public class ScheduleMemberEntity {
 
     @Column(name = "is_creator", nullable = false)
     private Boolean isCreator = false;
+
+    @Column(name = "accept_schedule", nullable = false)
+    private Boolean acceptSchedule = false;
 }
