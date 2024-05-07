@@ -95,8 +95,8 @@ jobs:
 
       - name: Stop and Remove Docker Image
         run: |
-          sudo docker ps -q --filter "name=WAY" | grep -q . && sudo docker stop "WAY" && sudo docker rmi -f "${{secrets.DOCKER_USERNAME}}/WAY"
-          sudo docker pull ${{secrets.DOCKER_USERNAME}}/WAY
+          sudo docker ps -q --filter "name=way" | grep -q . && sudo docker stop "way" && sudo docker rmi -f "${{secrets.DOCKER_USERNAME}}/way"
+          sudo docker pull ${{secrets.DOCKER_USERNAME}}/way
       - name: Docker run
         run: |
-          sudo docker run -d --name WAY --rm -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/WAY
+          sudo docker run -d --name way --rm -p 8080:8080 ${{secrets.DOCKER_USERNAME}}/way
