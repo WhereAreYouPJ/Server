@@ -22,7 +22,7 @@ import way.application.domain.member.usecase.SaveMemberUseCase;
 public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
 
-    @PostMapping(value = "/join", name = "회원가입")
+    @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
     @ApiResponses(value = {
             @ApiResponse(
