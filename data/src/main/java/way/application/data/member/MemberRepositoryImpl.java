@@ -1,5 +1,6 @@
 package way.application.data.member;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     private final BCryptPasswordEncoder encoder;
 
     @Override
+    @Transactional
     public void save(Member.SaveMemberRequest request) {
         memberJpaRepository.save(
                 memberMapper.toMemberEntity(request, encoder.encode(request.password()))
