@@ -23,17 +23,17 @@ jobs:
         run: |
           mkdir -p application/src/main/resources
           echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > application/src/main/resources/application.yml
-          find application/src  # 변경된 부분
+          find application/src
 
       - name: Set YML LOCAL
         run: |
           mkdir -p application/src/main/resources
           echo "${{ secrets.APPLICATION_LOCAL_YML }}" | base64 --decode > application/src/main/resources/application-local.yml
-          find application/src  # 변경된 부분
+          find application/src
 
       # Firebase JSON Key 생성
       - name: Create Firebase Config Directory
-        run: mkdir -p src/main/resources/firebase
+        run: mkdir -p application/src/main/resources/firebase
 
       - name: create-json
         id: create-json
