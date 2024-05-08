@@ -93,12 +93,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     public Schedule.GetScheduleResponse get(Long scheduleId, Long memberId) {
         // 예외처리
         ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(scheduleId);
-        MemberEntity memberEntity = validateUtils.validateMemberEntity(memberId);
-        List<ScheduleMemberEntity> scheduleMemberEntities
-                = scheduleMemberJpaRepository.findAllBySchedule(scheduleEntity);
-        validateUtils.validateMemberInScheduleMemberEntity(memberEntity, scheduleMemberEntities);
+        validateUtils.validateMemberEntity(memberId);
+        validateUtils.validateMemberInScheduleMemberEntity(memberId, scheduleId);
 
         // ScheduleMember에서 userName 추출
+        List<ScheduleMemberEntity> scheduleMemberEntities
+                = scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleEntity(scheduleEntity);
+
         List<String> userName = scheduleMemberEntities.stream()
                 .map(sm -> sm.getInvitedMember().getUserName())
                 .collect(Collectors.toList());
