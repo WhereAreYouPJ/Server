@@ -11,6 +11,6 @@ public class GetScheduleUseCase {
     private final ScheduleRepository scheduleRepository;
 
     public Schedule.GetScheduleResponse invoke(Long scheduleId, Long memberId) {
-        scheduleRepository.get(scheduleId, memberId);
+        return scheduleRepository.get(scheduleId, memberId);
     }
 }
