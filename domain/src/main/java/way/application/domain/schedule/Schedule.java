@@ -82,4 +82,22 @@ public class Schedule {
     ) {
 
     }
+
+    public record GetScheduleResponse(
+            String title,
+
+            LocalDateTime startTime,
+
+            LocalDateTime endTime,
+
+            String location,
+
+            String color,
+
+            String memo,
+
+            List<String> userName
+    ) {
+
+    }
 }

@@ -8,6 +8,8 @@ import way.application.data.member.MemberEntity;
 import way.application.data.member.MemberJpaRepository;
 import way.application.data.schedule.ScheduleEntity;
 import way.application.data.schedule.ScheduleJpaRepository;
+import way.application.data.scheduleMember.ScheduleMemberEntity;
+import way.application.data.scheduleMember.ScheduleMemberJpaRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ValidateUtils {
     private final MemberJpaRepository memberJpaRepository;
     private final ScheduleJpaRepository scheduleJpaRepository;
+    private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
 
     // TODO **ID 값으로만 Entity별 validate 진행
     public MemberEntity validateMemberEntity(Long id) {
@@ -41,5 +44,10 @@ public class ValidateUtils {
     public ScheduleEntity validateScheduleEntity(Long id) {
         return scheduleJpaRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_ID_BAD_REQUEST_EXCEPTION));
+    }
+
+    public ScheduleMemberEntity validateMemberInScheduleMemberEntity(Long memberId, Long scheduleId) {
+        return scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleIdAndMemberId(scheduleId, memberId)
+                .orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION));
     }
 }

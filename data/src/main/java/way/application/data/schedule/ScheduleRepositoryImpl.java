@@ -1,11 +1,12 @@
 package way.application.data.schedule;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import way.application.core.exception.ServerException;
 import way.application.core.utils.ErrorResult;
 import way.application.data.member.MemberEntity;
+import way.application.data.scheduleMember.ScheduleMemberEntity;
 import way.application.data.scheduleMember.ScheduleMemberJpaRepository;
 import way.application.data.scheduleMember.ScheduleMemberMapper;
 import way.application.data.utils.ValidateUtils;
@@ -15,7 +16,9 @@ import way.application.domain.schedule.ScheduleRepository;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -84,6 +87,29 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
         scheduleJpaRepository.deleteById(request.id());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Schedule.GetScheduleResponse get(Long scheduleId, Long memberId) {
+        // 예외처리
+        ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(scheduleId);
+        validateUtils.validateMemberEntity(memberId);
+        validateUtils.validateMemberInScheduleMemberEntity(memberId, scheduleId);
+
+        // ScheduleMember에서 userName 추출
+        List<ScheduleMemberEntity> scheduleMemberEntities
+                = scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleEntity(scheduleEntity);
+
+        List<String> userName = scheduleMemberEntities.stream()
+                .map(sm -> sm.getInvitedMember().getUserName())
+                .collect(Collectors.toList());
+
+        return new Schedule.GetScheduleResponse(
+                scheduleEntity.getTitle(), scheduleEntity.getStartTime(), scheduleEntity.getEndTime(), scheduleEntity.getLocation(),
+                scheduleEntity.getColor(), scheduleEntity.getMemo(), userName
+        );
+    }
+
 
     private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember, MemberEntity createMember) {
         boolean isCreator = invitedMember.getId().equals(createMember.getId());
