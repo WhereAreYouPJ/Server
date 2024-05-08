@@ -8,6 +8,7 @@ import way.application.data.member.MemberEntity;
 import way.application.data.member.MemberJpaRepository;
 import way.application.data.schedule.ScheduleEntity;
 import way.application.data.schedule.ScheduleJpaRepository;
+import way.application.data.scheduleMember.ScheduleMemberEntity;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,5 +42,11 @@ public class ValidateUtils {
     public ScheduleEntity validateScheduleEntity(Long id) {
         return scheduleJpaRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_ID_BAD_REQUEST_EXCEPTION));
+    }
+
+    public void validateMemberInScheduleMemberEntity(MemberEntity memberEntity, List<ScheduleMemberEntity> scheduleMemberEntities) {
+        if (scheduleMemberEntities.stream().noneMatch(sm -> sm.getInvitedMember().equals(memberEntity))) {
+            throw new BadRequestException(ErrorResult.MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION);
+        }
     }
 }

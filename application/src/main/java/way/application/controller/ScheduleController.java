@@ -1,6 +1,8 @@
 package way.application.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +16,7 @@ import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.schedule.Schedule;
 import way.application.domain.schedule.usecase.DeleteScheduleUseCase;
+import way.application.domain.schedule.usecase.GetScheduleUseCase;
 import way.application.domain.schedule.usecase.ModifyScheduleUseCase;
 import way.application.domain.schedule.usecase.SaveScheduleUseCase;
 
@@ -25,6 +28,7 @@ public class ScheduleController {
     private final SaveScheduleUseCase saveScheduleUseCase;
     private final ModifyScheduleUseCase modifyScheduleUseCase;
     private final DeleteScheduleUseCase deleteScheduleUseCase;
+    private final GetScheduleUseCase getScheduleUseCase;
 
     @PostMapping(name = "일정 생성")
     @Operation(summary = "Create Schedule API", description = "Create Schedule API")
@@ -147,5 +151,65 @@ public class ScheduleController {
         deleteScheduleUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+
+    @GetMapping(name = "일정 조회")
+    @Operation(summary = "Get Schedule API", description = "Get Schedule API")
+    @Parameters({
+            @Parameter(
+                    name = "scheduleId",
+                    description = "Schedule PK",
+                    example = "1"),
+            @Parameter(
+                    name = "memberId",
+                    description = "memberId PK",
+                    example = "1")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "S500",
+                    description = "SERVER_ERROR 500",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "B001",
+                    description = "Invalid DTO Parameter errors 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SIB003",
+                    description = "SCHEDULE_ID_BAD_REQUEST_EXCEPTION 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "UIB002",
+                    description = "USER_ID_BAD_REQUEST_EXCEPTION 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MINISB004",
+                    description = "MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION 400",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> getSchedule(
+            @Valid
+            @RequestParam(name = "scheduleId") Long scheduleId,
+            @RequestParam(name = "memberId") Long memberId) {
+        Schedule.GetScheduleResponse response = getScheduleUseCase.invoke(scheduleId, memberId);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 }
