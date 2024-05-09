@@ -1,5 +1,6 @@
 package way.application.controller;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 @RequestMapping(value = "/v1/schedule", name = "일정")
 @RequiredArgsConstructor
 @Tag(name = "Schedule API", description = "업무 담당: 박종훈")
+@OpenAPIDefinition(servers = {@Server(url = "/", description = "https://wlrmadjel.com")})
 public class ScheduleController {
     private final SaveScheduleUseCase saveScheduleUseCase;
     private final ModifyScheduleUseCase modifyScheduleUseCase;

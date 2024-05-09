@@ -1,10 +1,12 @@
 package way.application.controller;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import way.application.domain.member.usecase.SaveMemberUseCase;
 @RequestMapping(value = "/v1/member", name = "멤버")
 @RequiredArgsConstructor
 @Tag(name = "Member API", description = "업무 담당: 송인준")
+@OpenAPIDefinition(servers = {@Server(url = "/", description = "https://wlrmadjel.com")})
 public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
 
