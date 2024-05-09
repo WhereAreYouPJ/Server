@@ -106,7 +106,9 @@ public class Schedule {
 
         String title,
 
-        String location
+        String location,
+
+        String color
     ) {
 
     }

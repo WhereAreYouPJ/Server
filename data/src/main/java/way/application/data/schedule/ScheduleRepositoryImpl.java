@@ -121,7 +121,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .map(scheduleEntity -> new Schedule.GetScheduleByDateResponse(
                         scheduleEntity.getId(),
                         scheduleEntity.getTitle(),
-                        scheduleEntity.getLocation()))
+                        scheduleEntity.getLocation(),
+                        scheduleEntity.getColor()))
                 .collect(Collectors.toList());
     }
 
