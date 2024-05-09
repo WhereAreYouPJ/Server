@@ -21,14 +21,16 @@ public class ScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String title;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    @Column(nullable = false)
     private String location;
+    private String streetName;
+
+    private Double x;
+    private Double y;
 
     private String color;
 
