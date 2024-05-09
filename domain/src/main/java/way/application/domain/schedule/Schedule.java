@@ -20,6 +20,15 @@ public class Schedule {
             @NotEmpty(message = "location 값을 입력해주세요.")
             String location,
 
+            @NotEmpty(message = "streetName 값을 입력해주세요.")
+            String streetName,
+
+            @NotNull(message = "x 값을 입력해주세요.")
+            Double x,
+
+            @NotNull(message = "y 값을 입력해주세요.")
+            Double y,
+
             @NotEmpty(message = "color 값을 입력해주세요.")
             String color,
 
@@ -56,6 +65,15 @@ public class Schedule {
             @NotEmpty(message = "location 값을 입력해주세요.")
             String location,
 
+            @NotEmpty(message = "streetName 값을 입력해주세요.")
+            String streetName,
+
+            @NotNull(message = "x 값을 입력해주세요.")
+            Double x,
+
+            @NotNull(message = "y 값을 입력해주세요.")
+            Double y,
+
             @NotEmpty(message = "color 값을 입력해주세요.")
             String color,
 
@@ -91,6 +109,12 @@ public class Schedule {
             LocalDateTime endTime,
 
             String location,
+
+            String streetName,
+
+            Double x,
+
+            Double y,
 
             String color,
 

@@ -70,7 +70,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
 
         Schedule.SaveScheduleRequest saveScheduleRequest = new Schedule.SaveScheduleRequest(
-                request.title(), request.startTime(), request.endTime(), request.location(),
+                request.title(), request.startTime(), request.endTime(),
+                request.location(), request.streetName(), request.x(), request.y(),
                 request.color(), request.memo(), request.invitedMemberIds(), request.createMemberId()
         );
 
@@ -107,7 +108,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .collect(Collectors.toList());
 
         return new Schedule.GetScheduleResponse(
-                scheduleEntity.getTitle(), scheduleEntity.getStartTime(), scheduleEntity.getEndTime(), scheduleEntity.getLocation(),
+                scheduleEntity.getTitle(), scheduleEntity.getStartTime(), scheduleEntity.getEndTime(),
+                scheduleEntity.getLocation(), scheduleEntity.getStreetName(), scheduleEntity.getX(), scheduleEntity.getY(),
                 scheduleEntity.getColor(), scheduleEntity.getMemo(), userName
         );
     }
@@ -125,7 +127,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                         scheduleEntity.getColor()))
                 .collect(Collectors.toList());
     }
-
 
 
     private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember, MemberEntity createMember) {
