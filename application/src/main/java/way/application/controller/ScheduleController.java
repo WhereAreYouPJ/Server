@@ -60,7 +60,7 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "UB002",
+                    responseCode = "UIB002",
                     description = "USER_ID_BAD_REQUEST_EXCEPTION 400 / USER_ID 오류",
                     content = @Content(
                             schema = @Schema(
@@ -101,7 +101,7 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "UB002",
+                    responseCode = "UIB002",
                     description = "USER_ID_BAD_REQUEST_EXCEPTION 400 / USER_ID 오류",
                     content = @Content(
                             schema = @Schema(
@@ -208,7 +208,7 @@ public class ScheduleController {
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 
-    @GetMapping(name = "해당 날짜 일정 조회")
+    @GetMapping(value = "/date", name = "해당 날짜 일정 조회")
     @Operation(summary = "Get Schedule By Date API", description = "Get Schedule By Date API")
     @Parameters({
             @Parameter(
