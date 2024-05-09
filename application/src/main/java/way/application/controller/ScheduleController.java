@@ -60,7 +60,7 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "UB002",
+                    responseCode = "UIB002",
                     description = "USER_ID_BAD_REQUEST_EXCEPTION 400 / USER_ID 오류",
                     content = @Content(
                             schema = @Schema(
@@ -101,7 +101,7 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "UB002",
+                    responseCode = "UIB002",
                     description = "USER_ID_BAD_REQUEST_EXCEPTION 400 / USER_ID 오류",
                     content = @Content(
                             schema = @Schema(
