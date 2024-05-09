@@ -15,6 +15,8 @@ import way.application.domain.schedule.Schedule;
 import way.application.domain.schedule.ScheduleRepository;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -109,6 +111,20 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 scheduleEntity.getColor(), scheduleEntity.getMemo(), userName
         );
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(LocalDateTime request) {
+        List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.getScheduleEntityByRequestDate(request);
+
+        return scheduleEntities.stream()
+                .map(scheduleEntity -> new Schedule.GetScheduleByDateResponse(
+                        scheduleEntity.getId(),
+                        scheduleEntity.getTitle(),
+                        scheduleEntity.getLocation()))
+                .collect(Collectors.toList());
+    }
+
 
 
     private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember, MemberEntity createMember) {
