@@ -100,4 +100,14 @@ public class Schedule {
     ) {
 
     }
+
+    public record GetScheduleByDateResponse(
+        Long id,
+
+        String title,
+
+        String location
+    ) {
+
+    }
 }

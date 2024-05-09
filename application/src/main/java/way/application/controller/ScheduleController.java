@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.schedule.Schedule;
-import way.application.domain.schedule.usecase.DeleteScheduleUseCase;
-import way.application.domain.schedule.usecase.GetScheduleUseCase;
-import way.application.domain.schedule.usecase.ModifyScheduleUseCase;
-import way.application.domain.schedule.usecase.SaveScheduleUseCase;
+import way.application.domain.schedule.usecase.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/v1/schedule", name = "일정")
@@ -29,6 +29,7 @@ public class ScheduleController {
     private final ModifyScheduleUseCase modifyScheduleUseCase;
     private final DeleteScheduleUseCase deleteScheduleUseCase;
     private final GetScheduleUseCase getScheduleUseCase;
+    private final GetScheduleByDateUseCase getScheduleByDateUseCase;
 
     @PostMapping(name = "일정 생성")
     @Operation(summary = "Create Schedule API", description = "Create Schedule API")
@@ -180,12 +181,6 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "B001",
-                    description = "Invalid DTO Parameter errors 400 / 요청 값 형식 요류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
                     responseCode = "SIB003",
                     description = "SCHEDULE_ID_BAD_REQUEST_EXCEPTION 400 / SCHEDULE_ID 오류",
                     content = @Content(
@@ -209,6 +204,37 @@ public class ScheduleController {
             @RequestParam(name = "scheduleId") Long scheduleId,
             @RequestParam(name = "memberId") Long memberId) {
         Schedule.GetScheduleResponse response = getScheduleUseCase.invoke(scheduleId, memberId);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @GetMapping(name = "해당 날짜 일정 조회")
+    @Operation(summary = "Get Schedule By Date API", description = "Get Schedule By Date API")
+    @Parameters({
+            @Parameter(
+                    name = "date",
+                    description = "조회하려는 날짜",
+                    example = "2024-05-09T09:12:21.556Z")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "S500",
+                    description = "SERVER_ERROR 500 (나도 몰라 ..)",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> getScheduleByDate(
+            @Valid
+            @RequestParam(name = "date") LocalDateTime date) {
+        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(date);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
