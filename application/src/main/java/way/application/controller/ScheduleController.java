@@ -232,6 +232,12 @@ public class ScheduleController {
                     description = "S500 SERVER_ERROR (나도 몰라 ..)",
                     content = @Content(
                             schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
     public ResponseEntity<BaseResponse> getScheduleByDate(
