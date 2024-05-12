@@ -64,7 +64,7 @@ public class ScheduleController {
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    description = "MIB002 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -105,7 +105,7 @@ public class ScheduleController {
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    description = "MIB002 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
@@ -191,7 +191,7 @@ public class ScheduleController {
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    description = "MIB002 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
@@ -239,7 +239,7 @@ public class ScheduleController {
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    description = "MIB002 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
