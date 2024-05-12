@@ -217,7 +217,7 @@ public class ScheduleController {
             @Parameter(
                     name = "date",
                     description = "조회하려는 날짜",
-                    example = "2024-05-09T09:12:21.556Z"),
+                    example = "2024-05-12T13:31:16"),
             @Parameter(
                     name = "memberId",
                     description = "Member PK",
