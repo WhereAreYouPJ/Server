@@ -39,7 +39,7 @@ jobs:
       - name: Set YML LOCAL
         run: |
           mkdir -p application/src/main/resources
-          echo "${{ secrets.APPLICATION_LOCAL_YML }}" | base64 --decode > application/src/main/resources/application-local.yml
+          echo "${{ secrets.APPLICATION_PRODUCTION_YML }}" | base64 --decode > application/src/main/resources/application-production.yml
           find application/src
 
       # Firebase JSON Key 생성
