@@ -217,7 +217,11 @@ public class ScheduleController {
             @Parameter(
                     name = "date",
                     description = "조회하려는 날짜",
-                    example = "2024-05-09T09:12:21.556Z")
+                    example = "2024-05-09T09:12:21.556Z"),
+            @Parameter(
+                    name = "memberId",
+                    description = "Member PK",
+                    example = "1L")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -242,8 +246,9 @@ public class ScheduleController {
     })
     public ResponseEntity<BaseResponse> getScheduleByDate(
             @Valid
-            @RequestParam(name = "date") LocalDateTime date) {
-        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(date);
+            @RequestParam(name = "date") LocalDateTime date,
+            @RequestParam(name = "memberId") Long memberId) {
+        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberId, date);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
