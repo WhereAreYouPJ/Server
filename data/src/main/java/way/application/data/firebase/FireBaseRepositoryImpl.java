@@ -56,7 +56,7 @@ public class FireBaseRepositoryImpl implements FireBaseRepository {
     }
 
     private String getAccessToken() throws IOException {
-        String firebaseConfigPath = "application/src/main/resources/firebase/firebase_service_key.json";
+        String firebaseConfigPath = "firebase/firebase_service_key.json";
 
         GoogleCredentials googleCredentials = GoogleCredentials
                 .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream())

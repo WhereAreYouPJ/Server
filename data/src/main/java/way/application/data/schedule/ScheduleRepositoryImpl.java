@@ -1,5 +1,6 @@
 package way.application.data.schedule;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ScheduleRepositoryImpl implements ScheduleRepository {
     private final ScheduleJpaRepository scheduleJpaRepository;
     private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
@@ -144,6 +146,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             String body = createMember.getUserName() + "이(가) 일정 초대를 했습니다.";
             fireBaseRepository.sendMessageTo(invitedMember.getFireBaseTargetToken(), "일정 요청이 들어왔습니다.", body);
         } catch (IOException e) {
+            log.info("Exception = {}", e.getMessage());
             throw new ServerException(ErrorResult.FIREBASE_CLOUD_MESSAGING_EXCEPTION);
         }
     }
