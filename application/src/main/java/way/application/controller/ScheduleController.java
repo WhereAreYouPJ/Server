@@ -217,7 +217,11 @@ public class ScheduleController {
             @Parameter(
                     name = "date",
                     description = "조회하려는 날짜",
-                    example = "2024-05-09T09:12:21.556Z")
+                    example = "2024-05-09T09:12:21.556Z"),
+            @Parameter(
+                    name = "memberId",
+                    description = "Member PK",
+                    example = "1L")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -232,12 +236,19 @@ public class ScheduleController {
                     description = "S500 SERVER_ERROR (나도 몰라 ..)",
                     content = @Content(
                             schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
     public ResponseEntity<BaseResponse> getScheduleByDate(
             @Valid
-            @RequestParam(name = "date") LocalDateTime date) {
-        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(date);
+            @RequestParam(name = "date") LocalDateTime date,
+            @RequestParam(name = "memberId") Long memberId) {
+        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberId, date);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }

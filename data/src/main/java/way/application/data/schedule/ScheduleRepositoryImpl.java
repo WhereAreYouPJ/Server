@@ -116,9 +116,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(LocalDateTime request) {
-        List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.getScheduleEntityByRequestDate(request);
+    public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberId, LocalDateTime request) {
+        validateUtils.validateMemberEntity(memberId);
 
+        List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.findAcceptedSchedulesByMemberAndDate(memberId, request);
         return scheduleEntities.stream()
                 .map(scheduleEntity -> new Schedule.GetScheduleByDateResponse(
                         scheduleEntity.getId(),
