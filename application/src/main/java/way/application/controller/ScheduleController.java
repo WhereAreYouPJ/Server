@@ -221,7 +221,7 @@ public class ScheduleController {
             @Parameter(
                     name = "memberId",
                     description = "Member PK",
-                    example = "1L")
+                    example = "1")
     })
     @ApiResponses(value = {
             @ApiResponse(
