@@ -49,10 +49,12 @@ public class ValidateUtils {
                 .orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_ID_BAD_REQUEST_EXCEPTION));
     }
 
-    public ScheduleEntity validateScheduleEntityByMemberIdAndScheduleIdAndIsCreator(Long scheduleId, Long memberId) {
-        return scheduleJpaRepository.findScheduleEntityByScheduleIdAndMemberIdAndIsCreator(scheduleId, memberId)
-                .orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION));
+    public ScheduleEntity validateScheduleEntityCreatedByMember(Long scheduleId, Long memberId) {
+        return scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleIdAndMemberId(scheduleId, memberId)
+                .orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION))
+                .getSchedule();
     }
+
 
     public ScheduleMemberEntity validateMemberInScheduleMemberEntity(Long memberId, Long scheduleId) {
         return scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleIdAndMemberId(scheduleId, memberId)
