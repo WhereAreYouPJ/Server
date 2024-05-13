@@ -114,6 +114,12 @@ public class ScheduleController {
                     description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
                     content = @Content(
                             schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SDCBMB008",
+                    description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
     public ResponseEntity<BaseResponse> modifySchedule(@Valid @RequestBody Schedule.ModifyScheduleRequest request) {
@@ -147,6 +153,18 @@ public class ScheduleController {
             @ApiResponse(
                     responseCode = "SIB003",
                     description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SDCBMB008",
+                    description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
