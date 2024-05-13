@@ -65,7 +65,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     @Transactional
     public Schedule.ModifyScheduleResponse modify(Schedule.ModifyScheduleRequest request) {
-        ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(request.id());
+        validateUtils.validateMemberEntityIn(request.invitedMemberIds());
+        validateUtils.validateMemberEntity(request.createMemberId());
+        ScheduleEntity scheduleEntity
+                = validateUtils.validateScheduleEntityByMemberIdAndScheduleIdAndIsCreator(request.id(), request.createMemberId());
 
         // 데이터 전체 삭제
         scheduleJpaRepository.deleteById(request.id());
@@ -86,11 +89,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     @Transactional
     public void delete(Schedule.DeleteScheduleRequest request) {
-        ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(request.id());
+        validateUtils.validateMemberEntity(request.creatorId());
+        validateUtils.validateScheduleEntity(request.scheduleId());
+        ScheduleEntity scheduleEntity
+                = validateUtils.validateScheduleEntityByMemberIdAndScheduleIdAndIsCreator(request.scheduleId(), request.creatorId());
 
         // 데이터 전체 삭제
         scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
-        scheduleJpaRepository.deleteById(request.id());
+        scheduleJpaRepository.deleteById(request.scheduleId());
     }
 
     @Override
