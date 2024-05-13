@@ -3,6 +3,7 @@ package way.application.data.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import way.application.core.exception.BadRequestException;
+import way.application.core.exception.ConflictException;
 import way.application.core.utils.ErrorResult;
 import way.application.data.member.MemberEntity;
 import way.application.data.member.MemberJpaRepository;
@@ -49,5 +50,12 @@ public class ValidateUtils {
     public ScheduleMemberEntity validateMemberInScheduleMemberEntity(Long memberId, Long scheduleId) {
         return scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleIdAndMemberId(scheduleId, memberId)
                 .orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION));
+    }
+
+    public void validateMemberId(String userId) {
+        memberJpaRepository.findByUserId(userId)
+                .ifPresent(user -> {
+                    throw new ConflictException(ErrorResult.USER_ID_DUPLICATION_EXCEPTION);
+                });
     }
 }
