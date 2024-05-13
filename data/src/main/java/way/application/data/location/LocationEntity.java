@@ -26,7 +26,7 @@ public class LocationEntity {
     private Double x;
     private Double y;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private MemberEntity member;
 }
