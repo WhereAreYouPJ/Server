@@ -7,4 +7,7 @@ public interface MemberRepository {
     Member.CheckIdResponse findByUserId (Member.CheckIdRequest request);
 
     Member.CheckEmailResponse findByEmail (Member.CheckEmailRequest request);
+
+    Member.MemberLoginResponse login (Member.MemberLoginRequest request);
+
 }
