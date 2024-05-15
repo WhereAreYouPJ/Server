@@ -42,14 +42,14 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = BaseResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "B001 Invalid DTO Parameter errors",
+                    responseCode = "S500",
+                    description = "500 SERVER_ERROR",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S500 SERVER_ERROR",
+                    responseCode = "B001",
+                    description = "400 Invalid DTO Parameter errors",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))

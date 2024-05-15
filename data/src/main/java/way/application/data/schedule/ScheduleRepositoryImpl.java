@@ -1,5 +1,6 @@
 package way.application.data.schedule;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ScheduleRepositoryImpl implements ScheduleRepository {
     private final ScheduleJpaRepository scheduleJpaRepository;
     private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
@@ -63,7 +65,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     @Transactional
     public Schedule.ModifyScheduleResponse modify(Schedule.ModifyScheduleRequest request) {
-        ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(request.id());
+        validateUtils.validateMemberEntityIn(request.invitedMemberIds());
+        validateUtils.validateMemberEntity(request.createMemberId());
+        validateUtils.validateScheduleEntity(request.id());
+        ScheduleEntity scheduleEntity
+                = validateUtils.validateScheduleEntityCreatedByMember(request.id(), request.createMemberId());
 
         // 데이터 전체 삭제
         scheduleJpaRepository.deleteById(request.id());
@@ -84,11 +90,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     @Transactional
     public void delete(Schedule.DeleteScheduleRequest request) {
-        ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(request.id());
+        validateUtils.validateMemberEntity(request.creatorId());
+        validateUtils.validateScheduleEntity(request.scheduleId());
+        ScheduleEntity scheduleEntity
+                = validateUtils.validateScheduleEntityCreatedByMember(request.scheduleId(), request.creatorId());
 
         // 데이터 전체 삭제
         scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
-        scheduleJpaRepository.deleteById(request.id());
+        scheduleJpaRepository.deleteById(request.scheduleId());
     }
 
     @Override
@@ -116,9 +125,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(LocalDateTime request) {
-        List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.getScheduleEntityByRequestDate(request);
+    public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberId, LocalDateTime request) {
+        validateUtils.validateMemberEntity(memberId);
 
+        List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.findAcceptedSchedulesByMemberAndDate(memberId, request);
         return scheduleEntities.stream()
                 .map(scheduleEntity -> new Schedule.GetScheduleByDateResponse(
                         scheduleEntity.getId(),
@@ -143,6 +153,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             String body = createMember.getUserName() + "이(가) 일정 초대를 했습니다.";
             fireBaseRepository.sendMessageTo(invitedMember.getFireBaseTargetToken(), "일정 요청이 들어왔습니다.", body);
         } catch (IOException e) {
+            log.info("Exception = {}", e.getMessage());
             throw new ServerException(ErrorResult.FIREBASE_CLOUD_MESSAGING_EXCEPTION);
         }
     }
