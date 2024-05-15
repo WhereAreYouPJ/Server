@@ -24,10 +24,11 @@ public class ValidateUtils {
     private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
     private final BCryptPasswordEncoder encoder;
 
+
     // TODO **ID 값으로만 Entity별 validate 진행
     public MemberEntity validateMemberEntity(Long id) {
         return memberJpaRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException(ErrorResult.USER_ID_BAD_REQUEST_EXCEPTION));
+                .orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_ID_BAD_REQUEST_EXCEPTION));
     }
 
     public List<MemberEntity> validateMemberEntityIn(List<Long> ids) {
@@ -37,7 +38,7 @@ public class ValidateUtils {
 
         List<MemberEntity> memberEntities = memberJpaRepository.findAllById(ids);
         if (memberEntities.size() != ids.size()) {
-            throw new BadRequestException(ErrorResult.USER_ID_BAD_REQUEST_EXCEPTION);
+            throw new BadRequestException(ErrorResult.MEMBER_ID_BAD_REQUEST_EXCEPTION);
         }
 
         return memberEntities;
@@ -66,7 +67,6 @@ public class ValidateUtils {
                 .ifPresent(user -> {
                     throw new ConflictException(ErrorResult.EMAIL_DUPLICATION_EXCEPTION);
                 });
-
     }
 
     public MemberEntity validateUserId(String userId) {
@@ -80,6 +80,4 @@ public class ValidateUtils {
             throw new BadRequestException(ErrorResult.PASSWORD_BAD_REQUEST_EXCEPTION);
         }
     }
-
-
 }

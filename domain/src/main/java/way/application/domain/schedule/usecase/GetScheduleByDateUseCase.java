@@ -13,7 +13,7 @@ import java.util.List;
 public class GetScheduleByDateUseCase {
     private final ScheduleRepository scheduleRepository;
 
-    public List<Schedule.GetScheduleByDateResponse> invoke(LocalDateTime request) {
-        return scheduleRepository.getScheduleByDate(request);
+    public List<Schedule.GetScheduleByDateResponse> invoke(Long memberId, LocalDateTime request) {
+        return scheduleRepository.getScheduleByDate(memberId, request);
     }
 }

@@ -45,26 +45,26 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = BaseResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S500 SERVER_ERROR (나도 몰라 ..)",
+                    responseCode = "S500",
+                    description = "500 SERVER_ERROR (나도 몰라 ..)",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S501 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
+                    responseCode = "S501",
+                    description = "500 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "B001 Invalid DTO Parameter errors / 요청 값 형식 요류",
+                    responseCode = "B001",
+                    description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -86,32 +86,38 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = BaseResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S500 SERVER_ERROR (나도 몰라 ..)",
+                    responseCode = "S500",
+                    description = "500 SERVER_ERROR (나도 몰라 ..)",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S501 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
+                    responseCode = "S501",
+                    description = "500 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "B001 Invalid DTO Parameter errors / 요청 값 형식 요류",
+                    responseCode = "B001",
+                    description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "SIB003 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    responseCode = "SIB003",
+                    description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SDCBMB008",
+                    description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -133,20 +139,32 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = BaseResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S500 SERVER_ERROR (나도 몰라 ..)",
+                    responseCode = "S500",
+                    description = "500 SERVER_ERROR (나도 몰라 ..)",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "B001 Invalid DTO Parameter errors / 요청 값 형식 요류",
+                    responseCode = "B001",
+                    description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "SIB003 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    responseCode = "SIB003",
+                    description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SDCBMB008",
+                    description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -178,26 +196,26 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = BaseResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S500 SERVER_ERROR (나도 몰라 ..)",
+                    responseCode = "S500",
+                    description = "500 SERVER_ERROR (나도 몰라 ..)",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "SIB003 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+                    responseCode = "SIB003",
+                    description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION / USER_ID 오류",
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class))),
             @ApiResponse(
-                    responseCode = "400",
-                    description = "MINISB004 MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION / 일정에 존재하지 않는 Member의 경우 + Schedule에서 일정을 수락하지 않은 경우 조회 불가",
+                    responseCode = "MINISB004",
+                    description = "400 MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION / 일정에 존재하지 않는 Member의 경우 + Schedule에서 일정을 수락하지 않은 경우 조회 불가",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -217,7 +235,11 @@ public class ScheduleController {
             @Parameter(
                     name = "date",
                     description = "조회하려는 날짜",
-                    example = "2024-05-09T09:12:21.556Z")
+                    example = "2024-05-12T13:31:16"),
+            @Parameter(
+                    name = "memberId",
+                    description = "Member PK",
+                    example = "1")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -228,16 +250,23 @@ public class ScheduleController {
                             schema = @Schema(
                                     implementation = BaseResponse.class))),
             @ApiResponse(
-                    responseCode = "500",
-                    description = "S500 SERVER_ERROR (나도 몰라 ..)",
+                    responseCode = "S500",
+                    description = "500 SERVER_ERROR (나도 몰라 ..)",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
                     content = @Content(
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
     public ResponseEntity<BaseResponse> getScheduleByDate(
             @Valid
-            @RequestParam(name = "date") LocalDateTime date) {
-        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(date);
+            @RequestParam(name = "date") LocalDateTime date,
+            @RequestParam(name = "memberId") Long memberId) {
+        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberId, date);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }

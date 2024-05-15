@@ -95,8 +95,11 @@ public class Schedule {
     }
 
     public record DeleteScheduleRequest(
-            @NotNull(message = "id 값을 입력해주세요.")
-            Long id
+            @NotNull(message = "scheduleId 값을 입력해주세요.")
+            Long scheduleId,
+
+            @NotNull(message = "creatorId 값을 입력해주세요.")
+            Long creatorId
     ) {
 
     }
@@ -126,13 +129,13 @@ public class Schedule {
     }
 
     public record GetScheduleByDateResponse(
-        Long id,
+            Long id,
 
-        String title,
+            String title,
 
-        String location,
+            String location,
 
-        String color
+            String color
     ) {
 
     }
