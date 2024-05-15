@@ -47,5 +47,19 @@ public class Member {
 
     }
 
+    public record CheckEmailRequest(
+            @NotBlank(message = "email를 입력해주세요")
+            @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "유효한 이메일 형식이어야 합니다.")
+            String email
+    ) {
+
+    }
+
+    public record CheckEmailResponse(
+            String email
+    ) {
+
+    }
+
 
 }
