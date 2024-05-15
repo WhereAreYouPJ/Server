@@ -17,7 +17,7 @@ import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.member.Member;
 import way.application.domain.member.usecase.CheckEmailUseCase;
 import way.application.domain.member.usecase.CheckIdUseCase;
-import way.application.domain.member.usecase.LoginUserCase;
+import way.application.domain.member.usecase.LoginUseCase;
 import way.application.domain.member.usecase.SaveMemberUseCase;
 
 @RestController
@@ -29,7 +29,7 @@ public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
     private final CheckIdUseCase checkIdUseCase;
     private final CheckEmailUseCase checkEmailUseCase;
-    private final LoginUserCase loginUserCase;
+    private final LoginUseCase loginUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -169,7 +169,7 @@ public class MemberController {
     })
     public ResponseEntity<BaseResponse> login(@Valid @RequestBody Member.MemberLoginRequest request) {
 
-        Member.MemberLoginResponse response = loginUserCase.invoke(request);
+        Member.MemberLoginResponse response = loginUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
