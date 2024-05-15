@@ -58,4 +58,12 @@ public class ValidateUtils {
                     throw new ConflictException(ErrorResult.USER_ID_DUPLICATION_EXCEPTION);
                 });
     }
+
+    public void validateEmail(String email) {
+        memberJpaRepository.findByEmail(email)
+                .ifPresent(user -> {
+                    throw new ConflictException(ErrorResult.EMAIL_DUPLICATION_EXCEPTION);
+                });
+
+    }
 }
