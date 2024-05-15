@@ -4,5 +4,7 @@ public interface MemberRepository {
 
     void save (Member.SaveMemberRequest request);
 
-    Member.CheckIdResponse get (Member.CheckIdRequest request);
+    Member.CheckIdResponse findByUserId (Member.CheckIdRequest request);
+
+    Member.CheckEmailResponse findByEmail (Member.CheckEmailRequest request);
 }
