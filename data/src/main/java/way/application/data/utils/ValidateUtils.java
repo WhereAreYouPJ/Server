@@ -1,6 +1,7 @@
 package way.application.data.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import way.application.core.exception.BadRequestException;
 import way.application.core.exception.ConflictException;
@@ -21,6 +22,7 @@ public class ValidateUtils {
     private final MemberJpaRepository memberJpaRepository;
     private final ScheduleJpaRepository scheduleJpaRepository;
     private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
+    private final BCryptPasswordEncoder encoder;
 
     // TODO **ID 값으로만 Entity별 validate 진행
     public MemberEntity validateMemberEntity(Long id) {
@@ -66,4 +68,18 @@ public class ValidateUtils {
                 });
 
     }
+
+    public MemberEntity validateUserId(String userId) {
+        return memberJpaRepository.findByUserId(userId)
+                .orElseThrow(() -> new BadRequestException(ErrorResult.USER_ID_BAD_REQUEST_EXCEPTION));
+    }
+
+    public void validatePassword(String password, String encodedPassword) {
+
+        if (!encoder.matches(password, encodedPassword)) {
+            throw new BadRequestException(ErrorResult.PASSWORD_BAD_REQUEST_EXCEPTION);
+        }
+    }
+
+
 }
