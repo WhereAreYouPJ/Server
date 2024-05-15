@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.member.Member;
+import way.application.domain.member.usecase.CheckEmailUseCase;
 import way.application.domain.member.usecase.CheckIdUseCase;
 import way.application.domain.member.usecase.SaveMemberUseCase;
 
@@ -26,6 +27,7 @@ import way.application.domain.member.usecase.SaveMemberUseCase;
 public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
     private final CheckIdUseCase checkIdUseCase;
+    private final CheckEmailUseCase checkEmailUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -88,6 +90,42 @@ public class MemberController {
     public ResponseEntity<BaseResponse> checkId(@Valid @RequestParam("userId") Member.CheckIdRequest request) {
 
         Member.CheckIdResponse response = checkIdUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @GetMapping(name = "이메일 중복 체크")
+    @Operation(summary = "Check Email API", description = "Check Email API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "ED002 EMAIL_DUPLICATION_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> checkEmail(@Valid @RequestParam("email") Member.CheckEmailRequest request) {
+
+        Member.CheckEmailResponse response = checkEmailUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
