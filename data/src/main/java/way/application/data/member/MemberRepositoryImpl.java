@@ -26,12 +26,20 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Member.CheckIdResponse get(Member.CheckIdRequest request) {
+    public Member.CheckIdResponse findByUserId(Member.CheckIdRequest request) {
 
         //예외처리
         validateUtils.validateMemberId(request.userId());
 
         return new Member.CheckIdResponse(request.userId());
+    }
+
+    @Override
+    public Member.CheckEmailResponse findByEmail(Member.CheckEmailRequest request) {
+
+        validateUtils.validateEmail(request.email());
+
+        return new Member.CheckEmailResponse(request.email());
     }
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
