@@ -85,7 +85,7 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> checkId(@Valid @RequestBody Member.CheckIdRequest request) {
+    public ResponseEntity<BaseResponse> checkId(@Valid @RequestParam("userId") Member.CheckIdRequest request) {
 
         Member.CheckIdResponse response = checkIdUseCase.invoke(request);
 
