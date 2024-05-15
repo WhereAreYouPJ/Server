@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.member.Member;
+import way.application.domain.member.usecase.CheckIdUseCase;
 import way.application.domain.member.usecase.SaveMemberUseCase;
 
 @RestController
@@ -24,6 +25,7 @@ import way.application.domain.member.usecase.SaveMemberUseCase;
 @OpenAPIDefinition(servers = {@Server(url = "/", description = "https://wlrmadjel.com")})
 public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
+    private final CheckIdUseCase checkIdUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -54,4 +56,39 @@ public class MemberController {
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
 
+    @GetMapping(name = "아이디 중복 체크")
+    @Operation(summary = "Check Id API", description = "Check Id API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "UID001 USER_ID_DUPLICATION_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> checkId(@Valid @RequestBody Member.CheckIdRequest request) {
+
+        Member.CheckIdResponse response = checkIdUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
 }
