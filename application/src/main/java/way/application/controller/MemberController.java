@@ -17,6 +17,7 @@ import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.member.Member;
 import way.application.domain.member.usecase.CheckEmailUseCase;
 import way.application.domain.member.usecase.CheckIdUseCase;
+import way.application.domain.member.usecase.LoginUserCase;
 import way.application.domain.member.usecase.SaveMemberUseCase;
 
 @RestController
@@ -28,6 +29,7 @@ public class MemberController {
     private final SaveMemberUseCase saveMemberUseCase;
     private final CheckIdUseCase checkIdUseCase;
     private final CheckEmailUseCase checkEmailUseCase;
+    private final LoginUserCase loginUserCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -126,6 +128,48 @@ public class MemberController {
     public ResponseEntity<BaseResponse> checkEmail(@Valid @RequestParam("email") Member.CheckEmailRequest request) {
 
         Member.CheckEmailResponse response = checkEmailUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @PostMapping(name = "로그인")
+    @Operation(summary = "Login API", description = "Login API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "UIB002 USER_ID_BAD_REQUEST_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "PB005 PASSWORD_BAD_REQUEST_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> login(@Valid @RequestBody Member.MemberLoginRequest request) {
+
+        Member.MemberLoginResponse response = loginUserCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
