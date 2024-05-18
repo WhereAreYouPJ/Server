@@ -4,10 +4,12 @@ public interface MemberRepository {
 
     void save (Member.SaveMemberRequest request);
 
-    Member.CheckIdResponse findByUserId (Member.CheckIdRequest request);
+    Member.CheckIdResponse checkId (Member.CheckIdRequest request);
 
-    Member.CheckEmailResponse findByEmail (Member.CheckEmailRequest request);
+    Member.CheckEmailResponse checkEmail (Member.CheckEmailRequest request);
 
     Member.MemberLoginResponse login (Member.MemberLoginRequest request);
+
+    void sendMail (Member.MailSendRequest request);
 
 }
