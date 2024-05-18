@@ -83,7 +83,7 @@ public class ValidateUtils {
                 .orElseThrow(() -> new BadRequestException(ErrorResult.LOCATION_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION));
     }
 
-    public void checkMemberIdDuplication(String userId) {
+    public void checkUserIdDuplication(String userId) {
         memberJpaRepository.findByUserId(userId)
                 .ifPresent(user -> {
                     throw new ConflictException(ErrorResult.USER_ID_DUPLICATION_EXCEPTION);
@@ -100,7 +100,7 @@ public class ValidateUtils {
 
     public MemberEntity validateUserId(String userId) {
         return memberJpaRepository.findByUserId(userId)
-                .orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_ID_BAD_REQUEST_EXCEPTION));
+                .orElseThrow(() -> new BadRequestException(ErrorResult.USER_ID_BAD_REQUEST_EXCEPTION));
     }
 
     public void validatePassword(String password, String encodedPassword) {
