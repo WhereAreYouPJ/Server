@@ -26,12 +26,12 @@ public class JwtRepositoryImpl implements JwtRepository {
     @Value("${jwt.refreshTokenExpiration}")
     private long refreshTokenExpiration;
     @Override
-    public String generateAccessToken(String userId) {
+    public String generateAccessToken(Long memberId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + accessTokenExpiration);
 
         return Jwts.builder()
-                .setSubject(userId)
+                .setSubject(String.valueOf(memberId))
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -39,19 +39,19 @@ public class JwtRepositoryImpl implements JwtRepository {
     }
 
     @Override
-    public String generateRefreshToken(String userId) {
+    public String generateRefreshToken(Long memberId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + refreshTokenExpiration);
 
         String refreshToken = Jwts.builder()
-                .setSubject(userId)
+                .setSubject(String.valueOf(memberId))
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
 
         redisTemplate.opsForValue().set(
-                userId,
+                String.valueOf(memberId),
                 refreshToken,
                 refreshTokenExpiration,
                 TimeUnit.MILLISECONDS
