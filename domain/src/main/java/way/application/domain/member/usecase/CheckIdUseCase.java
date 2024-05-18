@@ -13,6 +13,6 @@ public class CheckIdUseCase {
 
     public Member.CheckIdResponse invoke(Member.CheckIdRequest request) {
 
-        return memberRepository.findByUserId(request);
+        return memberRepository.checkId(request);
     }
 }

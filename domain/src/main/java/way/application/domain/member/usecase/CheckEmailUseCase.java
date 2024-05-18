@@ -13,6 +13,6 @@ public class CheckEmailUseCase {
 
     public Member.CheckEmailResponse invoke(Member.CheckEmailRequest request) {
 
-        return memberRepository.findByEmail(request);
+        return memberRepository.checkEmail(request);
     }
 }
