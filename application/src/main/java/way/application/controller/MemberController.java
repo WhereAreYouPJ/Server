@@ -2,6 +2,8 @@ package way.application.controller;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -62,6 +64,12 @@ public class MemberController {
 
     @GetMapping(name = "아이디 중복 체크")
     @Operation(summary = "Check Id API", description = "Check Id API")
+    @Parameters({
+            @Parameter(
+                    name = "userId",
+                    description = "userId",
+                    example = "1")
+    })
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
