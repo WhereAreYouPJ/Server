@@ -83,14 +83,14 @@ public class ValidateUtils {
                 .orElseThrow(() -> new BadRequestException(ErrorResult.LOCATION_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION));
     }
 
-    public void validateMemberId(String userId) {
+    public void checkMemberIdDuplication(String userId) {
         memberJpaRepository.findByUserId(userId)
                 .ifPresent(user -> {
                     throw new ConflictException(ErrorResult.USER_ID_DUPLICATION_EXCEPTION);
                 });
     }
 
-    public void validateEmail(String email) {
+    public void checkEmailDuplication(String email) {
         memberJpaRepository.findByEmail(email)
                 .ifPresent(user -> {
                     throw new ConflictException(ErrorResult.EMAIL_DUPLICATION_EXCEPTION);
