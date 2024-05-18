@@ -28,20 +28,18 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    @Transactional
     public Member.CheckIdResponse findByUserId(Member.CheckIdRequest request) {
 
         //예외처리
-        validateUtils.validateMemberId(request.userId());
+        validateUtils.checkMemberIdDuplication(request.userId());
 
         return new Member.CheckIdResponse(request.userId());
     }
 
     @Override
-    @Transactional
     public Member.CheckEmailResponse findByEmail(Member.CheckEmailRequest request) {
 
-        validateUtils.validateEmail(request.email());
+        validateUtils.checkEmailDuplication(request.email());
 
         return new Member.CheckEmailResponse(request.email());
     }
@@ -58,10 +56,10 @@ public class MemberRepositoryImpl implements MemberRepository {
         memberJpaRepository.updateByFireBaseTargetToken(request.targetToken());
 
         // jwt 생성
-        String accessToken = jwtRepository.generateAccessToken(request.userId());
-        String refreshToken = jwtRepository.generateRefreshToken(request.userId());
+        String accessToken = jwtRepository.generateAccessToken(member.getId());
+        String refreshToken = jwtRepository.generateRefreshToken(member.getId());
 
-        return new Member.MemberLoginResponse(accessToken,refreshToken, member.getUserId());
+        return new Member.MemberLoginResponse(accessToken,refreshToken, member.getId());
     }
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
