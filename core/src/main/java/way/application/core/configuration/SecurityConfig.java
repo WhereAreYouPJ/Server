@@ -56,19 +56,9 @@ public class SecurityConfig {
     public JwtTokenFilter jwtTokenFilter() {
         List<String> permitAllEndpoints = Arrays.asList(
                 // 토큰 검사가 필요 없는 경로 목록
-                "/member/checkId",
-                "/member/checkEmail",
-                "/member/email/send",
-                "/member/email/verify",
-                "/member/join",
-                "/member/login",
-                "/member/logout",
-                "/member/tokenReissue",
-                "/member/findId",
-                "/member/email/verifyPassword",
-                "/member/resetPassword",
-                "/actuator/health",
-                "/h2-console/**"
+                "/swagger-ui/**",
+                "/v3/api-docs/**"
+
         );
         return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
     }
