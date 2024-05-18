@@ -78,7 +78,7 @@ public class Member {
     public record MemberLoginResponse(
             String accessToken,
             String refreshToken,
-            String userId
+            Long id
 
     ) {
 
