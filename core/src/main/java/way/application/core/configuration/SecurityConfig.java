@@ -13,6 +13,10 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import way.application.core.filter.JwtTokenFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -46,6 +50,27 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        List<String> permitAllEndpoints = Arrays.asList(
+                // 토큰 검사가 필요 없는 경로 목록
+                "/member/checkId",
+                "/member/checkEmail",
+                "/member/email/send",
+                "/member/email/verify",
+                "/member/join",
+                "/member/login",
+                "/member/logout",
+                "/member/tokenReissue",
+                "/member/findId",
+                "/member/email/verifyPassword",
+                "/member/resetPassword",
+                "/actuator/health",
+                "/h2-console/**"
+        );
+        return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
     }
 
 }
