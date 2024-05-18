@@ -2,6 +2,7 @@ package way.application.domain.jwt;
 
 public interface JwtRepository {
 
-    String generateAccessToken(String userId);
-    String generateRefreshToken(String userId);
+    String generateAccessToken(Long memberId);
+    String generateRefreshToken(Long memberId);
+
 }
