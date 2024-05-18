@@ -1,8 +1,10 @@
 package way.application.data.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import way.application.core.exception.BadRequestException;
+import way.application.core.exception.ConflictException;
 import way.application.core.utils.ErrorResult;
 import way.application.data.location.LocationEntity;
 import way.application.data.location.LocationJpaRepository;
@@ -23,6 +25,7 @@ public class ValidateUtils {
     private final ScheduleJpaRepository scheduleJpaRepository;
     private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
     private final LocationJpaRepository locationJpaRepository;
+    private final BCryptPasswordEncoder encoder;
 
     // TODO **ID 값으로만 Entity별 validate 진행
     public MemberEntity validateMemberEntity(Long id) {
@@ -79,4 +82,33 @@ public class ValidateUtils {
         return locationJpaRepository.findLocationEntityByMemberIdAndLocationId(memberId, locationId)
                 .orElseThrow(() -> new BadRequestException(ErrorResult.LOCATION_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION));
     }
+
+    public void checkUserIdDuplication(String userId) {
+        memberJpaRepository.findByUserId(userId)
+                .ifPresent(user -> {
+                    throw new ConflictException(ErrorResult.USER_ID_DUPLICATION_EXCEPTION);
+                });
+    }
+
+    public void checkEmailDuplication(String email) {
+        memberJpaRepository.findByEmail(email)
+                .ifPresent(user -> {
+                    throw new ConflictException(ErrorResult.EMAIL_DUPLICATION_EXCEPTION);
+                });
+
+    }
+
+    public MemberEntity validateUserId(String userId) {
+        return memberJpaRepository.findByUserId(userId)
+                .orElseThrow(() -> new BadRequestException(ErrorResult.USER_ID_BAD_REQUEST_EXCEPTION));
+    }
+
+    public void validatePassword(String password, String encodedPassword) {
+
+        if (!encoder.matches(password, encodedPassword)) {
+            throw new BadRequestException(ErrorResult.PASSWORD_BAD_REQUEST_EXCEPTION);
+        }
+    }
+
+
 }

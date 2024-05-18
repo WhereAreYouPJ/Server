@@ -13,6 +13,10 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import way.application.core.filter.JwtTokenFilter;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -46,6 +50,17 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        List<String> permitAllEndpoints = Arrays.asList(
+                // 토큰 검사가 필요 없는 경로 목록
+                "/swagger-ui/**",
+                "/v3/api-docs/**"
+
+        );
+        return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
     }
 
 }
