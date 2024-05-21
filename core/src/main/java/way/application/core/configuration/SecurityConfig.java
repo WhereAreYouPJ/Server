@@ -13,54 +13,60 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 import way.application.core.filter.JwtTokenFilter;
 
 import java.util.Arrays;
 import java.util.List;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+	@Value("${jwt.secret}")
+	private String jwtSecret;
 
-    @Bean
-    @ConditionalOnProperty(name = "spring.h2.console.enabled",havingValue = "true")
-    public WebSecurityCustomizer configureH2ConsoleEnable() {
-        return web -> web.ignoring()
-                .requestMatchers(PathRequest.toH2Console());
-    }
+	@Bean
+	@ConditionalOnProperty(name = "spring.h2.console.enabled", havingValue = "true")
+	public WebSecurityCustomizer configureH2ConsoleEnable() {
+		return web -> web.ignoring()
+			.requestMatchers(PathRequest.toH2Console());
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+			.csrf(AbstractHttpConfigurer::disable)
+			.formLogin(AbstractHttpConfigurer::disable)
+			.httpBasic(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/**").permitAll()
+				.anyRequest().authenticated())
+			.sessionManagement(session ->
+				session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        return http.build();
-    }
+		return http.build();
+	}
 
-    @Bean
-    public BCryptPasswordEncoder encoder(){
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public BCryptPasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    public JwtTokenFilter jwtTokenFilter() {
-        List<String> permitAllEndpoints = Arrays.asList(
-                // 토큰 검사가 필요 없는 경로 목록
-                "/swagger-ui/**",
-                "/v3/api-docs/**"
+	@Bean
+	public JwtTokenFilter jwtTokenFilter() {
+		List<String> permitAllEndpoints = Arrays.asList(
+			// 토큰 검사가 필요 없는 경로 목록
+			// Swagger
+			"/swagger-ui/**",
+			"/v3/api-docs/**",
 
-        );
-        return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
-    }
+			// Health Check
+			"/actuator/health",
+
+			// H2-Console
+			"/h2-console/**"
+		);
+		return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
+	}
 
 }
