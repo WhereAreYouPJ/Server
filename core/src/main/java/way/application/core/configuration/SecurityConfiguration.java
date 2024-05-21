@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,7 +20,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfiguration {
 	@Value("${jwt.secret}")
 	private String jwtSecret;
 
@@ -64,7 +63,10 @@ public class SecurityConfig {
 			"/actuator/health",
 
 			// H2-Console
-			"/h2-console/**"
+			"/h2-console/**",
+
+			// 모든 URL 개방
+			"/**"
 		);
 		return new JwtTokenFilter(jwtSecret, permitAllEndpoints);
 	}
