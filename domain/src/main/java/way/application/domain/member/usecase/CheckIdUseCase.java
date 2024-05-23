@@ -11,8 +11,8 @@ public class CheckIdUseCase {
 
     private final MemberRepository memberRepository;
 
-    public Member.CheckIdResponse invoke(Member.CheckIdRequest request) {
+    public Member.CheckIdResponse invoke(String userId) {
 
-        return memberRepository.checkId(request);
+        return memberRepository.checkId(userId);
     }
 }

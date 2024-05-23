@@ -68,7 +68,7 @@ public class MemberController {
             @Parameter(
                     name = "userId",
                     description = "userId",
-                    example = "1")
+                    example = "dlswns97")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -97,9 +97,9 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> checkId(@Valid @RequestParam("userId") Member.CheckIdRequest request) {
+    public ResponseEntity<BaseResponse> checkId(@Valid @RequestParam("userId") String userId) {
 
-        Member.CheckIdResponse response = checkIdUseCase.invoke(request);
+        Member.CheckIdResponse response = checkIdUseCase.invoke(userId);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
@@ -110,7 +110,7 @@ public class MemberController {
             @Parameter(
                     name = "email",
                     description = "email",
-                    example = "1")
+                    example = "dlswns@whereareyou.com")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -139,9 +139,9 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> checkEmail(@Valid @RequestParam("email") Member.CheckEmailRequest request) {
+    public ResponseEntity<BaseResponse> checkEmail(@Valid @RequestParam("email") String email) {
 
-        Member.CheckEmailResponse response = checkEmailUseCase.invoke(request);
+        Member.CheckEmailResponse response = checkEmailUseCase.invoke(email);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }

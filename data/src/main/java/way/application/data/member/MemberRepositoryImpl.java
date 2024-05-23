@@ -41,20 +41,20 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Member.CheckIdResponse checkId(Member.CheckIdRequest request) {
+    public Member.CheckIdResponse checkId(String userId) {
 
         //예외처리
-        validateUtils.checkUserIdDuplication(request.userId());
+        validateUtils.checkUserIdDuplication(userId);
 
-        return new Member.CheckIdResponse(request.userId());
+        return new Member.CheckIdResponse(userId);
     }
 
     @Override
-    public Member.CheckEmailResponse checkEmail(Member.CheckEmailRequest request) {
+    public Member.CheckEmailResponse checkEmail(String email) {
 
-        validateUtils.checkEmailDuplication(request.email());
+        validateUtils.checkEmailDuplication(email);
 
-        return new Member.CheckEmailResponse(request.email());
+        return new Member.CheckEmailResponse(email);
     }
 
     @Override

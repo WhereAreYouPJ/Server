@@ -11,8 +11,8 @@ public class CheckEmailUseCase {
 
     private final MemberRepository memberRepository;
 
-    public Member.CheckEmailResponse invoke(Member.CheckEmailRequest request) {
+    public Member.CheckEmailResponse invoke(String email) {
 
-        return memberRepository.checkEmail(request);
+        return memberRepository.checkEmail(email);
     }
 }
