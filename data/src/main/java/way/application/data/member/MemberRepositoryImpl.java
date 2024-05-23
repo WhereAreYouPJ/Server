@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import way.application.core.exception.InvalidEmailException;
+import way.application.core.exception.BadRequestException;
 import way.application.core.utils.ErrorResult;
 import way.application.data.utils.ValidateUtils;
 import way.application.domain.jwt.JwtRepository;
@@ -98,7 +98,7 @@ public class MemberRepositoryImpl implements MemberRepository {
             helper.setText(text,true);
             javaMailSender.send(mimeMessage);
         }catch (MessagingException e){
-            throw new InvalidEmailException(ErrorResult.EMAIL_BAD_REQUEST_EXCEPTION);
+            throw new BadRequestException(ErrorResult.EMAIL_BAD_REQUEST_EXCEPTION);
         }
 
         saveCode(email, authKey);
@@ -113,6 +113,20 @@ public class MemberRepositoryImpl implements MemberRepository {
         );
     }
 
+    @Override
+    public void verifyCode(Member.CodeVerifyRequest request) {
+
+        //이메일 검증
+        validateUtils.validateEmail(request.email());
+
+        // 인증코드 검사
+        String verifyCode = redisTemplate.opsForValue().get(request.email());
+        validateUtils.validateCode(verifyCode, request.code());
+
+        //코드 삭제
+        redisTemplate.delete(request.email());
+
+    }
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

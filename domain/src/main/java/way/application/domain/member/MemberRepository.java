@@ -12,6 +12,6 @@ public interface MemberRepository {
 
     void sendMail (Member.MailSendRequest request);
 
-    void codeVerify (Member.CodeVerifyRequest request);
+    void verifyCode (Member.CodeVerifyRequest request);
 
 }
