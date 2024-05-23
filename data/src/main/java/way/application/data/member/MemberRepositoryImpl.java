@@ -146,5 +146,21 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     }
 
+    @Override
+    public void resetPassword(Member.PasswordResetRequest request) {
+
+        //유저 검증
+        MemberEntity member = validateUtils.validateUserId(request.userId());
+        validateUtils.validatePassword(request.password(), member.getEncodedPassword());
+
+        // 비밀번호 검증
+        validateUtils.validateResetPassword(request.password(),request.checkPassword());
+
+        // 비밀번호 업데이트 및 저장
+        member.updatePassword(encoder.encode(request.checkPassword()));
+        memberJpaRepository.save(member);
+
+    }
+
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

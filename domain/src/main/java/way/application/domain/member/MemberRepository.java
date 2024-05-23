@@ -16,4 +16,5 @@ public interface MemberRepository {
 
     void verifyPasswordCode(Member.VerifyPasswordCodeRequest request);
 
+    void resetPassword(Member.PasswordResetRequest request);
 }
