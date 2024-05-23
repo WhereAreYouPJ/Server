@@ -113,8 +113,9 @@ public class ValidateUtils {
         }
     }
 
-    public void validateEmail(String email) {
-        memberJpaRepository.findByEmail(email)
+    public MemberEntity validateEmail(String email) {
+
+        return memberJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new BadRequestException(ErrorResult.EMAIL_BAD_REQUEST_EXCEPTION));
     }
 
@@ -123,7 +124,12 @@ public class ValidateUtils {
         if (!verifyCode.equals(code)){
             throw new BadRequestException(ErrorResult.CODE_BAD_REQUEST_EXCEPTION);
         }
+    }
 
+    public void validateUserMismatch(String userId, String requestUserId) {
+        if(!userId.equals(requestUserId)){
+            throw new BadRequestException(ErrorResult.USER_MISMATCH_BAD_REQUEST_EXCEPTION);
+        }
     }
 
 
