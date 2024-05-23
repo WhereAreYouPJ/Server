@@ -128,5 +128,23 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     }
 
+    @Override
+    public void verifyPasswordCode(Member.VerifyPasswordCodeRequest request) {
+
+        // 멤버 조회
+        MemberEntity member = validateUtils.validateEmail(request.email());
+
+        // 이메일, 멤버 유효성 검사
+        validateUtils.validateUserMismatch(member.getUserId(),request.userId());
+
+        // 인증코드 검사
+        String verifyCode = redisTemplate.opsForValue().get(request.email());
+        validateUtils.validateCode(verifyCode,request.code());
+
+        //코드 삭제
+        redisTemplate.delete(request.email());
+
+    }
+
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }
