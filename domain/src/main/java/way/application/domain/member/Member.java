@@ -117,4 +117,20 @@ public class Member {
     ) {
 
     }
+
+    public record PasswordResetRequest(
+            @NotBlank(message = "userId를 입력해주세요")
+            @Pattern(regexp = "^[a-z][a-z0-9]{4,11}$", message = "userId는 영문 소문자로 시작하고, 5~12자 길이의 영문 소문자와 숫자만 사용 가능합니다.")
+            String userId,
+
+            @NotBlank(message = "password를 입력해주세요")
+            @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9]{5,19}$", message = "password는 대문자 혹은 소문자로 시작하고, 6~20자 길이의 영문 대문자, 소문자, 숫자만 사용 가능합니다.")
+            String password,
+
+            @NotBlank(message = "checkPassword를 입력해주세요")
+            @Pattern(regexp = "^[a-zA-Z][a-zA-Z0-9]{5,19}$", message = "password는 대문자 혹은 소문자로 시작하고, 6~20자 길이의 영문 대문자, 소문자, 숫자만 사용 가능합니다.")
+            String checkPassword
+    ) {
+
+    }
 }
