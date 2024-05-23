@@ -30,6 +30,7 @@ public class MemberController {
     private final CheckEmailUseCase checkEmailUseCase;
     private final LoginUseCase loginUseCase;
     private final SendMailUseCase sendMailUseCase;
+    private final CodeVerifyUseCase codeVerifyUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -218,6 +219,48 @@ public class MemberController {
     public ResponseEntity<BaseResponse> sendEmail(@Valid @RequestBody Member.MailSendRequest request) {
 
         sendMailUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+
+    @PostMapping(value ="/email/verify",name = "인증코드 검증 ")
+    @Operation(summary = "Code Verify API", description = "Code Verify API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "EB009 Invalid Email errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "CB011 Invalid Code errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> verifyCode(@Valid @RequestBody Member.CodeVerifyRequest request) {
+
+        codeVerifyUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
