@@ -35,4 +35,8 @@ public class MemberEntity {
     private String profileImage;
 
     private String fireBaseTargetToken;
+
+    public void updatePassword(String password) {
+        this.encodedPassword = password;
+    }
 }
