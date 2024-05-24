@@ -3,6 +3,7 @@ package way.application.domain.schedule;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -124,8 +125,8 @@ public class Schedule {
             String memo,
 
             List<String> userName
-    ) {
-
+    ) implements Serializable {
+        private static final long serialVersionUID = 1L;
     }
 
     public record GetScheduleByDateResponse(
