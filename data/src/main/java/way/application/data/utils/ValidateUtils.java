@@ -1,6 +1,7 @@
 package way.application.data.utils;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import way.application.core.exception.BadRequestException;
@@ -26,6 +27,8 @@ public class ValidateUtils {
     private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
     private final LocationJpaRepository locationJpaRepository;
     private final BCryptPasswordEncoder encoder;
+    private final RedisTemplate<String, String> redisTemplate;
+
 
     // TODO **ID 값으로만 Entity별 validate 진행
     public MemberEntity validateMemberEntity(Long id) {
@@ -110,5 +113,30 @@ public class ValidateUtils {
         }
     }
 
+    public MemberEntity validateEmail(String email) {
+
+        return memberJpaRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException(ErrorResult.EMAIL_BAD_REQUEST_EXCEPTION));
+    }
+
+    public void validateCode(String verifyCode, String code) {
+
+        if (!verifyCode.equals(code)){
+            throw new BadRequestException(ErrorResult.CODE_BAD_REQUEST_EXCEPTION);
+        }
+    }
+
+    public void validateUserMismatch(String userId, String requestUserId) {
+        if(!userId.equals(requestUserId)){
+            throw new BadRequestException(ErrorResult.USER_MISMATCH_BAD_REQUEST_EXCEPTION);
+        }
+    }
+
+    public void validateResetPassword(String password, String checkPassword) {
+
+        if(!password.equals(checkPassword)) {
+            throw new BadRequestException(ErrorResult.PASSWORD_MISMATCH_BAD_REQUEST_EXCEPTION);
+        }
+    }
 
 }

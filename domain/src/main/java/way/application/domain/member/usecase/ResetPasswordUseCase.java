@@ -7,12 +7,12 @@ import way.application.domain.member.MemberRepository;
 
 @Component
 @RequiredArgsConstructor
-public class CheckIdUseCase {
+public class ResetPasswordUseCase {
 
     private final MemberRepository memberRepository;
 
-    public Member.CheckIdResponse invoke(String userId) {
+    public void invoke(Member.PasswordResetRequest request) {
 
-        return memberRepository.checkId(userId);
+        memberRepository.resetPassword(request);
     }
 }

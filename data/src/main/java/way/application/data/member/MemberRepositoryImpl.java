@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import way.application.core.exception.InvalidEmailException;
+import way.application.core.exception.BadRequestException;
 import way.application.core.utils.ErrorResult;
 import way.application.data.utils.ValidateUtils;
 import way.application.domain.jwt.JwtRepository;
@@ -41,20 +41,20 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
-    public Member.CheckIdResponse checkId(Member.CheckIdRequest request) {
+    public Member.CheckIdResponse checkId(String userId) {
 
         //예외처리
-        validateUtils.checkUserIdDuplication(request.userId());
+        validateUtils.checkUserIdDuplication(userId);
 
-        return new Member.CheckIdResponse(request.userId());
+        return new Member.CheckIdResponse(userId);
     }
 
     @Override
-    public Member.CheckEmailResponse checkEmail(Member.CheckEmailRequest request) {
+    public Member.CheckEmailResponse checkEmail(String email) {
 
-        validateUtils.checkEmailDuplication(request.email());
+        validateUtils.checkEmailDuplication(email);
 
-        return new Member.CheckEmailResponse(request.email());
+        return new Member.CheckEmailResponse(email);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MemberRepositoryImpl implements MemberRepository {
             helper.setText(text,true);
             javaMailSender.send(mimeMessage);
         }catch (MessagingException e){
-            throw new InvalidEmailException(ErrorResult.EMAIL_BAD_REQUEST_EXCEPTION);
+            throw new BadRequestException(ErrorResult.EMAIL_BAD_REQUEST_EXCEPTION);
         }
 
         saveCode(email, authKey);
@@ -113,6 +113,54 @@ public class MemberRepositoryImpl implements MemberRepository {
         );
     }
 
+    @Override
+    public void verifyCode(Member.CodeVerifyRequest request) {
+
+        //이메일 검증
+        validateUtils.validateEmail(request.email());
+
+        // 인증코드 검사
+        String verifyCode = redisTemplate.opsForValue().get(request.email());
+        validateUtils.validateCode(verifyCode, request.code());
+
+        //코드 삭제
+        redisTemplate.delete(request.email());
+
+    }
+
+    @Override
+    public void verifyPasswordCode(Member.VerifyPasswordCodeRequest request) {
+
+        // 멤버 조회
+        MemberEntity member = validateUtils.validateEmail(request.email());
+
+        // 이메일, 멤버 유효성 검사
+        validateUtils.validateUserMismatch(member.getUserId(),request.userId());
+
+        // 인증코드 검사
+        String verifyCode = redisTemplate.opsForValue().get(request.email());
+        validateUtils.validateCode(verifyCode,request.code());
+
+        //코드 삭제
+        redisTemplate.delete(request.email());
+
+    }
+
+    @Override
+    public void resetPassword(Member.PasswordResetRequest request) {
+
+        //유저 검증
+        MemberEntity member = validateUtils.validateUserId(request.userId());
+        validateUtils.validatePassword(request.password(), member.getEncodedPassword());
+
+        // 비밀번호 검증
+        validateUtils.validateResetPassword(request.password(),request.checkPassword());
+
+        // 비밀번호 업데이트 및 저장
+        member.updatePassword(encoder.encode(request.checkPassword()));
+        memberJpaRepository.save(member);
+
+    }
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

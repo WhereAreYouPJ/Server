@@ -7,12 +7,13 @@ import way.application.domain.member.MemberRepository;
 
 @Component
 @RequiredArgsConstructor
-public class CheckIdUseCase {
+public class CodeVerifyUseCase {
 
     private final MemberRepository memberRepository;
 
-    public Member.CheckIdResponse invoke(String userId) {
+    public void invoke(Member.CodeVerifyRequest request) {
 
-        return memberRepository.checkId(userId);
+        memberRepository.verifyCode(request);
     }
+
 }

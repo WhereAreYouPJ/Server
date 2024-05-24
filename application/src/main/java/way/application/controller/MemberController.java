@@ -30,6 +30,8 @@ public class MemberController {
     private final CheckEmailUseCase checkEmailUseCase;
     private final LoginUseCase loginUseCase;
     private final SendMailUseCase sendMailUseCase;
+    private final CodeVerifyUseCase codeVerifyUseCase;
+    private final ResetPasswordUseCase resetPasswordUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -66,7 +68,7 @@ public class MemberController {
             @Parameter(
                     name = "userId",
                     description = "userId",
-                    example = "1")
+                    example = "dlswns97")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -95,9 +97,9 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> checkId(@Valid @RequestParam("userId") Member.CheckIdRequest request) {
+    public ResponseEntity<BaseResponse> checkId(@Valid @RequestParam("userId") String userId) {
 
-        Member.CheckIdResponse response = checkIdUseCase.invoke(request);
+        Member.CheckIdResponse response = checkIdUseCase.invoke(userId);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
@@ -108,7 +110,7 @@ public class MemberController {
             @Parameter(
                     name = "email",
                     description = "email",
-                    example = "1")
+                    example = "dlswns@whereareyou.com")
     })
     @ApiResponses(value = {
             @ApiResponse(
@@ -137,9 +139,9 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> checkEmail(@Valid @RequestParam("email") Member.CheckEmailRequest request) {
+    public ResponseEntity<BaseResponse> checkEmail(@Valid @RequestParam("email") String email) {
 
-        Member.CheckEmailResponse response = checkEmailUseCase.invoke(request);
+        Member.CheckEmailResponse response = checkEmailUseCase.invoke(email);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
@@ -221,4 +223,143 @@ public class MemberController {
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
+
+    @PostMapping(value ="/email/verify",name = "인증코드 검증 ")
+    @Operation(summary = "Code Verify API", description = "Code Verify API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "EB009 Invalid Email errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "CB011 Invalid Code errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> verifyCode(@Valid @RequestBody Member.CodeVerifyRequest request) {
+
+        codeVerifyUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+
+    @PostMapping(value ="/email/verifyPassword",name = "비밀번호 재설정 인증코드 검증 ")
+    @Operation(summary = "Password Code Verify API", description = "Password Code Verify API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "EB009 Invalid Email errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "CB011 Invalid Code errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "UMB012 User Mismatch errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> verifyPasswordCode(@Valid @RequestBody Member.CodeVerifyRequest request) {
+
+        codeVerifyUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+    @PostMapping(value ="/resetPassword",name = "비밀번호 재설정")
+    @Operation(summary = "Password Code Verify API", description = "Password Code Verify API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "PB005 Invalid Password errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "PMB013 Password Mismatch errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "UIB009 USER_ID_BAD_REQUEST_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> resetPassword(@Valid @RequestBody Member.PasswordResetRequest request) {
+
+        resetPasswordUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+
+
 }
