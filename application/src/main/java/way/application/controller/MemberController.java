@@ -32,6 +32,7 @@ public class MemberController {
     private final SendMailUseCase sendMailUseCase;
     private final CodeVerifyUseCase codeVerifyUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
+    private final  FindIdUseCase findIdUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -313,6 +314,7 @@ public class MemberController {
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
+
     @PostMapping(value ="/resetPassword",name = "비밀번호 재설정")
     @Operation(summary = "Password Code Verify API", description = "Password Code Verify API")
     @ApiResponses(value = {
@@ -359,6 +361,48 @@ public class MemberController {
         resetPasswordUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+
+    @PostMapping(value ="/findId",name = "아이디 찾기")
+    @Operation(summary = "Find Id API", description = "Find Id API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "EB009 Invalid Email errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "CB011 Invalid Code errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> findId(@Valid @RequestBody Member.FindIdRequest request) {
+
+        Member.FindIdResponse findIdResponse = findIdUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(findIdResponse));
     }
 
 

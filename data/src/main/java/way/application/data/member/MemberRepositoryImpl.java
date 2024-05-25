@@ -162,5 +162,16 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     }
 
+    @Override
+    public Member.FindIdResponse findId(Member.FindIdRequest request) {
+
+        String verifyCode = redisTemplate.opsForValue().get(request.email());
+        validateUtils.validateCode(verifyCode, request.code());
+
+        MemberEntity member = validateUtils.validateEmail(request.email());
+
+        return new Member.FindIdResponse(member.getUserId());
+    }
+
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }
