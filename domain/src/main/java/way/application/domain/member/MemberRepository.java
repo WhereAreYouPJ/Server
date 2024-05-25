@@ -19,4 +19,6 @@ public interface MemberRepository {
     void resetPassword(Member.PasswordResetRequest request);
 
     Member.FindIdResponse findId (Member.FindIdRequest request);
+
+    Member.GetMemberDetailResponse getMemberDetail (Long memberId);
 }

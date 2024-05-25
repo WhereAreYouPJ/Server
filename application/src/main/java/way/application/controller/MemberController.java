@@ -32,7 +32,8 @@ public class MemberController {
     private final SendMailUseCase sendMailUseCase;
     private final CodeVerifyUseCase codeVerifyUseCase;
     private final ResetPasswordUseCase resetPasswordUseCase;
-    private final  FindIdUseCase findIdUseCase;
+    private final FindIdUseCase findIdUseCase;
+    private final GetMemberDetailUseCase getMemberDetailUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -403,6 +404,48 @@ public class MemberController {
         Member.FindIdResponse findIdResponse = findIdUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(findIdResponse));
+    }
+
+    @GetMapping(value = "/details",name = "회원 상세 정보")
+    @Operation(summary = "Get Member Details API", description = "Get Member Details API")
+    @Parameters({
+            @Parameter(
+                    name = "MemberId",
+                    description = "memberId",
+                    example = "1")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> getMemberDetail(@Valid @RequestParam("memberId") Long memberId) {
+
+        Member.GetMemberDetailResponse response = getMemberDetailUseCase.invoke(memberId);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 
 

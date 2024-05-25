@@ -173,5 +173,13 @@ public class MemberRepositoryImpl implements MemberRepository {
         return new Member.FindIdResponse(member.getUserId());
     }
 
+    @Override
+    public Member.GetMemberDetailResponse getMemberDetail(Long memberId) {
+
+        MemberEntity member = validateUtils.validateMemberEntity(memberId);
+
+        return new Member.GetMemberDetailResponse(member.getUserName(), member.getUserId(), member.getEmail(), member.getProfileImage());
+    }
+
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

@@ -150,4 +150,14 @@ public class Member {
     ) {
 
     }
+
+    public record GetMemberDetailResponse (
+
+            String userName,
+            String userId,
+            String email,
+            String profileImage
+    ) {
+
+    }
 }
