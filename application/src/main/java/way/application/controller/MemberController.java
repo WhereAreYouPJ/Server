@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.member.Member;
@@ -34,6 +35,7 @@ public class MemberController {
     private final ResetPasswordUseCase resetPasswordUseCase;
     private final FindIdUseCase findIdUseCase;
     private final GetMemberDetailUseCase getMemberDetailUseCase;
+    private final ModifyUserInfoUseCase modifyUserInfoUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -446,6 +448,51 @@ public class MemberController {
         Member.GetMemberDetailResponse response = getMemberDetailUseCase.invoke(memberId);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @PostMapping(value ="/findId",name = "회원 정보 변경")
+    @Operation(summary = "Modify User Info API", description = "Modify user Info API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "UID001",
+                    description = "409 USER_ID_DUPLICATION_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> ModifyUserInfo (@RequestPart(value = "memberId") Long memberId,
+                                                     @RequestPart(value = "images", required = false)MultipartFile multipartFile,
+                                                     @RequestPart(value = "newUserId",required = false) String newUserId,
+                                                     @RequestPart(value = "newUserName",required = false) String newUserName) throws Exception {
+
+        modifyUserInfoUseCase.invoke(memberId, multipartFile, newUserId, newUserName);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
 
 

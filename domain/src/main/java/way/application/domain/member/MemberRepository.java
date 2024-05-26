@@ -1,5 +1,9 @@
 package way.application.domain.member;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
 public interface MemberRepository {
 
     void save (Member.SaveMemberRequest request);
@@ -21,4 +25,6 @@ public interface MemberRepository {
     Member.FindIdResponse findId (Member.FindIdRequest request);
 
     Member.GetMemberDetailResponse getMemberDetail (Long memberId);
+
+    void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String userName) throws IOException;
 }

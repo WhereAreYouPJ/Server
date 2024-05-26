@@ -39,4 +39,16 @@ public class MemberEntity {
     public void updatePassword(String password) {
         this.encodedPassword = password;
     }
+
+    public void updateUserId(String newUserId) {
+        this.userId = newUserId;
+    }
+
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void updateUserName(String newUserName) {
+        this.userName = newUserName;
+    }
 }

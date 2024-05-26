@@ -9,13 +9,16 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import way.application.core.exception.BadRequestException;
 import way.application.core.utils.ErrorResult;
+import way.application.core.utils.S3Util;
 import way.application.data.utils.ValidateUtils;
 import way.application.domain.jwt.JwtRepository;
 import way.application.domain.member.Member;
 import way.application.domain.member.MemberRepository;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +33,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     private final JwtRepository jwtRepository;
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String, String> redisTemplate;
+    private final S3Util s3Util;
 
 
     @Override
@@ -179,6 +183,35 @@ public class MemberRepositoryImpl implements MemberRepository {
         MemberEntity member = validateUtils.validateMemberEntity(memberId);
 
         return new Member.GetMemberDetailResponse(member.getUserName(), member.getUserId(), member.getEmail(), member.getProfileImage());
+    }
+
+    @Override
+    @Transactional
+    public void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String newUserName) throws IOException {
+
+        //멤버 조회
+        MemberEntity member = validateUtils.validateMemberEntity(memberId);
+
+        //아이디 변경
+        if(newUserId != null) {
+            validateUtils.checkUserIdDuplication(newUserId);
+
+            member.updateUserId(newUserId);
+        }
+
+        //프로필 사진 변경
+        if(multipartFile != null) {
+            String upload = s3Util.uploadMultipartFile(multipartFile);
+            member.updateProfileImage(upload);
+        }
+
+        //이름 변경
+        if(newUserName != null) {
+            member.updateUserName(newUserName);
+        }
+
+        //저장
+        memberJpaRepository.save(member);
     }
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
