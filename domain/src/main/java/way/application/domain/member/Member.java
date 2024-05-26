@@ -153,4 +153,11 @@ public class Member {
     ) {
 
     }
+
+    public record LogoutRequest (
+
+            Long memberId
+    ) {
+
+    }
 }

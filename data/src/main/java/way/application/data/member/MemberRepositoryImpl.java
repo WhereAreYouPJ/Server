@@ -232,6 +232,16 @@ public class MemberRepositoryImpl implements MemberRepository {
         return new Member.GetMemberDetailByUserIdResponse(member.getUserName(),member.getProfileImage(),member.getId());
     }
 
+    @Override
+    @Transactional
+    public void logout(Member.LogoutRequest request) {
+
+        MemberEntity member = validateUtils.validateMemberEntity(request.memberId());
+
+        member.deleteFireBaseTargetToken();
+
+    }
+
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

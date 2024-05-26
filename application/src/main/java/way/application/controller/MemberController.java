@@ -38,6 +38,7 @@ public class MemberController {
     private final GetMemberDetailUseCase getMemberDetailUseCase;
     private final ModifyUserInfoUseCase modifyUserInfoUseCase;
     private final GetMemberDetailByUserIdUseCase getMemberDetailByUserIdUseCase;
+    private final LogoutUseCase logoutUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -543,6 +544,42 @@ public class MemberController {
         Member.GetMemberDetailByUserIdResponse response = getMemberDetailByUserIdUseCase.invoke(userId,request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+    }
+
+    @PostMapping(value ="/logout",name = "로그아웃")
+    @Operation(summary = "Logout API", description = "Logout API")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> logout(@Valid @RequestBody Member.LogoutRequest request) {
+
+        logoutUseCase.invoke(request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
 
 

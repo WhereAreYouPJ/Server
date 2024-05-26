@@ -30,4 +30,6 @@ public interface MemberRepository {
     void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String userName) throws IOException;
 
     Member.GetMemberDetailByUserIdResponse getMemberDetailByUserId(String userId, HttpServletRequest request);
+
+    void logout (Member.LogoutRequest request);
 }
