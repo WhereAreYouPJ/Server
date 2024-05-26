@@ -144,4 +144,13 @@ public class Member {
     ) {
 
     }
+
+    public record GetMemberDetailByUserIdResponse (
+
+            String userName,
+            String porfileImage,
+            Long memberId
+    ) {
+
+    }
 }

@@ -1,5 +1,6 @@
 package way.application.domain.member;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,4 +28,6 @@ public interface MemberRepository {
     Member.GetMemberDetailResponse getMemberDetail (Long memberId);
 
     void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String userName) throws IOException;
+
+    Member.GetMemberDetailByUserIdResponse getMemberDetailByUserId(String userId, HttpServletRequest request);
 }

@@ -2,6 +2,7 @@ package way.application.data.member;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -73,8 +74,8 @@ public class MemberRepositoryImpl implements MemberRepository {
         memberJpaRepository.updateByFireBaseTargetToken(request.targetToken());
 
         // jwt 생성
-        String accessToken = jwtRepository.generateAccessToken(member.getId());
-        String refreshToken = jwtRepository.generateRefreshToken(member.getId());
+        String accessToken = jwtRepository.generateAccessToken(member.getUserId());
+        String refreshToken = jwtRepository.generateRefreshToken(member.getUserId());
 
         return new Member.MemberLoginResponse(accessToken,refreshToken, member.getId());
     }
@@ -213,6 +214,24 @@ public class MemberRepositoryImpl implements MemberRepository {
         //저장
         memberJpaRepository.save(member);
     }
+
+    @Override
+    public Member.GetMemberDetailByUserIdResponse getMemberDetailByUserId(String userId, HttpServletRequest request) {
+
+        // 토큰 추출
+        String token = jwtRepository.extractToken(request);
+        //userId 추출
+        String tokenUserId = jwtRepository.extractUserId(token);
+        //userId 검사
+        MemberEntity member = validateUtils.validateUserId(userId);
+
+        if(tokenUserId.equals(member.getUserId())){
+            throw new BadRequestException(ErrorResult.SELF_SEARCH_BAD_REQUEST_EXCEPTION);
+        }
+
+        return new Member.GetMemberDetailByUserIdResponse(member.getUserName(),member.getProfileImage(),member.getId());
+    }
+
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

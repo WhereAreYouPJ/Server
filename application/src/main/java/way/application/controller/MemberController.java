@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ public class MemberController {
     private final FindIdUseCase findIdUseCase;
     private final GetMemberDetailUseCase getMemberDetailUseCase;
     private final ModifyUserInfoUseCase modifyUserInfoUseCase;
+    private final GetMemberDetailByUserIdUseCase getMemberDetailByUserIdUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -450,7 +452,7 @@ public class MemberController {
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 
-    @PostMapping(value ="/findId",name = "회원 정보 변경")
+    @PostMapping(value ="/modify",name = "회원 정보 변경")
     @Operation(summary = "Modify User Info API", description = "Modify user Info API")
     @ApiResponses(value = {
             @ApiResponse(
@@ -493,6 +495,54 @@ public class MemberController {
         modifyUserInfoUseCase.invoke(memberId, multipartFile, newUserId, newUserName);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+    }
+
+    @GetMapping(value = "/info",name = "회원 상세 정보 By UserId")
+    @Operation(summary = "Get Member Details By UserId API", description = "Get Member Details By UserId API")
+    @Parameters({
+            @Parameter(
+                    name = "userId",
+                    description = "uesrId",
+                    example = "dlswns11")
+    })
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청에 성공하였습니다.",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = BaseResponse.class))),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "B001 Invalid DTO Parameter errors",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "S500 SERVER_ERROR",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "MIB002",
+                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
+            @ApiResponse(
+                    responseCode = "SSB014",
+                    description = "400 SELF_SEARCH_BAD_REQUEST_EXCEPTION",
+                    content = @Content(
+                            schema = @Schema(
+                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
+    })
+    public ResponseEntity<BaseResponse> getMemberDetailByUserId(@Valid @RequestParam("userId") String userId, HttpServletRequest request) {
+
+        Member.GetMemberDetailByUserIdResponse response = getMemberDetailByUserIdUseCase.invoke(userId,request);
+
+        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 
 

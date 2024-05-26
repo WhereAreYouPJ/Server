@@ -1,7 +1,9 @@
 package way.application.data.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,12 +28,12 @@ public class JwtRepositoryImpl implements JwtRepository {
     @Value("${jwt.refreshTokenExpiration}")
     private long refreshTokenExpiration;
     @Override
-    public String generateAccessToken(Long memberId) {
+    public String generateAccessToken(String userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + accessTokenExpiration);
 
         return Jwts.builder()
-                .setSubject(String.valueOf(memberId))
+                .setSubject(userId)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -39,19 +41,19 @@ public class JwtRepositoryImpl implements JwtRepository {
     }
 
     @Override
-    public String generateRefreshToken(Long memberId) {
+    public String generateRefreshToken(String userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + refreshTokenExpiration);
 
         String refreshToken = Jwts.builder()
-                .setSubject(String.valueOf(memberId))
+                .setSubject(userId)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
 
         redisTemplate.opsForValue().set(
-                String.valueOf(memberId),
+                userId,
                 refreshToken,
                 refreshTokenExpiration,
                 TimeUnit.MILLISECONDS
@@ -59,4 +61,27 @@ public class JwtRepositoryImpl implements JwtRepository {
 
         return refreshToken;
     }
+
+    @Override
+    public String extractToken(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = "";
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7); // Remove "Bearer " from the header value
+        }
+        return token;
+    }
+
+    @Override
+    public String extractUserId(String token) {
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
+
 }
