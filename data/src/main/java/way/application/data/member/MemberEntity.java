@@ -18,9 +18,9 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder(toBuilder = true)
 public class MemberEntity {
     @Id
-    @Column(name = "member_id")
+    @Column(name = "member_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long member_seq;
 
     @Column(nullable = false)
     private String userName;
@@ -38,5 +38,22 @@ public class MemberEntity {
 
     public void updatePassword(String password) {
         this.encodedPassword = password;
+    }
+
+    public void updateUserId(String newUserId) {
+        this.userId = newUserId;
+    }
+
+    public void updateProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void updateUserName(String newUserName) {
+        this.userName = newUserName;
+    }
+
+
+    public void deleteFireBaseTargetToken() {
+        this.fireBaseTargetToken = null;
     }
 }

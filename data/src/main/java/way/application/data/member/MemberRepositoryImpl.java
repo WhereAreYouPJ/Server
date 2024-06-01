@@ -2,6 +2,7 @@ package way.application.data.member;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -9,13 +10,16 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import way.application.core.exception.BadRequestException;
 import way.application.core.utils.ErrorResult;
+import way.application.core.utils.S3Util;
 import way.application.data.utils.ValidateUtils;
 import way.application.domain.jwt.JwtRepository;
 import way.application.domain.member.Member;
 import way.application.domain.member.MemberRepository;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +34,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     private final JwtRepository jwtRepository;
     private final JavaMailSender javaMailSender;
     private final RedisTemplate<String, String> redisTemplate;
+    private final S3Util s3Util;
 
 
     @Override
@@ -69,10 +74,10 @@ public class MemberRepositoryImpl implements MemberRepository {
         memberJpaRepository.updateByFireBaseTargetToken(request.targetToken());
 
         // jwt 생성
-        String accessToken = jwtRepository.generateAccessToken(member.getId());
-        String refreshToken = jwtRepository.generateRefreshToken(member.getId());
+        String accessToken = jwtRepository.generateAccessToken(member.getUserId());
+        String refreshToken = jwtRepository.generateRefreshToken(member.getUserId());
 
-        return new Member.MemberLoginResponse(accessToken,refreshToken, member.getId());
+        return new Member.MemberLoginResponse(accessToken,refreshToken, member.getMember_seq());
     }
 
     @Override
@@ -161,6 +166,83 @@ public class MemberRepositoryImpl implements MemberRepository {
         memberJpaRepository.save(member);
 
     }
+
+    @Override
+    public Member.FindIdResponse findId(Member.FindIdRequest request) {
+
+        String verifyCode = redisTemplate.opsForValue().get(request.email());
+        validateUtils.validateCode(verifyCode, request.code());
+
+        MemberEntity member = validateUtils.validateEmail(request.email());
+
+        return new Member.FindIdResponse(member.getUserId());
+    }
+
+    @Override
+    public Member.GetMemberDetailResponse getMemberDetail(Long memberId) {
+
+        MemberEntity member = validateUtils.validateMemberEntity(memberId);
+
+        return new Member.GetMemberDetailResponse(member.getUserName(), member.getUserId(), member.getEmail(), member.getProfileImage());
+    }
+
+    @Override
+    @Transactional
+    public void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String newUserName) throws IOException {
+
+        //멤버 조회
+        MemberEntity member = validateUtils.validateMemberEntity(memberId);
+
+        //아이디 변경
+        if(newUserId != null) {
+            validateUtils.checkUserIdDuplication(newUserId);
+
+            member.updateUserId(newUserId);
+        }
+
+        //프로필 사진 변경
+        if(multipartFile != null) {
+            String upload = s3Util.uploadMultipartFile(multipartFile);
+            member.updateProfileImage(upload);
+        }
+
+        //이름 변경
+        if(newUserName != null) {
+            member.updateUserName(newUserName);
+        }
+
+        //저장
+        memberJpaRepository.save(member);
+    }
+
+    @Override
+    public Member.GetMemberDetailByUserIdResponse getMemberDetailByUserId(String userId, HttpServletRequest request) {
+
+        // 토큰 추출
+        String token = jwtRepository.extractToken(request);
+        //userId 추출
+        String tokenUserId = jwtRepository.extractUserId(token);
+        //userId 검사
+        MemberEntity member = validateUtils.validateUserId(userId);
+
+        if(tokenUserId.equals(member.getUserId())){
+            throw new BadRequestException(ErrorResult.SELF_SEARCH_BAD_REQUEST_EXCEPTION);
+        }
+
+        return new Member.GetMemberDetailByUserIdResponse(member.getUserName(),member.getProfileImage(),member.getMember_seq());
+    }
+
+    @Override
+    @Transactional
+    public void logout(Member.LogoutRequest request) {
+
+        MemberEntity member = validateUtils.validateMemberEntity(request.memberId());
+
+        member.deleteFireBaseTargetToken();
+        redisTemplate.delete(member.getUserId());
+
+    }
+
 
     // TODO 로그인 시 MemberEntity firebaseTargetToken 저장 로직 구현 필요
 }

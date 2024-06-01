@@ -20,9 +20,9 @@ import way.application.data.schedule.ScheduleEntity;
 @Builder
 public class ScheduleMemberEntity {
     @Id
-    @Column(name = "schedule_member_id")
+    @Column(name = "schedule_member_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long schedule_member_seq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")

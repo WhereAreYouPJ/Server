@@ -8,6 +8,6 @@ import way.application.domain.schedule.Schedule;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ScheduleMapper {
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "schedule_seq", ignore = true)
     ScheduleEntity toScheduleEntity(Schedule.SaveScheduleRequest request);
 }

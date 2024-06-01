@@ -11,6 +11,6 @@ import way.application.domain.schedule.Schedule;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LocationMapper {
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "location_seq", ignore = true)
     LocationEntity toLocationEntity(Location.SaveLocationRequest request, MemberEntity member);
 }

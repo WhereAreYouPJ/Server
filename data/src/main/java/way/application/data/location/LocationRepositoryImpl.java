@@ -30,7 +30,7 @@ public class LocationRepositoryImpl implements LocationRepository {
         );
 
         return new Location.SaveLocationResponse(
-                locationEntity.getId()
+                locationEntity.getLocation_seq()
         );
     }
 
