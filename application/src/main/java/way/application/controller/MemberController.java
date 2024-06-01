@@ -453,7 +453,7 @@ public class MemberController {
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
     }
 
-    @PostMapping(value ="/modify",name = "회원 정보 변경")
+    @PutMapping(value ="/modify",name = "회원 정보 변경")
     @Operation(summary = "Modify User Info API", description = "Modify user Info API")
     @ApiResponses(value = {
             @ApiResponse(
