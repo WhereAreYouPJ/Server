@@ -39,6 +39,7 @@ public class MemberController {
     private final ModifyUserInfoUseCase modifyUserInfoUseCase;
     private final GetMemberDetailByUserIdUseCase getMemberDetailByUserIdUseCase;
     private final LogoutUseCase logoutUseCase;
+    private final VerifyPasswordCodeUseCase verifyPasswordCodeUseCase;
 
     @PostMapping(name = "회원가입")
     @Operation(summary = "join Member API", description = "join Member API")
@@ -314,9 +315,9 @@ public class MemberController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> verifyPasswordCode(@Valid @RequestBody Member.CodeVerifyRequest request) {
+    public ResponseEntity<BaseResponse> verifyPasswordCode(@Valid @RequestBody Member.VerifyPasswordCodeRequest request) {
 
-        codeVerifyUseCase.invoke(request);
+        verifyPasswordCodeUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
     }
