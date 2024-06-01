@@ -239,6 +239,7 @@ public class MemberRepositoryImpl implements MemberRepository {
         MemberEntity member = validateUtils.validateMemberEntity(request.memberId());
 
         member.deleteFireBaseTargetToken();
+        redisTemplate.delete(member.getUserId());
 
     }
 
