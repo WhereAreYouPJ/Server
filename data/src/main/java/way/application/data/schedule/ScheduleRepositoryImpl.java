@@ -64,7 +64,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 			)
 		);
 
-		return new Schedule.SaveScheduleResponse(savedSchedule.getId());
+		return new Schedule.SaveScheduleResponse(savedSchedule.getSchedule_seq());
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 			request);
 		return scheduleEntities.stream()
 			.map(scheduleEntity -> new Schedule.GetScheduleByDateResponse(
-				scheduleEntity.getId(),
+				scheduleEntity.getSchedule_seq(),
 				scheduleEntity.getTitle(),
 				scheduleEntity.getLocation(),
 				scheduleEntity.getColor()))
@@ -147,7 +147,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
 	private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember,
 		MemberEntity createMember) {
-		boolean isCreator = invitedMember.getId().equals(createMember.getId());
+		boolean isCreator = invitedMember.getMember_seq().equals(createMember.getMember_seq());
 		scheduleMemberJpaRepository.save(
 			scheduleMemberMapper.toScheduleMemberEntity(savedSchedule, invitedMember, isCreator, isCreator));
 

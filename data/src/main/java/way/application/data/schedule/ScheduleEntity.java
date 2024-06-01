@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 @Builder
 public class ScheduleEntity {
     @Id
-    @Column(name = "schedule_id")
+    @Column(name = "schedule_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long schedule_seq;
 
     private String title;
 

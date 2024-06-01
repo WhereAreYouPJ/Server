@@ -77,7 +77,7 @@ public class MemberRepositoryImpl implements MemberRepository {
         String accessToken = jwtRepository.generateAccessToken(member.getUserId());
         String refreshToken = jwtRepository.generateRefreshToken(member.getUserId());
 
-        return new Member.MemberLoginResponse(accessToken,refreshToken, member.getId());
+        return new Member.MemberLoginResponse(accessToken,refreshToken, member.getMember_seq());
     }
 
     @Override
@@ -229,7 +229,7 @@ public class MemberRepositoryImpl implements MemberRepository {
             throw new BadRequestException(ErrorResult.SELF_SEARCH_BAD_REQUEST_EXCEPTION);
         }
 
-        return new Member.GetMemberDetailByUserIdResponse(member.getUserName(),member.getProfileImage(),member.getId());
+        return new Member.GetMemberDetailByUserIdResponse(member.getUserName(),member.getProfileImage(),member.getMember_seq());
     }
 
     @Override

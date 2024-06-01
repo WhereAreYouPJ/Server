@@ -18,9 +18,9 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder(toBuilder = true)
 public class MemberEntity {
     @Id
-    @Column(name = "member_id")
+    @Column(name = "member_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long member_seq;
 
     @Column(nullable = false)
     private String userName;

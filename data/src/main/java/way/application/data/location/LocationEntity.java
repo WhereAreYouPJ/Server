@@ -18,8 +18,10 @@ import way.application.data.member.MemberEntity;
 @Getter
 @Builder
 public class LocationEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @Column(name = "location_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long location_seq;
 
     private String location;
     private String streetName;
