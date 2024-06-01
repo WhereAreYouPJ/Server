@@ -7,7 +7,7 @@ import way.application.domain.member.MemberRepository;
 
 @Component
 @RequiredArgsConstructor
-public class VerifyPasswordCode {
+public class VerifyPasswordCodeUseCase {
 
     private final MemberRepository memberRepository;
 
