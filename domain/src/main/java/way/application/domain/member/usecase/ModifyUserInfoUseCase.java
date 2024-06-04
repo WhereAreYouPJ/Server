@@ -15,10 +15,10 @@ public class ModifyUserInfoUseCase {
 
 	private final MemberRepository memberRepository;
 
-	public void invoke(Long memberId, MultipartFile multipartFile, String newUserId, String newUserName) throws
+	public void invoke(Long memberSeq, MultipartFile multipartFile, String newUserId, String newUserName) throws
 		IOException {
 
-		memberRepository.modifyUserInfo(memberId, multipartFile, newUserId, newUserName);
+		memberRepository.modifyUserInfo(memberSeq, multipartFile, newUserId, newUserName);
 	}
 
 }

@@ -28,7 +28,7 @@ public interface MemberRepository {
 
 	Member.GetMemberDetailResponse getMemberDetail(Long memberSeq);
 
-	void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String userName) throws
+	void modifyUserInfo(Long memberSeq, MultipartFile multipartFile, String newUserId, String userName) throws
 		IOException;
 
 	Member.GetMemberDetailByUserIdResponse getMemberDetailByUserId(String userId, HttpServletRequest request);

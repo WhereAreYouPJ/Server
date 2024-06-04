@@ -89,20 +89,20 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "409",
-			description = "UID001 USER_ID_DUPLICATION_EXCEPTION",
+			responseCode = "UID001",
+			description = "409 USER_ID_DUPLICATION_EXCEPTION",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -131,20 +131,20 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "409",
-			description = "ED002 EMAIL_DUPLICATION_EXCEPTION",
+			responseCode = "ED002",
+			description = "409 EMAIL_DUPLICATION_EXCEPTION",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -167,26 +167,26 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "UIB009 USER_ID_BAD_REQUEST_EXCEPTION",
+			responseCode = "UIB009",
+			description = "400 USER_ID_BAD_REQUEST_EXCEPTION",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "PB005 PASSWORD_BAD_REQUEST_EXCEPTION",
+			responseCode = "PB005",
+			description = "400 PASSWORD_BAD_REQUEST_EXCEPTION",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -209,20 +209,20 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "EB009 Invalid Email errors",
+			responseCode = "EB009",
+			description = "400 Invalid Email errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -245,26 +245,26 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "EB009 Invalid Email errors",
+			responseCode = "EB009",
+			description = "400 Invalid Email errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "CB011 Invalid Code errors",
+			responseCode = "CB011",
+			description = "400 Invalid Code errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -287,32 +287,32 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "EB009 Invalid Email errors",
+			responseCode = "EB009",
+			description = "400 Invalid Email errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "CB011 Invalid Code errors",
+			responseCode = "CB011",
+			description = "400 Invalid Code errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "UMB012 User Mismatch errors",
+			responseCode = "UMB012",
+			description = "400 User Mismatch errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -336,32 +336,32 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "PB005 Invalid Password errors",
+			responseCode = "PB005",
+			description = "400 Invalid Password errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "PMB013 Password Mismatch errors",
+			responseCode = "PMB013",
+			description = "400 Password Mismatch errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "UIB009 USER_ID_BAD_REQUEST_EXCEPTION",
+			responseCode = "UIB009",
+			description = "400 USER_ID_BAD_REQUEST_EXCEPTION",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -384,26 +384,26 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "EB009 Invalid Email errors",
+			responseCode = "EB009",
+			description = "400 Invalid Email errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "CB011 Invalid Code errors",
+			responseCode = "CB011",
+			description = "400 Invalid Code errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
@@ -432,14 +432,14 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
@@ -450,9 +450,9 @@ public class MemberController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> getMemberDetail(@Valid @RequestParam("memberId") Long memberId) {
+	public ResponseEntity<BaseResponse> getMemberDetail(@Valid @RequestParam("memberSeq") Long memberSeq) {
 
-		Member.GetMemberDetailResponse response = getMemberDetailUseCase.invoke(memberId);
+		Member.GetMemberDetailResponse response = getMemberDetailUseCase.invoke(memberSeq);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
 	}
@@ -468,14 +468,14 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
@@ -492,12 +492,12 @@ public class MemberController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> ModifyUserInfo(@RequestPart(value = "memberSeq") Long memberId,
+	public ResponseEntity<BaseResponse> ModifyUserInfo(@RequestPart(value = "memberSeq") Long memberSeq,
 		@RequestPart(value = "images", required = false) MultipartFile multipartFile,
 		@RequestPart(value = "newUserId", required = false) String newUserId,
 		@RequestPart(value = "newUserName", required = false) String newUserName) throws Exception {
 
-		modifyUserInfoUseCase.invoke(memberId, multipartFile, newUserId, newUserName);
+		modifyUserInfoUseCase.invoke(memberSeq, multipartFile, newUserId, newUserName);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
 	}
@@ -519,14 +519,14 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
@@ -562,14 +562,14 @@ public class MemberController {
 				schema = @Schema(
 					implementation = BaseResponse.class))),
 		@ApiResponse(
-			responseCode = "400",
-			description = "B001 Invalid DTO Parameter errors",
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),
 		@ApiResponse(
-			responseCode = "500",
-			description = "S500 SERVER_ERROR",
+			responseCode = "S500",
+			description = "500 SERVER_ERROR",
 			content = @Content(
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class))),

@@ -190,11 +190,11 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 	@Override
 	@Transactional
-	public void modifyUserInfo(Long memberId, MultipartFile multipartFile, String newUserId, String newUserName) throws
+	public void modifyUserInfo(Long memberSeq, MultipartFile multipartFile, String newUserId, String newUserName) throws
 		IOException {
 
 		//멤버 조회
-		MemberEntity member = validateUtils.validateMemberEntity(memberId);
+		MemberEntity member = validateUtils.validateMemberEntity(memberSeq);
 
 		//아이디 변경
 		if (newUserId != null) {
