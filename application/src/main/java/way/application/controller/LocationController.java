@@ -35,8 +35,8 @@ public class LocationController {
 	private final DeleteLocationUseCase deleteLocationUseCase;
 	private final GetLocationUseCase getLocationUseCase;
 
-	@PostMapping(name = "장소 저장")
-	@Operation(summary = "Save Location API", description = "Save Location API")
+	@PostMapping(name = "장소 즐겨찾기")
+	@Operation(summary = "장소 즐겨찾기 저장 API", description = "장소 즐겨찾기 저장 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -76,8 +76,8 @@ public class LocationController {
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
 	}
 
-	@DeleteMapping(name = "장소 삭제")
-	@Operation(summary = "Delete Location API", description = "Delete Location API")
+	@DeleteMapping(name = "장소 즐겨찾기 삭제")
+	@Operation(summary = "장소 즐겨찾기 삭제 API", description = "장소 즐겨찾기 삭제 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -111,12 +111,12 @@ public class LocationController {
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
 	}
 
-	@GetMapping(name = "장소 전체 검색")
-	@Operation(summary = "Get Location API", description = "Get Location API")
+	@GetMapping(name = "장소 즐겨찾기 전체 검색")
+	@Operation(summary = "장소 즐겨찾기 전체 검색 API", description = "장소 즐겨찾기 전체 검색 API")
 	@Parameters({
 		@Parameter(
 			name = "memberSeq",
-			description = "memberSeq Sequence",
+			description = "Member Sequence",
 			example = "1")
 	})
 	@ApiResponses(value = {

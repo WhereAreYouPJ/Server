@@ -37,7 +37,7 @@ public class ScheduleController {
 	private final GetScheduleByDateUseCase getScheduleByDateUseCase;
 
 	@PostMapping(name = "일정 생성")
-	@Operation(summary = "Create Schedule API", description = "Create Schedule API")
+	@Operation(summary = "일정 생성 API", description = "일정 생성 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -78,7 +78,7 @@ public class ScheduleController {
 	}
 
 	@PutMapping(name = "일정 수정")
-	@Operation(summary = "Modify Schedule API", description = "Modify Schedule API")
+	@Operation(summary = "일정 수정 API", description = "일정 수정 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -131,7 +131,7 @@ public class ScheduleController {
 	}
 
 	@DeleteMapping(name = "일정 삭제")
-	@Operation(summary = "Delete Schedule API", description = "Delete Schedule API")
+	@Operation(summary = "일정 삭제 API", description = "일정 삭제 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -178,7 +178,7 @@ public class ScheduleController {
 	}
 
 	@GetMapping(name = "일정 조회")
-	@Operation(summary = "Get Schedule API", description = "Get Schedule API")
+	@Operation(summary = "일정 상세 조회 API", description = "일정 상세 조회 API")
 	@Parameters({
 		@Parameter(
 			name = "scheduleSeq",
@@ -186,7 +186,7 @@ public class ScheduleController {
 			example = "1"),
 		@Parameter(
 			name = "memberSeq",
-			description = "memberSeq Sequence",
+			description = "Member Sequence",
 			example = "1")
 	})
 	@ApiResponses(value = {
@@ -232,7 +232,7 @@ public class ScheduleController {
 	}
 
 	@GetMapping(value = "/date", name = "해당 날짜 일정 조회")
-	@Operation(summary = "Get Schedule By Date API", description = "Get Schedule By Date API")
+	@Operation(summary = "해당 날짜 일정 조회 API", description = "해당 날짜 일정 조회 API")
 	@Parameters({
 		@Parameter(
 			name = "date",
