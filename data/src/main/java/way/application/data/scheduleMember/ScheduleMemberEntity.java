@@ -27,11 +27,11 @@ public class ScheduleMemberEntity {
 	private Long scheduleMemberSeq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "schedule_id")
+	@JoinColumn(name = "schedule_seq")
 	private ScheduleEntity schedule;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "member_seq")
 	private MemberEntity invitedMember;
 
 	@Column(name = "is_creator", nullable = false)
