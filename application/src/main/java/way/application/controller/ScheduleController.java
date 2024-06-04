@@ -12,8 +12,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.schedule.Schedule;
@@ -28,246 +30,246 @@ import java.util.List;
 @Tag(name = "Schedule API", description = "업무 담당: 박종훈")
 @OpenAPIDefinition(servers = {@Server(url = "/", description = "https://wlrmadjel.com")})
 public class ScheduleController {
-    private final SaveScheduleUseCase saveScheduleUseCase;
-    private final ModifyScheduleUseCase modifyScheduleUseCase;
-    private final DeleteScheduleUseCase deleteScheduleUseCase;
-    private final GetScheduleUseCase getScheduleUseCase;
-    private final GetScheduleByDateUseCase getScheduleByDateUseCase;
+	private final SaveScheduleUseCase saveScheduleUseCase;
+	private final ModifyScheduleUseCase modifyScheduleUseCase;
+	private final DeleteScheduleUseCase deleteScheduleUseCase;
+	private final GetScheduleUseCase getScheduleUseCase;
+	private final GetScheduleByDateUseCase getScheduleByDateUseCase;
 
-    @PostMapping(name = "일정 생성")
-    @Operation(summary = "Create Schedule API", description = "Create Schedule API")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "요청에 성공하였습니다.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = BaseResponse.class))),
-            @ApiResponse(
-                    responseCode = "S500",
-                    description = "500 SERVER_ERROR (나도 몰라 ..)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "S501",
-                    description = "500 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "B001",
-                    description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "MIB002",
-                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
-    })
-    public ResponseEntity<BaseResponse> saveSchedule(@Valid @RequestBody Schedule.SaveScheduleRequest request) {
-        Schedule.SaveScheduleResponse response = saveScheduleUseCase.invoke(request);
+	@PostMapping(name = "일정 생성")
+	@Operation(summary = "Create Schedule API", description = "Create Schedule API")
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "S501",
+			description = "500 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MIB002",
+			description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> saveSchedule(@Valid @RequestBody Schedule.SaveScheduleRequest request) {
+		Schedule.SaveScheduleResponse response = saveScheduleUseCase.invoke(request);
 
-        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
-    }
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+	}
 
-    @PutMapping(name = "일정 수정")
-    @Operation(summary = "Modify Schedule API", description = "Modify Schedule API")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "요청에 성공하였습니다.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = BaseResponse.class))),
-            @ApiResponse(
-                    responseCode = "S500",
-                    description = "500 SERVER_ERROR (나도 몰라 ..)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "S501",
-                    description = "500 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "B001",
-                    description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "MIB002",
-                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "SIB003",
-                    description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "SDCBMB008",
-                    description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
-    })
-    public ResponseEntity<BaseResponse> modifySchedule(@Valid @RequestBody Schedule.ModifyScheduleRequest request) {
-        Schedule.ModifyScheduleResponse response = modifyScheduleUseCase.invoke(request);
+	@PutMapping(name = "일정 수정")
+	@Operation(summary = "Modify Schedule API", description = "Modify Schedule API")
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "S501",
+			description = "500 FIREBASE_CLOUD_MESSAGING_EXCEPTION / FIREBASE 오류(서버 오류 혹은 Token 존재 X)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MIB002",
+			description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "SIB003",
+			description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "SDCBMB008",
+			description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> modifySchedule(@Valid @RequestBody Schedule.ModifyScheduleRequest request) {
+		Schedule.ModifyScheduleResponse response = modifyScheduleUseCase.invoke(request);
 
-        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
-    }
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+	}
 
-    @DeleteMapping(name = "일정 삭제")
-    @Operation(summary = "Delete Schedule API", description = "Delete Schedule API")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "요청에 성공하였습니다.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = BaseResponse.class))),
-            @ApiResponse(
-                    responseCode = "S500",
-                    description = "500 SERVER_ERROR (나도 몰라 ..)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "B001",
-                    description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "SIB003",
-                    description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "MIB002",
-                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "SDCBMB008",
-                    description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
-    })
-    public ResponseEntity<BaseResponse> deleteSchedule(@Valid @RequestBody Schedule.DeleteScheduleRequest request) {
-        deleteScheduleUseCase.invoke(request);
+	@DeleteMapping(name = "일정 삭제")
+	@Operation(summary = "Delete Schedule API", description = "Delete Schedule API")
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "B001",
+			description = "400 Invalid DTO Parameter errors / 요청 값 형식 요류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "SIB003",
+			description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MIB002",
+			description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "SDCBMB008",
+			description = "400 SCHEDULE_DIDNT_CREATED_BY_MEMBER_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> deleteSchedule(@Valid @RequestBody Schedule.DeleteScheduleRequest request) {
+		deleteScheduleUseCase.invoke(request);
 
-        return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
-    }
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+	}
 
-    @GetMapping(name = "일정 조회")
-    @Operation(summary = "Get Schedule API", description = "Get Schedule API")
-    @Parameters({
-            @Parameter(
-                    name = "scheduleId",
-                    description = "Schedule PK",
-                    example = "1"),
-            @Parameter(
-                    name = "memberId",
-                    description = "memberId PK",
-                    example = "1")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "요청에 성공하였습니다.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = BaseResponse.class))),
-            @ApiResponse(
-                    responseCode = "S500",
-                    description = "500 SERVER_ERROR (나도 몰라 ..)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "SIB003",
-                    description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "MIB002",
-                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "MINISB004",
-                    description = "400 MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION / 일정에 존재하지 않는 Member의 경우 + Schedule에서 일정을 수락하지 않은 경우 조회 불가",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
-    })
-    public ResponseEntity<BaseResponse> getSchedule(
-            @Valid
-            @RequestParam(name = "scheduleId") Long scheduleId,
-            @RequestParam(name = "memberId") Long memberId) {
-        Schedule.GetScheduleResponse response = getScheduleUseCase.invoke(scheduleId, memberId);
+	@GetMapping(name = "일정 조회")
+	@Operation(summary = "Get Schedule API", description = "Get Schedule API")
+	@Parameters({
+		@Parameter(
+			name = "scheduleSeq",
+			description = "Schedule Sequence",
+			example = "1"),
+		@Parameter(
+			name = "memberSeq",
+			description = "memberSeq Sequence",
+			example = "1")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "SIB003",
+			description = "400 SCHEDULE_ID_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MIB002",
+			description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MINISB004",
+			description = "400 MEMBER_ID_NOT_IN_SCHEDULE_BAD_EXCEPTION / 일정에 존재하지 않는 Member의 경우 + Schedule에서 일정을 수락하지 않은 경우 조회 불가",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> getSchedule(
+		@Valid
+		@RequestParam(name = "scheduleSeq") Long scheduleSeq,
+		@RequestParam(name = "memberSeq") Long memberSeq) {
+		Schedule.GetScheduleResponse response = getScheduleUseCase.invoke(scheduleSeq, memberSeq);
 
-        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
-    }
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+	}
 
-    @GetMapping(value = "/date", name = "해당 날짜 일정 조회")
-    @Operation(summary = "Get Schedule By Date API", description = "Get Schedule By Date API")
-    @Parameters({
-            @Parameter(
-                    name = "date",
-                    description = "조회하려는 날짜",
-                    example = "2024-05-12T13:31:16"),
-            @Parameter(
-                    name = "memberId",
-                    description = "Member PK",
-                    example = "1")
-    })
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "요청에 성공하였습니다.",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = BaseResponse.class))),
-            @ApiResponse(
-                    responseCode = "S500",
-                    description = "500 SERVER_ERROR (나도 몰라 ..)",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class))),
-            @ApiResponse(
-                    responseCode = "MIB002",
-                    description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = GlobalExceptionHandler.ErrorResponse.class)))
-    })
-    public ResponseEntity<BaseResponse> getScheduleByDate(
-            @Valid
-            @RequestParam(name = "date") LocalDateTime date,
-            @RequestParam(name = "memberId") Long memberId) {
-        List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberId, date);
+	@GetMapping(value = "/date", name = "해당 날짜 일정 조회")
+	@Operation(summary = "Get Schedule By Date API", description = "Get Schedule By Date API")
+	@Parameters({
+		@Parameter(
+			name = "date",
+			description = "조회하려는 날짜",
+			example = "2024-05-12T13:31:16"),
+		@Parameter(
+			name = "memberSeq",
+			description = "Member Sequence",
+			example = "1")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MIB002",
+			description = "400 MEMBER_ID_BAD_REQUEST_EXCEPTION / MEMBER_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> getScheduleByDate(
+		@Valid
+		@RequestParam(name = "date") LocalDateTime date,
+		@RequestParam(name = "memberSeq") Long memberSeq) {
+		List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberSeq, date);
 
-        return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
-    }
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+	}
 }

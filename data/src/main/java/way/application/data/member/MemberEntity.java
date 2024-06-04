@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -17,43 +18,42 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @Builder(toBuilder = true)
 public class MemberEntity {
-    @Id
-    @Column(name = "member_seq")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long member_seq;
+	@Id
+	@Column(name = "member_seq")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long memberSeq;
 
-    @Column(nullable = false)
-    private String userName;
+	@Column(nullable = false)
+	private String userName;
 
-    @Column(nullable = false)
-    private String userId;
+	@Column(nullable = false)
+	private String userId;
 
-    @Column(nullable = false)
-    private String encodedPassword;
+	@Column(nullable = false)
+	private String encodedPassword;
 
-    private String email;
-    private String profileImage;
+	private String email;
+	private String profileImage;
 
-    private String fireBaseTargetToken;
+	private String fireBaseTargetToken;
 
-    public void updatePassword(String password) {
-        this.encodedPassword = password;
-    }
+	public void updatePassword(String password) {
+		this.encodedPassword = password;
+	}
 
-    public void updateUserId(String newUserId) {
-        this.userId = newUserId;
-    }
+	public void updateUserId(String newUserId) {
+		this.userId = newUserId;
+	}
 
-    public void updateProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
+	public void updateProfileImage(String profileImage) {
+		this.profileImage = profileImage;
+	}
 
-    public void updateUserName(String newUserName) {
-        this.userName = newUserName;
-    }
+	public void updateUserName(String newUserName) {
+		this.userName = newUserName;
+	}
 
-
-    public void deleteFireBaseTargetToken() {
-        this.fireBaseTargetToken = null;
-    }
+	public void deleteFireBaseTargetToken() {
+		this.fireBaseTargetToken = null;
+	}
 }

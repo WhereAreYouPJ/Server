@@ -9,11 +9,16 @@ import java.util.Optional;
 
 @Repository
 public interface MemberJpaRepository extends JpaRepository<MemberEntity, Long> {
-    Optional<MemberEntity> findByUserId(String userId);
+	Optional<MemberEntity> findByUserId(String userId);
 
-    Optional<MemberEntity> findByEmail(String email);
+	Optional<MemberEntity> findByEmail(String email);
 
-    @Modifying
-    @Query("update MemberEntity set fireBaseTargetToken =:token ")
-    void updateByFireBaseTargetToken(String token);
+	@Modifying
+	@Query("""
+		update 
+		    MemberEntity 
+		set 
+		    fireBaseTargetToken =:token
+		""")
+	void updateByFireBaseTargetToken(String token);
 }

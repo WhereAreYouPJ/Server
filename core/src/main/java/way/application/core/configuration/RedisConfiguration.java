@@ -10,23 +10,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfiguration {
-    @Value("${spring.data.redis.host}")
-    private String redisHost;
+	@Value("${spring.data.redis.host}")
+	private String redisHost;
 
-    @Value("${spring.data.redis.port}")
-    private int redisPort;
+	@Value("${spring.data.redis.port}")
+	private int redisPort;
 
-    @Bean
-    public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(redisHost,redisPort);
-    }
+	@Bean
+	public RedisConnectionFactory redisConnectionFactory() {
+		return new LettuceConnectionFactory(redisHost, redisPort);
+	}
 
-    @Bean
-    public RedisTemplate<String , Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
+	@Bean
+	public RedisTemplate<String, Object> redisTemplate() {
+		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+		redisTemplate.setConnectionFactory(redisConnectionFactory());
+		redisTemplate.setKeySerializer(new StringRedisSerializer());
 
-        return redisTemplate;
-    }
+		return redisTemplate;
+	}
 }

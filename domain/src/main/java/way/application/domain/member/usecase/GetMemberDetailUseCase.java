@@ -11,9 +11,9 @@ public class GetMemberDetailUseCase {
 
     private final MemberRepository memberRepository;
 
-    public Member.GetMemberDetailResponse invoke(Long memberId) {
+    public Member.GetMemberDetailResponse invoke(Long memberSeq) {
 
-        return memberRepository.getMemberDetail(memberId);
+        return memberRepository.getMemberDetail(memberSeq);
     }
 
 }

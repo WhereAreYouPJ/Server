@@ -5,9 +5,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
 import way.application.domain.jwt.JwtRepository;
 
 import java.util.Date;
@@ -17,71 +19,72 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class JwtRepositoryImpl implements JwtRepository {
 
-    private final RedisTemplate<String, String> redisTemplate;
+	private final RedisTemplate<String, String> redisTemplate;
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+	@Value("${jwt.secret}")
+	private String jwtSecret;
 
-    @Value("${jwt.accessTokenExpiration}")
-    private long accessTokenExpiration;
+	@Value("${jwt.accessTokenExpiration}")
+	private long accessTokenExpiration;
 
-    @Value("${jwt.refreshTokenExpiration}")
-    private long refreshTokenExpiration;
-    @Override
-    public String generateAccessToken(String userId) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + accessTokenExpiration);
+	@Value("${jwt.refreshTokenExpiration}")
+	private long refreshTokenExpiration;
 
-        return Jwts.builder()
-                .setSubject(userId)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
-    }
+	@Override
+	public String generateAccessToken(String userId) {
+		Date now = new Date();
+		Date expiryDate = new Date(now.getTime() + accessTokenExpiration);
 
-    @Override
-    public String generateRefreshToken(String userId) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + refreshTokenExpiration);
+		return Jwts.builder()
+			.setSubject(userId)
+			.setIssuedAt(now)
+			.setExpiration(expiryDate)
+			.signWith(SignatureAlgorithm.HS512, jwtSecret)
+			.compact();
+	}
 
-        String refreshToken = Jwts.builder()
-                .setSubject(userId)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
+	@Override
+	public String generateRefreshToken(String userId) {
+		Date now = new Date();
+		Date expiryDate = new Date(now.getTime() + refreshTokenExpiration);
 
-        redisTemplate.opsForValue().set(
-                userId,
-                refreshToken,
-                refreshTokenExpiration,
-                TimeUnit.MILLISECONDS
-        );
+		String refreshToken = Jwts.builder()
+			.setSubject(userId)
+			.setIssuedAt(now)
+			.setExpiration(expiryDate)
+			.signWith(SignatureAlgorithm.HS512, jwtSecret)
+			.compact();
 
-        return refreshToken;
-    }
+		redisTemplate.opsForValue().set(
+			userId,
+			refreshToken,
+			refreshTokenExpiration,
+			TimeUnit.MILLISECONDS
+		);
 
-    @Override
-    public String extractToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        String token = "";
+		return refreshToken;
+	}
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7); // Remove "Bearer " from the header value
-        }
-        return token;
-    }
+	@Override
+	public String extractToken(HttpServletRequest request) {
+		String authHeader = request.getHeader("Authorization");
+		String token = "";
 
-    @Override
-    public String extractUserId(String token) {
+		if (authHeader != null && authHeader.startsWith("Bearer ")) {
+			token = authHeader.substring(7); // Remove "Bearer " from the header value
+		}
+		return token;
+	}
 
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
+	@Override
+	public String extractUserId(String token) {
 
-        return claims.getSubject();
-    }
+		Claims claims = Jwts.parser()
+			.setSigningKey(jwtSecret)
+			.parseClaimsJws(token)
+			.getBody();
+
+		return claims.getSubject();
+	}
 
 }
