@@ -22,7 +22,6 @@ import way.application.domain.schedule.ScheduleRepository;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +42,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 	@Transactional
 	public Schedule.SaveScheduleResponse save(Schedule.SaveScheduleRequest request) {
 		MemberEntity createMember = validateUtils.validateMemberEntity(
-			request.createMemberId()
+			request.createMemberSeq()
 		);
 
 		// Schedule 저장
@@ -54,7 +53,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 		// ScheduleMember 저장
 		Set<MemberEntity> invitedMembers = new HashSet<>(
 			validateUtils.validateMemberEntityIn(
-				request.invitedMemberIds()
+				request.invitedMemberSeqs()
 			)
 		);
 		invitedMembers.add(createMember);
@@ -64,55 +63,55 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 			)
 		);
 
-		return new Schedule.SaveScheduleResponse(savedSchedule.getSchedule_seq());
+		return new Schedule.SaveScheduleResponse(savedSchedule.getScheduleSeq());
 	}
 
 	@Override
 	@Transactional
 	public Schedule.ModifyScheduleResponse modify(Schedule.ModifyScheduleRequest request) {
-		validateUtils.validateMemberEntityIn(request.invitedMemberIds());
-		validateUtils.validateMemberEntity(request.createMemberId());
-		validateUtils.validateScheduleEntity(request.id());
+		validateUtils.validateMemberEntityIn(request.invitedMemberSeqs());
+		validateUtils.validateMemberEntity(request.createMemberSeq());
+		validateUtils.validateScheduleEntity(request.scheduleSeq());
 		ScheduleEntity scheduleEntity
-			= validateUtils.validateScheduleEntityCreatedByMember(request.id(), request.createMemberId());
+			= validateUtils.validateScheduleEntityCreatedByMember(request.scheduleSeq(), request.createMemberSeq());
 
 		// 데이터 전체 삭제
-		scheduleJpaRepository.deleteById(request.id());
+		scheduleJpaRepository.deleteById(request.scheduleSeq());
 		scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
 
 		Schedule.SaveScheduleRequest saveScheduleRequest = new Schedule.SaveScheduleRequest(
 			request.title(), request.startTime(), request.endTime(),
 			request.location(), request.streetName(), request.x(), request.y(),
-			request.color(), request.memo(), request.invitedMemberIds(), request.createMemberId()
+			request.color(), request.memo(), request.invitedMemberSeqs(), request.createMemberSeq()
 		);
 
 		// Schedule + ScheduleMember 다시 저장
 		Schedule.SaveScheduleResponse response = save(saveScheduleRequest);
 
-		return new Schedule.ModifyScheduleResponse(response.id());
+		return new Schedule.ModifyScheduleResponse(response.scheduleSeq());
 	}
 
 	@Override
 	@Transactional
 	public void delete(Schedule.DeleteScheduleRequest request) {
-		validateUtils.validateMemberEntity(request.creatorId());
-		validateUtils.validateScheduleEntity(request.scheduleId());
+		validateUtils.validateMemberEntity(request.creatorSeq());
+		validateUtils.validateScheduleEntity(request.scheduleSeq());
 		ScheduleEntity scheduleEntity
-			= validateUtils.validateScheduleEntityCreatedByMember(request.scheduleId(), request.creatorId());
+			= validateUtils.validateScheduleEntityCreatedByMember(request.scheduleSeq(), request.creatorSeq());
 
 		// 데이터 전체 삭제
 		scheduleMemberJpaRepository.deleteAllBySchedule(scheduleEntity);
-		scheduleJpaRepository.deleteById(request.scheduleId());
+		scheduleJpaRepository.deleteById(request.scheduleSeq());
 	}
 
 	@Override
-	@Cacheable(value = "schedules", key = "#scheduleId + '-' + #memberId")
+	@Cacheable(value = "schedules", key = "#scheduleSeq + '-' + #memberSeq")
 	@Transactional(readOnly = true)
-	public Schedule.GetScheduleResponse get(Long scheduleId, Long memberId) {
+	public Schedule.GetScheduleResponse get(Long scheduleSeq, Long memberSeq) {
 		// 예외처리
-		ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(scheduleId);
-		validateUtils.validateMemberEntity(memberId);
-		validateUtils.validateMemberInScheduleMemberEntity(memberId, scheduleId);
+		ScheduleEntity scheduleEntity = validateUtils.validateScheduleEntity(scheduleSeq);
+		validateUtils.validateMemberEntity(memberSeq);
+		validateUtils.validateMemberInScheduleMemberEntity(memberSeq, scheduleSeq);
 
 		// ScheduleMember에서 userName 추출
 		List<ScheduleMemberEntity> scheduleMemberEntities
@@ -131,14 +130,14 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberId, LocalDateTime request) {
-		validateUtils.validateMemberEntity(memberId);
+	public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberSeq, LocalDateTime request) {
+		validateUtils.validateMemberEntity(memberSeq);
 
-		List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.findAcceptedSchedulesByMemberAndDate(memberId,
+		List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.findAcceptedSchedulesByMemberAndDate(memberSeq,
 			request);
 		return scheduleEntities.stream()
 			.map(scheduleEntity -> new Schedule.GetScheduleByDateResponse(
-				scheduleEntity.getSchedule_seq(),
+				scheduleEntity.getScheduleSeq(),
 				scheduleEntity.getTitle(),
 				scheduleEntity.getLocation(),
 				scheduleEntity.getColor()))
@@ -147,7 +146,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
 	private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember,
 		MemberEntity createMember) {
-		boolean isCreator = invitedMember.getMember_seq().equals(createMember.getMember_seq());
+		boolean isCreator = invitedMember.getMemberSeq().equals(createMember.getMemberSeq());
 		scheduleMemberJpaRepository.save(
 			scheduleMemberMapper.toScheduleMemberEntity(savedSchedule, invitedMember, isCreator, isCreator));
 

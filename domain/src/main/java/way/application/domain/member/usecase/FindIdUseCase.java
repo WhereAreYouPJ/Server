@@ -1,7 +1,9 @@
 package way.application.domain.member.usecase;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
+
 import way.application.domain.member.Member;
 import way.application.domain.member.MemberRepository;
 
@@ -9,11 +11,11 @@ import way.application.domain.member.MemberRepository;
 @RequiredArgsConstructor
 public class FindIdUseCase {
 
-    private final MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
 
-    public Member.FindIdResponse invoke(Member.FindIdRequest request) {
+	public Member.FindIdResponse invoke(Member.FindIdRequest request) {
 
-        return memberRepository.findId(request);
-    }
+		return memberRepository.findId(request);
+	}
 
 }

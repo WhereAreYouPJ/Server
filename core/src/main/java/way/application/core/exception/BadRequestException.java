@@ -6,6 +6,6 @@ import way.application.core.utils.ErrorResult;
 
 @Getter
 @RequiredArgsConstructor
-public class BadRequestException extends RuntimeException{
-    private final ErrorResult errorResult;
+public class BadRequestException extends RuntimeException {
+	private final ErrorResult errorResult;
 }

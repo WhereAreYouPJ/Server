@@ -1,7 +1,9 @@
 package way.application.domain.member.usecase;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Component;
+
 import way.application.domain.member.Member;
 import way.application.domain.member.MemberRepository;
 
@@ -9,10 +11,10 @@ import way.application.domain.member.MemberRepository;
 @RequiredArgsConstructor
 public class ResetPasswordUseCase {
 
-    private final MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
 
-    public void invoke(Member.PasswordResetRequest request) {
+	public void invoke(Member.PasswordResetRequest request) {
 
-        memberRepository.resetPassword(request);
-    }
+		memberRepository.resetPassword(request);
+	}
 }

@@ -7,5 +7,5 @@ import way.application.core.utils.ErrorResult;
 @Getter
 @RequiredArgsConstructor
 public class ServerException extends RuntimeException {
-    private final ErrorResult errorResult;
+	private final ErrorResult errorResult;
 }

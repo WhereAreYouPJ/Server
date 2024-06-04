@@ -10,13 +10,35 @@ import java.util.Optional;
 
 @Repository
 public interface LocationJpaRepository extends JpaRepository<LocationEntity, Long> {
-    @Query("SELECT le FROM LocationEntity le WHERE le.member.id =:memberId")
-    List<LocationEntity> findLocationEntityByMemberId(@Param("memberId") Long memberId);
+	@Query("""
+		SELECT 
+		    le 
+		FROM 
+		   LocationEntity le 
+		WHERE 
+			le.member.memberSeq =:memberSeq
+		""")
+	List<LocationEntity> findLocationEntityByMemberId(@Param("memberSeq") Long memberSeq);
 
-    @Query("SELECT ls FROM LocationEntity ls WHERE ls.member.id =:memberId AND ls.id =:locationId")
-    Optional<LocationEntity> findLocationEntityByMemberIdAndLocationId(@Param("memberId") Long memberId,
-                                                                       @Param("locationId") Long locationId);
+	@Query("""
+		SELECT 
+			ls 
+		FROM 
+			LocationEntity ls 
+		WHERE 
+			ls.member.memberSeq =:memberSeq 
+			AND 
+			ls.locationSeq =:locationSeq
+		""")
+	Optional<LocationEntity> findLocationEntityByMemberIdAndLocationId(@Param("memberSeq") Long memberSeq, @Param("locationSeq") Long locationSeq);
 
-    @Query("SELECT ls FROM LocationEntity ls WHERE ls.member.id =:memberId")
-    List<LocationEntity> findAllLocationEntitiesByMemberId(@Param("memberId") Long memberId);
+	@Query("""
+		SELECT 
+			ls 
+		FROM 
+			LocationEntity ls 
+		WHERE 
+			ls.member.memberSeq =:memberSeq
+		""")
+	List<LocationEntity> findAllLocationEntitiesByMemberId(@Param("memberSeq") Long memberSeq);
 }
