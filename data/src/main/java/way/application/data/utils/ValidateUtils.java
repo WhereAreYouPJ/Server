@@ -2,7 +2,6 @@ package way.application.data.utils;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,7 @@ public class ValidateUtils {
 
 	public MemberEntity validateMemberEntity(Long memberSeq) {
 		return memberJpaRepository.findById(memberSeq)
-			.orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_ID_BAD_REQUEST_EXCEPTION));
+			.orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_SEQ_BAD_REQUEST_EXCEPTION));
 	}
 
 	public List<MemberEntity> validateMemberEntityIn(List<Long> memberSeqs) {
@@ -42,7 +41,7 @@ public class ValidateUtils {
 
 		List<MemberEntity> memberEntities = memberJpaRepository.findAllById(memberSeqs);
 		if (memberEntities.size() != memberSeqs.size()) {
-			throw new BadRequestException(ErrorResult.MEMBER_ID_BAD_REQUEST_EXCEPTION);
+			throw new BadRequestException(ErrorResult.MEMBER_SEQ_BAD_REQUEST_EXCEPTION);
 		}
 
 		return memberEntities;
@@ -50,7 +49,7 @@ public class ValidateUtils {
 
 	public ScheduleEntity validateScheduleEntity(Long scheduleSeq) {
 		return scheduleJpaRepository.findById(scheduleSeq)
-			.orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_ID_BAD_REQUEST_EXCEPTION));
+			.orElseThrow(() -> new BadRequestException(ErrorResult.SCHEDULE_SEQ_BAD_REQUEST_EXCEPTION));
 	}
 
 	public ScheduleEntity validateScheduleEntityCreatedByMember(Long scheduleSeq, Long memberSeq) {
@@ -62,7 +61,7 @@ public class ValidateUtils {
 
 	public ScheduleMemberEntity validateMemberInScheduleMemberEntity(Long memberSeq, Long scheduleSeq) {
 		return scheduleMemberJpaRepository.findAcceptedScheduleMemberByScheduleIdAndMemberId(scheduleSeq, memberSeq)
-			.orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_ID_NOT_IN_SCHEDULE_BAD_REQUEST_EXCEPTION));
+			.orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_SEQ_NOT_IN_SCHEDULE_BAD_REQUEST_EXCEPTION));
 	}
 
 	public List<LocationEntity> validateLocationEntityByCount(Long memberSeq) {
@@ -76,7 +75,7 @@ public class ValidateUtils {
 
 	public LocationEntity validateLocationEntityById(Long locationSeq) {
 		return locationJpaRepository.findById(locationSeq)
-			.orElseThrow(() -> new BadRequestException(ErrorResult.LOCATION_ID_BAD_REQUEST_EXCEPTION));
+			.orElseThrow(() -> new BadRequestException(ErrorResult.LOCATION_SEQ_BAD_REQUEST_EXCEPTION));
 	}
 
 	public LocationEntity validateLocationEntityByMemberId(Long locationSeq, Long memberSeq) {
