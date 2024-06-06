@@ -140,4 +140,11 @@ public class Schedule {
 	) {
 
 	}
+
+	public record AcceptScheduleRequest(
+		Long scheduleSeq,
+		Long memberSeq
+	) {
+
+	}
 }
