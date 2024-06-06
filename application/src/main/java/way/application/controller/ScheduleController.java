@@ -35,6 +35,7 @@ public class ScheduleController {
 	private final DeleteScheduleUseCase deleteScheduleUseCase;
 	private final GetScheduleUseCase getScheduleUseCase;
 	private final GetScheduleByDateUseCase getScheduleByDateUseCase;
+	private final AcceptScheduleUseCase acceptScheduleUseCase;
 
 	@PostMapping(name = "일정 생성")
 	@Operation(summary = "일정 생성 API", description = "일정 생성 API")
@@ -271,5 +272,47 @@ public class ScheduleController {
 		List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberSeq, date);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
+	}
+
+	@PostMapping(value = "/accept-schedule", name = "일정 초대 수락")
+	@Operation(summary = "일정 초대 수락 API", description = "일정 초대 수락 API")
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MSB002",
+			description = "400 MEMBER_SEQ_BAD_REQUEST_EXCEPTION / MEMBER_SEQ 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "SSB003",
+			description = "400 SCHEDULE_SEQ_BAD_REQUEST_EXCEPTION / SCHEDULE_ID 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MSNISB004",
+			description = "400 MEMBER_SEQ_NOT_IN_SCHEDULE_BAD_REQUEST_EXCEPTION / 일정에 존재하지 않는 Member의 경우 + Schedule에서 일정을 수락하지 않은 경우 조회 불가",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> acceptSchedule(
+		@Valid @RequestBody Schedule.AcceptScheduleRequest request) {
+		acceptScheduleUseCase.invoke(request);
+
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
 	}
 }
