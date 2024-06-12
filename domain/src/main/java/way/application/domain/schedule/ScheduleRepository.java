@@ -13,4 +13,6 @@ public interface ScheduleRepository {
 	Schedule.GetScheduleResponse get(Long scheduleSeq, Long memberSeq);
 
 	List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberSeq, LocalDateTime request);
+
+	void acceptSchedule(Schedule.AcceptScheduleRequest request);
 }

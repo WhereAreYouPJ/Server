@@ -39,4 +39,8 @@ public class ScheduleMemberEntity {
 
 	@Column(name = "accept_schedule", nullable = false)
 	private Boolean acceptSchedule = false;
+
+	public void updateAcceptSchedule() {
+		this.acceptSchedule = true;
+	}
 }

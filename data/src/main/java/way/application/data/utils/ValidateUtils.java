@@ -64,6 +64,11 @@ public class ValidateUtils {
 			.orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_SEQ_NOT_IN_SCHEDULE_BAD_REQUEST_EXCEPTION));
 	}
 
+	public ScheduleMemberEntity validateMemberInSchedule(Long memberSeq, Long scheduleSeq) {
+		return scheduleMemberJpaRepository.findScheduleMemberEntityByMemberSeq(memberSeq, scheduleSeq)
+			.orElseThrow(() -> new BadRequestException(ErrorResult.MEMBER_SEQ_NOT_IN_SCHEDULE_BAD_REQUEST_EXCEPTION));
+	}
+
 	public List<LocationEntity> validateLocationEntityByCount(Long memberSeq) {
 		List<LocationEntity> locationEntities = locationJpaRepository.findLocationEntityByMemberId(memberSeq);
 

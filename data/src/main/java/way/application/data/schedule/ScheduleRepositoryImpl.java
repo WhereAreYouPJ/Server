@@ -144,6 +144,18 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 			.collect(Collectors.toList());
 	}
 
+	@Override
+	public void acceptSchedule(Schedule.AcceptScheduleRequest request) {
+		validateUtils.validateMemberEntity(request.memberSeq());
+		validateUtils.validateScheduleEntity(request.scheduleSeq());
+		ScheduleMemberEntity scheduleMemberEntity
+			= validateUtils.validateMemberInSchedule(request.memberSeq(), request.scheduleSeq());
+
+		scheduleMemberEntity.updateAcceptSchedule();
+
+		scheduleMemberJpaRepository.save(scheduleMemberEntity);
+	}
+
 	private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember,
 		MemberEntity createMember) {
 		boolean isCreator = invitedMember.getMemberSeq().equals(createMember.getMemberSeq());

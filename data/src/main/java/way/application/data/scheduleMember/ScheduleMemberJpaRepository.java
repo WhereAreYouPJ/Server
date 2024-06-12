@@ -10,6 +10,8 @@ import way.application.data.schedule.ScheduleEntity;
 import java.util.List;
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 @Repository
 public interface ScheduleMemberJpaRepository extends JpaRepository<ScheduleMemberEntity, Long> {
 	void deleteAllBySchedule(ScheduleEntity scheduleEntity);
@@ -42,4 +44,19 @@ public interface ScheduleMemberJpaRepository extends JpaRepository<ScheduleMembe
 	Optional<ScheduleMemberEntity> findAcceptedScheduleMemberByScheduleIdAndMemberId(
 		@Param("scheduleSeq") Long scheduleSeq,
 		@Param("memberSeq") Long memberSeq);
+
+	@Query("""
+			SELECT 
+				sme
+			FROM 
+				ScheduleMemberEntity sme
+			WHERE 
+				sme.invitedMember.memberSeq =:memberSeq
+				AND
+				sme.schedule.scheduleSeq =:scheduleSeq
+		""")
+	Optional<ScheduleMemberEntity> findScheduleMemberEntityByMemberSeq(
+		@Param("memberSeq") Long memberSeq,
+		@Param("scheduleSeq") Long scheduleSeq
+	);
 }
