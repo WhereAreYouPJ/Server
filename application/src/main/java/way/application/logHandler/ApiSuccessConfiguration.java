@@ -63,6 +63,12 @@ public class ApiSuccessConfiguration {
 
 	private void saveSuccessLog(HttpServletRequest request, CustomHttpServletResponseWrapper responseWrapper,
 		String serverIp, long start, long end) {
+		String requestURL = request.getRequestURL().toString();
+
+		if (requestURL.contains("/admin") || requestURL.contains("/actuator")) {
+			return;
+		}
+
 		ApiSuccessLogs log = ApiSuccessLogs.builder()
 			.serverIp(serverIp)
 			.requestURL(request.getRequestURL().toString())
