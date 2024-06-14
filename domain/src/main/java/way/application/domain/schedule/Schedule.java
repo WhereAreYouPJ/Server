@@ -130,13 +130,15 @@ public class Schedule {
 	}
 
 	public record GetScheduleByDateResponse(
-		Long id,
+		Long scheduleSeq,
 
 		String title,
 
 		String location,
 
-		String color
+		String color,
+		LocalDateTime startTime,
+		LocalDateTime endTime
 	) {
 
 	}

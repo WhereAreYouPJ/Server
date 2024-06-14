@@ -21,6 +21,7 @@ import way.application.domain.schedule.Schedule;
 import way.application.domain.schedule.ScheduleRepository;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -130,7 +131,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberSeq, LocalDateTime request) {
+	public List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberSeq, LocalDate request) {
 		validateUtils.validateMemberEntity(memberSeq);
 
 		List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.findAcceptedSchedulesByMemberAndDate(memberSeq,
@@ -140,7 +141,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 				scheduleEntity.getScheduleSeq(),
 				scheduleEntity.getTitle(),
 				scheduleEntity.getLocation(),
-				scheduleEntity.getColor()))
+				scheduleEntity.getColor(),
+				scheduleEntity.getStartTime(),
+				scheduleEntity.getEndTime()))
 			.collect(Collectors.toList());
 	}
 
