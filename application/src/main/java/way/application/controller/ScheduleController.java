@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import way.application.domain.schedule.Schedule;
 import way.application.domain.schedule.usecase.*;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -36,6 +38,7 @@ public class ScheduleController {
 	private final GetScheduleUseCase getScheduleUseCase;
 	private final GetScheduleByDateUseCase getScheduleByDateUseCase;
 	private final AcceptScheduleUseCase acceptScheduleUseCase;
+	private final GetScheduleByMonthUseCase getScheduleByMonthUseCase;
 
 	@PostMapping(name = "일정 생성")
 	@Operation(summary = "일정 생성 API", description = "일정 생성 API")
@@ -238,7 +241,7 @@ public class ScheduleController {
 		@Parameter(
 			name = "date",
 			description = "조회하려는 날짜",
-			example = "2024-05-12T13:31:16"),
+			example = "2024-05-12"),
 		@Parameter(
 			name = "memberSeq",
 			description = "Member Sequence",
@@ -314,5 +317,46 @@ public class ScheduleController {
 		acceptScheduleUseCase.invoke(request);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+	}
+
+	@GetMapping(value = "/month-schedule", name = "월별 일정 조회")
+	@Operation(summary = "월별 일정 조회 API", description = "월별 일정 조회 API")
+	@Parameters({
+		@Parameter(
+			name = "yearMonth",
+			description = "조회하려는 날짜(yyyy-dd)",
+			example = "2024-05"),
+		@Parameter(
+			name = "memberSeq",
+			description = "Member Sequence",
+			example = "1")
+	})
+	@ApiResponses(value = {
+		@ApiResponse(
+			responseCode = "200",
+			description = "요청에 성공하였습니다.",
+			content = @Content(
+				mediaType = "application/json",
+				schema = @Schema(
+					implementation = BaseResponse.class))),
+		@ApiResponse(
+			responseCode = "S500",
+			description = "500 SERVER_ERROR (나도 몰라 ..)",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class))),
+		@ApiResponse(
+			responseCode = "MSB002",
+			description = "400 MEMBER_SEQ_BAD_REQUEST_EXCEPTION / MEMBER_SEQ 오류",
+			content = @Content(
+				schema = @Schema(
+					implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> getScheduleByMonth(
+		@Valid @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
+		@RequestParam("memberSeq") Long memberSeq) {
+		List<Schedule.GetScheduleByMonthResponse> response = getScheduleByMonthUseCase.invoke(yearMonth, memberSeq);
+
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
 	}
 }
