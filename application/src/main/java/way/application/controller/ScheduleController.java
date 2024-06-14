@@ -21,7 +21,7 @@ import way.application.core.exception.GlobalExceptionHandler;
 import way.application.domain.schedule.Schedule;
 import way.application.domain.schedule.usecase.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -267,7 +267,7 @@ public class ScheduleController {
 	})
 	public ResponseEntity<BaseResponse> getScheduleByDate(
 		@Valid
-		@RequestParam(name = "date") LocalDateTime date,
+		@RequestParam(name = "date") LocalDate date,
 		@RequestParam(name = "memberSeq") Long memberSeq) {
 		List<Schedule.GetScheduleByDateResponse> response = getScheduleByDateUseCase.invoke(memberSeq, date);
 

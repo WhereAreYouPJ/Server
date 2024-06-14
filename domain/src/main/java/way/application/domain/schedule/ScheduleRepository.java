@@ -1,5 +1,6 @@
 package way.application.domain.schedule;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface ScheduleRepository {
 
 	Schedule.GetScheduleResponse get(Long scheduleSeq, Long memberSeq);
 
-	List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberSeq, LocalDateTime request);
+	List<Schedule.GetScheduleByDateResponse> getScheduleByDate(Long memberSeq, LocalDate request);
 
 	void acceptSchedule(Schedule.AcceptScheduleRequest request);
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,21 +13,20 @@ import java.util.List;
 public interface ScheduleJpaRepository extends JpaRepository<ScheduleEntity, Long> {
 	@Query("""
 		SELECT 
-			se 
+		    se 
 		FROM 
-			ScheduleEntity se 
+		    ScheduleEntity se 
 		JOIN 
-			ScheduleMemberEntity sme 
-			ON 
-			se.scheduleSeq = sme.schedule.scheduleSeq 
+		    ScheduleMemberEntity sme 
+		    ON 
+		    se.scheduleSeq = sme.schedule.scheduleSeq 
 		WHERE 
-			sme.invitedMember.memberSeq = :memberSeq 
-			AND 
-			sme.acceptSchedule = true 
-			AND 
-			CAST(se.startTime AS date) = CAST(:requestDate AS date)
+		    sme.invitedMember.memberSeq = :memberSeq 
+		    AND 
+		    sme.acceptSchedule = true 
+		    AND 
+		    :requestDate BETWEEN CAST(se.startTime AS date) AND CAST(se.endTime AS date)
 		""")
-		// TODO: STARTIME 기준이 아닌 STARTTIME >= ENDTIME <= 로 쿼리 수정 필요
 	List<ScheduleEntity> findAcceptedSchedulesByMemberAndDate(@Param("memberSeq") Long memberSeq,
-		@Param("requestDate") LocalDateTime requestDate);
+		@Param("requestDate") LocalDate requestDate);
 }
