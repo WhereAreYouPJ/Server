@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Error Logs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #0b1727;
+            color: #ffffff;
+        }
+        .card {
+            background-color: #182b47;
+            border: none;
+            border-radius: 1rem;
+        }
+        .card .card-body {
+            color: #ffffff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #0f233f;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+        .header .search-bar {
+            flex-grow: 1;
+            margin-right: 1rem;
+        }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .header .user-info img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+        .thead-dark {
+            background-color: #1a3556;
+            color: #ffffff;
+        }
+        .table tbody tr td {
+            color: #ffffff;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card mt-4">
+        <div class="card-body table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Server IP</th>
+                    <th>Request URL</th>
+                    <th>Request Method</th>
+                    <th>Response Status</th>
+                    <th>Client IP</th>
+                    <th>Request Time</th>
+                    <th>Response Time</th>
+                    <th>Connection Time</th>
+                    <th>Error Message</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="log : ${errorLogs}">
+                    <td th:text="${log.serverIp}"></td>
+                    <td class="text-wrap" th:text="${log.requestURL}"></td>
+                    <td th:text="${log.requestMethod}"></td>
+                    <td th:text="${log.responseStatus}"></td>
+                    <td th:text="${log.clientIp}"></td>
+                    <td th:text="${#temporals.format(log.requestTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(log.responseTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${log.connectionTime}"></td>
+                    <td class="text-wrap" th:text="${log.errorMessage}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
