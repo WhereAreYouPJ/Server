@@ -11,4 +11,6 @@ import way.application.domain.schedule.Schedule;
 public interface ScheduleMapper {
 	@Mapping(target = "scheduleSeq", ignore = true)
 	ScheduleEntity toScheduleEntity(Schedule.SaveScheduleRequest request);
+
+	Schedule.GetScheduleByMonthResponse toGetScheduleByMonthResponse(ScheduleEntity scheduleEntity);
 }
