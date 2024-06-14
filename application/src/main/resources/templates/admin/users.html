@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #0b1727;
+            color: #ffffff;
+        }
+        .card {
+            background-color: #182b47;
+            border: none;
+            border-radius: 1rem;
+        }
+        .card .card-body {
+            color: #ffffff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #0f233f;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+        .header .search-bar {
+            flex-grow: 1;
+            margin-right: 1rem;
+        }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .header .user-info img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+        .text-wrap {
+            word-wrap: break-word;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body table-responsive">
+            <table class="table table-striped mt-4">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Sequence</th>
+                    <th>User Name</th>
+                    <th>User Id</th>
+                    <th>Password</th>
+                    <th>Profile Image</th>
+                    <th>Email</th>
+                    <th>FireBase Target Token</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.memberSeq}"></td>
+                    <td th:text="${user.userName}"></td>
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.encodedPassword}"></td>
+                    <td class="text-wrap" th:text="${user.profileImage}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td class="text-wrap" th:text="${user.fireBaseTargetToken}"></td>
+                    <td>
+                        <a th:href="@{'/admin/users/edit/' + ${user.memberSeq}}" class="btn btn-primary btn-sm">수정</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" data-toggle="modal" th:data-target="'#deleteModal' + ${user.memberSeq}">삭제</button>
+                        <!-- Delete Modal -->
+                        <div class="modal fade" th:id="'deleteModal' + ${user.memberSeq}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">삭제 확인</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        정말로 삭제하시겠습니까?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                        <form th:action="@{'/admin/users/delete/' + ${user.memberSeq}}" method="post" style="display:inline;">
+                                            <input type="hidden" name="_method" value="delete"/>
+                                            <button type="submit" class="btn btn-danger">삭제</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of Delete Modal -->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
