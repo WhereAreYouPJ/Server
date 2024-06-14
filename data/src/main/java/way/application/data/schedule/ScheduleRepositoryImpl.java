@@ -23,6 +23,7 @@ import way.application.domain.schedule.ScheduleRepository;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -157,6 +158,20 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 		scheduleMemberEntity.updateAcceptSchedule();
 
 		scheduleMemberJpaRepository.save(scheduleMemberEntity);
+	}
+
+	@Override
+	public List<Schedule.GetScheduleByMonthResponse> getScheduleByMonth(YearMonth yearMonth, Long memberSeq) {
+		validateUtils.validateMemberEntity(memberSeq);
+		LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
+		LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59);
+
+		List<ScheduleEntity> scheduleEntities
+			= scheduleJpaRepository.findSchedulesByYearMonth(startOfMonth, endOfMonth, memberSeq);
+
+		return scheduleEntities.stream()
+			.map(scheduleMapper::toGetScheduleByMonthResponse)
+			.collect(Collectors.toList());
 	}
 
 	private void saveScheduleMember(ScheduleEntity savedSchedule, MemberEntity invitedMember,
