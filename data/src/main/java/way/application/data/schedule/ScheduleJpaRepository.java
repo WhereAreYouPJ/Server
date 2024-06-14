@@ -29,4 +29,25 @@ public interface ScheduleJpaRepository extends JpaRepository<ScheduleEntity, Lon
 		""")
 	List<ScheduleEntity> findAcceptedSchedulesByMemberAndDate(@Param("memberSeq") Long memberSeq,
 		@Param("requestDate") LocalDate requestDate);
+
+	@Query("""
+		SELECT 
+		    se 
+		FROM 
+		    ScheduleEntity se 
+		JOIN 
+		    ScheduleMemberEntity sme 
+		    ON 
+		    se.scheduleSeq = sme.schedule.scheduleSeq 
+		WHERE 
+			(se.startTime BETWEEN :startOfMonth AND :endOfMonth 			
+			OR 			
+			se.endTime BETWEEN :startOfMonth AND :endOfMonth)
+			AND
+			sme.acceptSchedule = true
+			AND
+			sme.invitedMember.memberSeq =:memberSeq
+		""")
+	List<ScheduleEntity> findSchedulesByYearMonth(@Param("startOfMonth") LocalDateTime startOfMonth,
+		@Param("endOfMonth") LocalDateTime endOfMonth, @Param("memberSeq") Long memberSeq);
 }
