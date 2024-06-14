@@ -149,4 +149,20 @@ public class Schedule {
 	) {
 
 	}
+
+	public record GetScheduleByMonthResponse(
+		Long scheduleSeq,
+		String title,
+		LocalDateTime startTime,
+		LocalDateTime endTime,
+		String location,
+		String streetName,
+
+		Double x,
+		Double y,
+		String color,
+		String memo
+	) {
+
+	}
 }
