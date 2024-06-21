@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -85,11 +86,26 @@ public class MemberRepositoryImpl implements MemberRepository {
 	public void sendMail(Member.MailSendRequest request) {
 
 		// authKey 생성
-		Random random = new Random();
-		String authKey = String.valueOf(random.nextInt(888888) + 111111);
+		String authKey = getAuthKey();
 
 		//이메일 발송
 		sendAuthEmail(request.email(), authKey);
+	}
+
+	@NotNull
+	private static String getAuthKey() {
+		Random random = new Random();
+        return String.valueOf(random.nextInt(888888) + 111111);
+	}
+
+	@Override
+	public void sendMailByUserId(Member.MailSendByUserIdRequest request) {
+
+		MemberEntity member = validateUtils.validateUserId(request.userId());
+
+		String authKey = getAuthKey();
+
+		sendAuthEmail(member.getEmail(), authKey);
 	}
 
 	private void sendAuthEmail(String email, String authKey) {
@@ -138,17 +154,14 @@ public class MemberRepositoryImpl implements MemberRepository {
 	public void verifyPasswordCode(Member.VerifyPasswordCodeRequest request) {
 
 		// 멤버 조회
-		MemberEntity member = validateUtils.validateEmail(request.email());
-
-		// 이메일, 멤버 유효성 검사
-		validateUtils.validateUserMismatch(member.getUserId(), request.userId());
+		MemberEntity member = validateUtils.validateUserId(request.userId());
 
 		// 인증코드 검사
-		String verifyCode = redisTemplate.opsForValue().get(request.email());
+		String verifyCode = redisTemplate.opsForValue().get(member.getEmail());
 		validateUtils.validateCode(verifyCode, request.code());
 
 		//코드 삭제
-		redisTemplate.delete(request.email());
+		redisTemplate.delete(member.getEmail());
 
 	}
 

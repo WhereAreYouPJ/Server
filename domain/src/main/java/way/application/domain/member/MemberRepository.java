@@ -18,6 +18,8 @@ public interface MemberRepository {
 
 	void sendMail(Member.MailSendRequest request);
 
+	void sendMailByUserId(Member.MailSendByUserIdRequest request);
+
 	void verifyCode(Member.CodeVerifyRequest request);
 
 	void verifyPasswordCode(Member.VerifyPasswordCodeRequest request);
