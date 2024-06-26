@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import way.application.core.exception.BadRequestException;
 import way.application.core.exception.ConflictException;
 import way.application.core.utils.ErrorResult;
+import way.application.data.friend.FriendEntity;
+import way.application.data.friend.FriendJpaRepository;
+import way.application.data.friendRequest.FriendRequestJpaRepository;
 import way.application.data.location.LocationEntity;
 import way.application.data.location.LocationJpaRepository;
 import way.application.data.member.MemberEntity;
@@ -19,6 +22,7 @@ import way.application.data.scheduleMember.ScheduleMemberJpaRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +32,8 @@ public class ValidateUtils {
 	private final ScheduleMemberJpaRepository scheduleMemberJpaRepository;
 	private final LocationJpaRepository locationJpaRepository;
 	private final BCryptPasswordEncoder encoder;
+	private final FriendJpaRepository friendJpaRepository;
+	private final FriendRequestJpaRepository friendRequestJpaRepository;
 
 	public MemberEntity validateMemberEntity(Long memberSeq) {
 		return memberJpaRepository.findById(memberSeq)
@@ -142,4 +148,29 @@ public class ValidateUtils {
 		}
 	}
 
+	public void validateMemberAndFriendId(MemberEntity member, MemberEntity friend) {
+
+		if(member.equals(friend)) {
+			throw new BadRequestException(ErrorResult.SELF_FRIEND_REQUEST_BAD_REQUEST_EXCEPTION);
+		}
+
+	}
+
+	public void validateAlreadyFriend(MemberEntity owner,MemberEntity friend) {
+
+		Optional<FriendEntity> byOwnerAndFriends = friendJpaRepository.findByOwnerAndFriends(owner, friend);
+		byOwnerAndFriends.ifPresent(friendSeq -> {
+			throw new BadRequestException(ErrorResult.ALREADY_FRIEND_BAD_REQUEST_EXCEPTION);
+		});
+
+	}
+
+	public void validateAlreadyFriendRequest(MemberEntity owner,MemberEntity friends) {
+
+		boolean b = friendRequestJpaRepository.existsByReceiverIdAndSenderId(friends, owner);
+		if(b){
+			throw new BadRequestException(ErrorResult.ALREADY_SENT_BAD_REQUEST_EXCEPTION);
+		}
+
+	}
 }
