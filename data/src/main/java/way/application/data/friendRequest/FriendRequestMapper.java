@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 public interface FriendRequestMapper {
 
     @Mapping(target = "friendRequestSeq", ignore = true)
+    @Mapping(target = "senderSeq", source = "owner")
+    @Mapping(target = "receiverSeq", source = "friends")
+    @Mapping(target = "createTime", source = "localDateTime")
     FriendRequestEntity toFriendRequestEntity(MemberEntity owner, MemberEntity friends, LocalDateTime localDateTime);
 
 }
