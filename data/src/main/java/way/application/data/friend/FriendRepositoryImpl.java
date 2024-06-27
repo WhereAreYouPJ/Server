@@ -52,13 +52,6 @@ public class FriendRepositoryImpl implements FriendRepository {
 
         // 친구 요청 저장
         FriendRequestEntity friendRequestEntity = friendRequestMapper.toFriendRequestEntity(owner,friends, LocalDateTime.now());
-
-//        FriendRequestEntity friendRequestEntity = FriendRequestEntity.builder()
-//                .senderId(owner)
-//                .receiverId(friends)
-//                .createTime(LocalDateTime.now())
-//                .build();
-
         friendRequestJpaRepository.save(friendRequestEntity);
         // 알림
         sendNotification(friends, owner);

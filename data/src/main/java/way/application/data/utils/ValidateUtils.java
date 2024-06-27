@@ -167,8 +167,7 @@ public class ValidateUtils {
 
 	public void validateAlreadyFriendRequest(MemberEntity owner,MemberEntity friends) {
 
-		boolean b = friendRequestJpaRepository.existsByReceiverIdAndSenderId(friends, owner);
-		if(b){
+		if(friendRequestJpaRepository.existsByReceiverSeqAndSenderSeq(friends, owner)){
 			throw new BadRequestException(ErrorResult.ALREADY_SENT_BAD_REQUEST_EXCEPTION);
 		}
 
