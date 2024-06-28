@@ -25,11 +25,11 @@ public class FriendEntity {
     private Long friendSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "friends_id")
+    @JoinColumn(name = "friends_seq")
     private MemberEntity friends;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "owner_seq")
     private MemberEntity owner;
 
 
