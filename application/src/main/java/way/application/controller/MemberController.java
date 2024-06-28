@@ -34,6 +34,7 @@ public class MemberController {
 	private final CheckEmailUseCase checkEmailUseCase;
 	private final LoginUseCase loginUseCase;
 	private final SendMailUseCase sendMailUseCase;
+	private final SendMailByUserIdUseCase sendMailByUserIdUseCase;
 	private final CodeVerifyUseCase codeVerifyUseCase;
 	private final ResetPasswordUseCase resetPasswordUseCase;
 	private final FindIdUseCase findIdUseCase;
@@ -44,7 +45,7 @@ public class MemberController {
 	private final VerifyPasswordCodeUseCase verifyPasswordCodeUseCase;
 
 	@PostMapping(name = "회원가입")
-	@Operation(summary = "join Member API", description = "join Member API")
+	@Operation(summary = "join Member API", description = "회원가입 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -73,7 +74,7 @@ public class MemberController {
 	}
 
 	@GetMapping(value = "/checkId", name = "아이디 중복 체크")
-	@Operation(summary = "Check Id API", description = "Check Id API")
+	@Operation(summary = "Check Id API", description = "아이디 중복 체크 API")
 	@Parameters({
 		@Parameter(
 			name = "userId",
@@ -115,7 +116,7 @@ public class MemberController {
 	}
 
 	@GetMapping(value = "checkEmail", name = "이메일 중복 체크")
-	@Operation(summary = "Check Email API", description = "Check Email API")
+	@Operation(summary = "Check Email API", description = "이메일 중복 체크 API")
 	@Parameters({
 		@Parameter(
 			name = "email",
@@ -157,7 +158,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "/login", name = "로그인")
-	@Operation(summary = "Login API", description = "Login API")
+	@Operation(summary = "Login API", description = "로그인 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -199,7 +200,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "/email/send", name = "메일 전송")
-	@Operation(summary = "Mail Send API", description = "Mail Send API")
+	@Operation(summary = "Mail Send API", description = "인증 메일 전송 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -234,8 +235,44 @@ public class MemberController {
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
 	}
 
+	@PostMapping(value = "/email/sendUserId", name = "메일 전송")
+	@Operation(summary = "Mail Send API", description = "인증 메일 전송(By UserId) API")
+	@ApiResponses(value = {
+			@ApiResponse(
+					responseCode = "200",
+					description = "요청에 성공하였습니다.",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(
+									implementation = BaseResponse.class))),
+			@ApiResponse(
+					responseCode = "B001",
+					description = "400 Invalid DTO Parameter errors",
+					content = @Content(
+							schema = @Schema(
+									implementation = GlobalExceptionHandler.ErrorResponse.class))),
+			@ApiResponse(
+					responseCode = "S500",
+					description = "500 SERVER_ERROR",
+					content = @Content(
+							schema = @Schema(
+									implementation = GlobalExceptionHandler.ErrorResponse.class))),
+			@ApiResponse(
+					responseCode = "UIB009",
+					description = "400 USER_ID_BAD_REQUEST_EXCEPTION",
+					content = @Content(
+							schema = @Schema(
+									implementation = GlobalExceptionHandler.ErrorResponse.class)))
+	})
+	public ResponseEntity<BaseResponse> sendEmailByUserId(@Valid @RequestBody Member.MailSendByUserIdRequest request) {
+
+		sendMailByUserIdUseCase.invoke(request);
+
+		return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
+	}
+
 	@PostMapping(value = "/email/verify", name = "인증코드 검증 ")
-	@Operation(summary = "Code Verify API", description = "Code Verify API")
+	@Operation(summary = "Code Verify API", description = "인증코드 검증 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -277,7 +314,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "/email/verifyPassword", name = "비밀번호 재설정 인증코드 검증 ")
-	@Operation(summary = "Password Code Verify API", description = "Password Code Verify API")
+	@Operation(summary = "Password Code Verify API", description = "비밀번호 재설정 인증코드 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -317,8 +354,7 @@ public class MemberController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> verifyPasswordCode(
-		@Valid @RequestBody Member.VerifyPasswordCodeRequest request) {
+	public ResponseEntity<BaseResponse> verifyPasswordCode(@Valid @RequestBody Member.VerifyPasswordCodeRequest request) {
 
 		verifyPasswordCodeUseCase.invoke(request);
 
@@ -326,7 +362,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "/resetPassword", name = "비밀번호 재설정")
-	@Operation(summary = "Password Code Verify API", description = "Password Code Verify API")
+	@Operation(summary = "Password Code Verify API", description = "비밀번호 재설정 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -374,7 +410,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "/findId", name = "아이디 찾기")
-	@Operation(summary = "Find Id API", description = "Find Id API")
+	@Operation(summary = "Find Id API", description = "아이디 찾기 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -416,7 +452,7 @@ public class MemberController {
 	}
 
 	@GetMapping(value = "/details", name = "회원 상세 정보")
-	@Operation(summary = "Get Member Details API", description = "Get Member Details API")
+	@Operation(summary = "Get Member Details API", description = "회원 상세 정보(By MemberSeq) API")
 	@Parameters({
 		@Parameter(
 			name = "MemberSeq",
@@ -458,7 +494,7 @@ public class MemberController {
 	}
 
 	@PutMapping(value = "/modify", name = "회원 정보 변경")
-	@Operation(summary = "Modify User Info API", description = "Modify user Info API")
+	@Operation(summary = "Modify User Info API", description = "회원 정보 변경(프로필 사진, 아이디, 이름 변경 가능) API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
@@ -503,7 +539,7 @@ public class MemberController {
 	}
 
 	@GetMapping(value = "/info", name = "회원 상세 정보 By UserId")
-	@Operation(summary = "Get Member Details By UserId API", description = "Get Member Details By UserId API")
+	@Operation(summary = "Get Member Details By UserId API", description = "회원 상세 정보(친구 신청 시 아이디 검색) API")
 	@Parameters({
 		@Parameter(
 			name = "userId",
@@ -552,7 +588,7 @@ public class MemberController {
 	}
 
 	@PostMapping(value = "/logout", name = "로그아웃")
-	@Operation(summary = "Logout API", description = "Logout API")
+	@Operation(summary = "Logout API", description = "로그아웃 API")
 	@ApiResponses(value = {
 		@ApiResponse(
 			responseCode = "200",
