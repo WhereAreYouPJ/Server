@@ -187,7 +187,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 		String verifyCode = redisTemplate.opsForValue().get(request.email());
 		validateUtils.validateCode(verifyCode, request.code());
 
-		MemberEntity member = validateUtils.validateEmail(request.email());
+		MemberEntity member = validateUtils.validateFindIdByEmail(request.email());
 
 		return new Member.FindIdResponse(member.getUserId());
 	}
