@@ -41,7 +41,7 @@ public class FriendController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(
-                                    implementation = BaseResponse.class))),
+                                    implementation = Friend.VoidSwaggerResponse.class))),
             @ApiResponse(
                     responseCode = "S500",
                     description = "500 SERVER_ERROR",
