@@ -22,16 +22,4 @@ public class Friend {
         String data;
 
     }
-
-    public record FriendRequest(
-
-            // 친추 보낼 아이디
-            Long memberSeq,
-            // 친추 보낸 아이디
-            Long friendSeq,
-            LocalDateTime localDateTime
-
-    ) {
-
-    }
 }

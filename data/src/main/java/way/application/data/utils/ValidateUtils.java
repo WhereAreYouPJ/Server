@@ -178,6 +178,12 @@ public class ValidateUtils {
 		if(friendRequestJpaRepository.existsByReceiverSeqAndSenderSeq(friends, owner)){
 			throw new BadRequestException(ErrorResult.ALREADY_SENT_BAD_REQUEST_EXCEPTION);
 		}
+	}
 
+	public void validateAlreadyFriendRequestByFriend(MemberEntity friends,MemberEntity owner) {
+
+		if(friendRequestJpaRepository.existsByReceiverSeqAndSenderSeq(owner, friends)){
+			throw new BadRequestException(ErrorResult.ALREADY_SENT_BY_FRIEND_BAD_REQUEST_EXCEPTION);
+		}
 	}
 }

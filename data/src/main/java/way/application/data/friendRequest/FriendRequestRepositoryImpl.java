@@ -1,4 +1,4 @@
-package way.application.data.friend;
+package way.application.data.friendRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,16 +12,21 @@ import way.application.data.friendRequest.FriendRequestMapper;
 import way.application.data.member.MemberEntity;
 import way.application.data.utils.ValidateUtils;
 import way.application.domain.firebase.FireBaseRepository;
-import way.application.domain.friend.Friend;
-import way.application.domain.friend.FriendRepository;
+import way.application.domain.friendRequest.FriendRequestRepository;
+import way.application.domain.friendRequest.FriendRequest;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static way.application.domain.friendRequest.FriendRequest.*;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class FriendRepositoryImpl implements FriendRepository {
+public class FriendRequestRepositoryImpl implements FriendRequestRepository {
 
     private final ValidateUtils validateUtils;
     private final FriendRequestMapper friendRequestMapper;
@@ -30,7 +35,7 @@ public class FriendRepositoryImpl implements FriendRepository {
 
     @Override
     @Transactional
-    public void friendRequest(Friend.FriendRequest request) {
+    public void friendRequest(SaveFriendRequest request) {
 
         // 보낸 아이디
         MemberEntity owner = validateUtils.validateMemberEntity(request.memberSeq());
@@ -39,24 +44,37 @@ public class FriendRepositoryImpl implements FriendRepository {
         MemberEntity friends = validateUtils.validateMemberEntity(request.friendSeq());
 
         // 본인 한테 친구 요청 보낼 수 없음
-        validateUtils.validateMemberAndFriendId(owner,friends);
+        validateUtils.validateMemberAndFriendId(owner, friends);
 
         // 이미 친구 요청 전송됨
         validateUtils.validateAlreadyFriendRequest(owner, friends);
 
         // 친구가 친구 요청을 보냄
-        validateUtils.validateAlreadyFriendRequest(friends,owner);
+        validateUtils.validateAlreadyFriendRequestByFriend(friends, owner);
 
         // 이미 친구
-        validateUtils.validateAlreadyFriend(owner,friends);
+        validateUtils.validateAlreadyFriend(owner, friends);
 
         // 친구 요청 저장
-        FriendRequestEntity friendRequestEntity = friendRequestMapper.toFriendRequestEntity(owner,friends, LocalDateTime.now());
+        FriendRequestEntity friendRequestEntity = friendRequestMapper.toFriendRequestEntity(owner, friends, LocalDateTime.now());
         friendRequestJpaRepository.save(friendRequestEntity);
         // 알림
         sendNotification(friends, owner);
 
     }
+
+    @Override
+    public List<FriendRequestList> friendRequestList(Long memberSeq) {
+        MemberEntity member = validateUtils.validateMemberEntity(memberSeq);
+
+        List<FriendRequestEntity> byReceiverSeq = friendRequestJpaRepository.findByReceiverSeq(member);
+
+        return byReceiverSeq.stream().map(friendRequestEntity -> new FriendRequestList(
+                friendRequestEntity.getFriendRequestSeq(),
+                friendRequestEntity.getSenderSeq().getMemberSeq(),
+                friendRequestEntity.getCreateTime())).collect(Collectors.toList());
+    }
+
     private void sendNotification(MemberEntity invitedMember, MemberEntity createMember) {
         try {
             String body = createMember.getUserName() + "이(가) 친구 요청을 보냈습니다.";
