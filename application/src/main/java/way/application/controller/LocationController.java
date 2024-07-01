@@ -41,10 +41,7 @@ public class LocationController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -70,7 +67,7 @@ public class LocationController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> save(Location.SaveLocationRequest request) {
+	public ResponseEntity<BaseResponse<Location.SaveLocationResponse>> save(Location.SaveLocationRequest request) {
 		Location.SaveLocationResponse response = saveLocationUseCase.invoke(request);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
@@ -123,10 +120,7 @@ public class LocationController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -140,7 +134,7 @@ public class LocationController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> get(
+	public ResponseEntity<BaseResponse<List<Location.GetLocationResponse>>> get(
 		@Valid
 		@RequestParam(name = "memberSeq") Long memberSeq) {
 		List<Location.GetLocationResponse> response = getLocationUseCase.invoke(memberSeq);

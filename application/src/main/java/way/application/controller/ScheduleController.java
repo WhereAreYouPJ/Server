@@ -46,10 +46,7 @@ public class ScheduleController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -75,7 +72,7 @@ public class ScheduleController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> saveSchedule(@Valid @RequestBody Schedule.SaveScheduleRequest request) {
+	public ResponseEntity<BaseResponse<Schedule.SaveScheduleResponse>> saveSchedule(@Valid @RequestBody Schedule.SaveScheduleRequest request) {
 		Schedule.SaveScheduleResponse response = saveScheduleUseCase.invoke(request);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
@@ -87,10 +84,7 @@ public class ScheduleController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -128,7 +122,7 @@ public class ScheduleController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> modifySchedule(@Valid @RequestBody Schedule.ModifyScheduleRequest request) {
+	public ResponseEntity<BaseResponse<Schedule.ModifyScheduleResponse>> modifySchedule(@Valid @RequestBody Schedule.ModifyScheduleRequest request) {
 		Schedule.ModifyScheduleResponse response = modifyScheduleUseCase.invoke(request);
 
 		return ResponseEntity.ok().body(BaseResponse.ofSuccess(response));
@@ -197,10 +191,7 @@ public class ScheduleController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -226,7 +217,7 @@ public class ScheduleController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> getSchedule(
+	public ResponseEntity<BaseResponse<Schedule.GetScheduleResponse>> getSchedule(
 		@Valid
 		@RequestParam(name = "scheduleSeq") Long scheduleSeq,
 		@RequestParam(name = "memberSeq") Long memberSeq) {
@@ -251,10 +242,7 @@ public class ScheduleController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -268,7 +256,7 @@ public class ScheduleController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> getScheduleByDate(
+	public ResponseEntity<BaseResponse<List<Schedule.GetScheduleByDateResponse>>> getScheduleByDate(
 		@Valid
 		@RequestParam(name = "date") LocalDate date,
 		@RequestParam(name = "memberSeq") Long memberSeq) {
@@ -335,10 +323,13 @@ public class ScheduleController {
 		@ApiResponse(
 			responseCode = "200",
 			description = "요청에 성공하였습니다.",
-			content = @Content(
-				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+			useReturnTypeSchema = true
+			// content = @Content(
+			// 	mediaType = "application/json",
+			// 	schema = @Schema(
+			// 		implementation = Schedule.GetScheduleByMonthResponse.class,
+			// 		type = "array"))
+		),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR (나도 몰라 ..)",
@@ -352,7 +343,7 @@ public class ScheduleController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> getScheduleByMonth(
+	public ResponseEntity<BaseResponse<List<Schedule.GetScheduleByMonthResponse>>> getScheduleByMonth(
 		@Valid @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
 		@RequestParam("memberSeq") Long memberSeq) {
 		List<Schedule.GetScheduleByMonthResponse> response = getScheduleByMonthUseCase.invoke(yearMonth, memberSeq);
