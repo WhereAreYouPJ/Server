@@ -53,7 +53,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "S500",
 			description = "500 SERVER_ERROR",
@@ -87,8 +87,7 @@ public class MemberController {
 			description = "요청에 성공하였습니다.",
 			content = @Content(
 				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+				schema = @Schema(implementation = Member.CheckIdSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -130,7 +129,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.CheckEmailSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -165,8 +164,7 @@ public class MemberController {
 			description = "요청에 성공하였습니다.",
 			content = @Content(
 				mediaType = "application/json",
-				schema = @Schema(
-					implementation = BaseResponse.class))),
+				schema = @Schema(implementation = Member.MemberLoginSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -208,7 +206,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -244,7 +242,7 @@ public class MemberController {
 					content = @Content(
 							mediaType = "application/json",
 							schema = @Schema(
-									implementation = BaseResponse.class))),
+									implementation = Member.VoidSwaggerResponse.class))),
 			@ApiResponse(
 					responseCode = "B001",
 					description = "400 Invalid DTO Parameter errors",
@@ -280,7 +278,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -322,7 +320,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -370,7 +368,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -418,7 +416,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.FindIdSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -444,7 +442,7 @@ public class MemberController {
 				schema = @Schema(
 					implementation = GlobalExceptionHandler.ErrorResponse.class)))
 	})
-	public ResponseEntity<BaseResponse> findId(@Valid @RequestBody Member.FindIdRequest request) {
+	public ResponseEntity<BaseResponse<Member.FindIdResponse>> findId(@Valid @RequestBody Member.FindIdRequest request) {
 
 		Member.FindIdResponse findIdResponse = findIdUseCase.invoke(request);
 
@@ -466,7 +464,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.GetMemberDetailSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -502,7 +500,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -553,7 +551,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.GetMemberDetailByUserIdSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",
@@ -596,7 +594,7 @@ public class MemberController {
 			content = @Content(
 				mediaType = "application/json",
 				schema = @Schema(
-					implementation = BaseResponse.class))),
+					implementation = Member.VoidSwaggerResponse.class))),
 		@ApiResponse(
 			responseCode = "B001",
 			description = "400 Invalid DTO Parameter errors",

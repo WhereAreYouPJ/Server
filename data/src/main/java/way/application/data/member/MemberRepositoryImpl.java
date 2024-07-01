@@ -72,9 +72,6 @@ public class MemberRepositoryImpl implements MemberRepository {
 		MemberEntity member = validateUtils.validateUserId(request.userId());
 		validateUtils.validatePassword(request.password(), member.getEncodedPassword());
 
-		// fcm 토큰 저장
-		memberJpaRepository.updateByFireBaseTargetToken(request.targetToken());
-
 		// jwt 생성
 		String accessToken = jwtRepository.generateAccessToken(member.getUserId());
 		String refreshToken = jwtRepository.generateRefreshToken(member.getUserId());
