@@ -19,7 +19,7 @@ public class Member {
 		@Schema(example = "SUCCESS")
 		String message;
 
-		List<MemberLoginResponse> data;
+		MemberLoginResponse data;
 
 	}
 
@@ -45,7 +45,7 @@ public class Member {
 		@Schema(example = "SUCCESS")
 		String message;
 
-		List<CheckIdResponse> data;
+		CheckIdResponse data;
 
 	}
 
@@ -58,7 +58,7 @@ public class Member {
 		@Schema(example = "SUCCESS")
 		String message;
 
-		List<CheckEmailResponse> data;
+		CheckEmailResponse data;
 
 	}
 
@@ -71,7 +71,7 @@ public class Member {
 		@Schema(example = "SUCCESS")
 		String message;
 
-		List<FindIdResponse> data;
+		FindIdResponse data;
 
 	}
 
@@ -84,7 +84,7 @@ public class Member {
 		@Schema(example = "SUCCESS")
 		String message;
 
-		List<GetMemberDetailResponse> data;
+		GetMemberDetailResponse data;
 
 	}
 
@@ -97,7 +97,7 @@ public class Member {
 		@Schema(example = "SUCCESS")
 		String message;
 
-		List<GetMemberDetailByUserIdResponse> data;
+		GetMemberDetailByUserIdResponse data;
 
 	}
 
