@@ -1,10 +1,13 @@
 package way.application.domain.friendRequest;
 
+
 import java.util.List;
+
+import static way.application.domain.friendRequest.FriendRequest.*;
 
 public interface FriendRequestRepository {
 
-    void friendRequest (FriendRequest.SaveFriendRequest request);
+    void friendRequest (SaveFriendRequest request);
 
-    List<FriendRequest.FriendRequestList> friendRequestList(Long memberSeq);
+    List<FriendRequestList> friendRequestList(Long memberSeq);
 }

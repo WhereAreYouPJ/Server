@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FriendRequest {
 
@@ -33,10 +34,22 @@ public class FriendRequest {
 
     }
 
+    @Getter
+    @Setter
+    public static class FriendRequestListSwaggerResponse {
+        @Schema(example = "200")
+        int status;
+
+        @Schema(example = "SUCCESS")
+        String message;
+
+        List<FriendRequestList> data;
+    }
+
     public record FriendRequestList(
 
             Long friendRequestSeq,
-            Long senderId,
+            Long senderSeq,
             LocalDateTime createTime
     ) {
 
