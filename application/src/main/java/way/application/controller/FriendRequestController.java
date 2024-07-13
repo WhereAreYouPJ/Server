@@ -16,13 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import way.application.core.base.BaseResponse;
 import way.application.core.exception.GlobalExceptionHandler;
-import way.application.domain.friend.Friend;
-import way.application.domain.friendRequest.FriendRequest;
 import way.application.domain.friendRequest.usecase.FriendRequestListUseCase;
 import way.application.domain.friendRequest.usecase.FriendRequestUseCase;
 
 import java.io.IOException;
 import java.util.List;
+
+import static way.application.domain.friendRequest.FriendRequest.*;
 
 @RestController
 @RequestMapping(value = "/v1/friendRequest", name = "친구 요청")
@@ -43,7 +43,7 @@ public class FriendRequestController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(
-                                    implementation = Friend.VoidSwaggerResponse.class))),
+                                    implementation = VoidSwaggerResponse.class))),
             @ApiResponse(
                     responseCode = "S500",
                     description = "500 SERVER_ERROR",
@@ -81,7 +81,7 @@ public class FriendRequestController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> friendRequest(@Valid @RequestBody FriendRequest.SaveFriendRequest request) throws IOException {
+    public ResponseEntity<BaseResponse<String>> friendRequest(@Valid @RequestBody SaveFriendRequest request) throws IOException {
         friendRequestUseCase.invoke(request);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess("SUCCESS"));
@@ -90,7 +90,7 @@ public class FriendRequestController {
 
 
     @GetMapping(name = "친구 요청 리스트 조회")
-    @Operation(summary = "friend Request API", description = "친구 요청 리스트 조회 API")
+    @Operation(summary = "friend Request List API", description = "친구 요청 리스트 조회 API")
     @Parameters({
             @Parameter(
                     name = "memberSeq",
@@ -104,7 +104,7 @@ public class FriendRequestController {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(
-                                    implementation = Friend.VoidSwaggerResponse.class))),
+                                    implementation = FriendRequestListSwaggerResponse.class))),
             @ApiResponse(
                     responseCode = "S500",
                     description = "500 SERVER_ERROR",
@@ -124,8 +124,8 @@ public class FriendRequestController {
                             schema = @Schema(
                                     implementation = GlobalExceptionHandler.ErrorResponse.class)))
     })
-    public ResponseEntity<BaseResponse> friendRequestList(@Valid @RequestParam("memberSeq") Long memberSeq) {
-        List<FriendRequest.FriendRequestList> invoke = friendRequestListUseCase.invoke(memberSeq);
+    public ResponseEntity<BaseResponse<List<FriendRequestList>>> friendRequestList(@Valid @RequestParam("memberSeq") Long memberSeq) {
+        List<FriendRequestList> invoke = friendRequestListUseCase.invoke(memberSeq);
 
         return ResponseEntity.ok().body(BaseResponse.ofSuccess(invoke));
     }
